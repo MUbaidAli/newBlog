@@ -83,16 +83,16 @@ function Navbar({ modelOpener }) {
   const [isDropDown, setIsDropDown] = useState(false);
   return (
     <>
-      <nav className="">
+      <nav className="fixed z-10 w-full text-white">
         <div className=" navbar h-20  mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 flex items-center justify-between">
           <button
             className="block md:hidden"
             onClick={() => setIsDropDown(!isDropDown)}
           >
             {isDropDown ? (
-              <i class="fa-solid fa-x"></i>
+              <i class="fa-solid fa-x cursor-pointer"></i>
             ) : (
-              <i class="fa-solid fa-bars"></i>
+              <i class="fa-solid fa-bars cursor-pointer"></i>
             )}
           </button>
           <div className="logo ">

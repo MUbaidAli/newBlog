@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Review = require("./reviews");
 
 const blogSchema = new mongoose.Schema(
   {
@@ -6,9 +7,20 @@ const blogSchema = new mongoose.Schema(
     content: { type: String, required: true },
     category: { type: String, required: true },
     author: { type: String, required: true },
+    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
   },
   { timestamps: true }
 );
+
+blogSchema.pre("findOneAndDelete", async function (next) {
+  const blog = await this.model.findOne(this.getFilter());
+
+  if (blog) {
+    await Review.deleteMany({ blog: blog._id });
+  }
+  console.log(blog);
+  next();
+});
 
 const Blog = mongoose.model("Blog", blogSchema);
 

@@ -3,12 +3,10 @@ const express = require("express");
 const app = express();
 const dbConnect = require("./config/db");
 dbConnect();
-const Blog = require("./model/blog.js");
-const ExpressError = require("./utils/expressError.js");
-const wrapAsync = require("./utils/wrapAsync.js");
-const Category = require("./model/category.js");
 const categoryRoutes = require("./routes/categoryRoutes.js");
 const blogRoutes = require("./routes/blogRoutes.js");
+const reviewRoutes = require("./routes/reviewRoutes.js");
+const errorHandler = require("./middlewares/errorHandle.js");
 
 app.use(express.json());
 // Blog Routes
@@ -17,12 +15,12 @@ app.use("/api/blogs", blogRoutes);
 // category Operations
 app.use("/api/category", categoryRoutes);
 
-// custome Error Handler Middleware
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message = "Internal Server Error" } = err;
+// review Routes
+app.use("/api/review", reviewRoutes);
 
-  res.status(statusCode).json({ error: message });
-});
+// custome Error Handler Middleware
+
+app.use(errorHandler);
 
 // listening all requests
 app.listen(process.env.PORT, () => {

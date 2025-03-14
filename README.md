@@ -17,6 +17,15 @@ This is a full-stack blog application built using the MERN (MongoDB, Express, Re
 
 ✅ Separate frontend and backend structure
 
+✅ Progress - March 14, 2025
+Implemented Review Controllers for blogs and categories, separating logic from routes.
+Established One-to-Many Relationship between blogs and reviews by storing review ObjectIDs in the blog schema.
+Added Middleware for Review Deletion, ensuring reviews are removed from blogs when deleted.
+Implemented Cascade Deletion Middleware, automatically deleting all associated reviews when a blog is deleted.
+Refactored Code by moving business logic into controllers for better structure and maintainability.
+Created Hero Section in Frontend, improving the UI with a well-designed introduction section.
+
+
 🛠 Tech Stack
 
 Frontend:
