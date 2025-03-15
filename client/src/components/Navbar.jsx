@@ -83,7 +83,7 @@ function Navbar({ modelOpener }) {
   const [isDropDown, setIsDropDown] = useState(false);
   return (
     <>
-      <nav className="fixed z-10 w-full text-white">
+      <nav className="fixed z-30 w-full text-white">
         <div className=" navbar h-20  mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 flex items-center justify-between">
           <button
             className="block md:hidden"

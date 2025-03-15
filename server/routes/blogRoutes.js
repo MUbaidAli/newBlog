@@ -7,6 +7,7 @@ const {
   updateBlog,
   deleteBlog,
 } = require("../controllers/blogController");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 // get Request to show blogs data
 router.get("/", getAllBlogs);
@@ -15,13 +16,13 @@ router.get("/:id", getBlogById);
 
 // post Request to create new blog
 
-router.post("/", createBlog);
+router.post("/", authMiddleware, createBlog);
 
 // update Blog
-router.put("/:id", updateBlog);
+router.put("/:id", authMiddleware, updateBlog);
 
 // delete Request Blog
 
-router.delete("/:id", deleteBlog);
+router.delete("/:id", authMiddleware, deleteBlog);
 
 module.exports = router;

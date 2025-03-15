@@ -25,6 +25,22 @@ Implemented Cascade Deletion Middleware, automatically deleting all associated r
 Refactored Code by moving business logic into controllers for better structure and maintainability.
 Created Hero Section in Frontend, improving the UI with a well-designed introduction section.
 
+✅ Progress - March 15, 2025
+User Authentication & Authorization:
+
+Implemented user registration and login functionality.
+Applied protected routes to secure specific endpoints.
+User Data Handling:
+
+Developed API to fetch user details after authentication.
+Blog Authorization & CRUD Enhancements:
+
+Updated blog only if the user is authorized.
+Implemented protected delete functionality (users can only delete their own blogs).
+🚀 Authentication & Authorization added successfully!
+
+
+
 
 🛠 Tech Stack
 

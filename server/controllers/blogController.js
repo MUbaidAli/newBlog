@@ -1,4 +1,5 @@
 const Blog = require("../model/blog");
+const User = require("../model/user");
 const ExpressError = require("../utils/expressError");
 const wrapAsync = require("../utils/wrapAsync");
 
@@ -23,9 +24,18 @@ const getBlogById = wrapAsync(async (req, res) => {
 // post Request to create new blog
 
 const createBlog = wrapAsync(async (req, res) => {
-  const data = req.body;
+  const { title, content, category, author } = req.body;
+  if (!title || !content || !category) {
+    throw new ExpressError(400, "Please Fill All Test Fields");
+  }
   // console.log(data);
-  const newBlog = new Blog({ ...data });
+  const newBlog = new Blog({
+    title,
+    category,
+    content,
+    user: req.user._id,
+    author: req.user.name,
+  });
   console.log(newBlog);
   await newBlog.save();
   res.status(201).json({ message: "Blog Created Successfully" });
@@ -35,10 +45,25 @@ const createBlog = wrapAsync(async (req, res) => {
 const updateBlog = wrapAsync(async (req, res) => {
   const { id } = req.params;
   const data = req.body;
-  const updatedBlog = await Blog.findByIdAndUpdate(id, data, { new: true });
-  if (!updatedBlog) {
+
+  const blog = await Blog.findById(id);
+
+  if (!blog) {
     throw new ExpressError(404, "Blog Not Found");
   }
+
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    throw new ExpressError(401, "User Not Found");
+  }
+
+  if (user.id !== blog.user.toString()) {
+    // console.log(blog.user.toString() !== user.id);
+    throw new ExpressError(401, "You Are Not Authorizedddddd");
+  }
+
+  const updatedBlog = await Blog.findByIdAndUpdate(id, data, { new: true });
   res.json({ message: "Blog Updated Successfully", Blog: updatedBlog });
 });
 
@@ -46,10 +71,25 @@ const updateBlog = wrapAsync(async (req, res) => {
 const deleteBlog = wrapAsync(async (req, res) => {
   const { id } = req.params;
 
-  const deletedBlog = await Blog.findByIdAndDelete(id);
-  if (!deletedBlog) {
+  const blog = await Blog.findById(id);
+
+  if (!blog) {
     throw new ExpressError(404, "Blog Not Found");
   }
+
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    throw new ExpressError(401, "User Not Found");
+  }
+
+  if (user.id !== blog.user.toString()) {
+    // console.log(user.id, blog.user.toString());
+    throw new ExpressError(401, "You Are Not Authorized");
+  }
+
+  const deletedBlog = await Blog.findByIdAndDelete(id);
+
   res.json({ message: "Blog Deleted Successfully" });
 });
 

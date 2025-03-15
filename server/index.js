@@ -6,6 +6,7 @@ dbConnect();
 const categoryRoutes = require("./routes/categoryRoutes.js");
 const blogRoutes = require("./routes/blogRoutes.js");
 const reviewRoutes = require("./routes/reviewRoutes.js");
+const userRoutes = require("./routes/userRoutes.js");
 const errorHandler = require("./middlewares/errorHandle.js");
 
 app.use(express.json());
@@ -17,6 +18,9 @@ app.use("/api/category", categoryRoutes);
 
 // review Routes
 app.use("/api/review", reviewRoutes);
+
+// User Routes
+app.use("/api/user", userRoutes);
 
 // custome Error Handler Middleware
 

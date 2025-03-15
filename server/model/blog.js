@@ -8,6 +8,7 @@ const blogSchema = new mongoose.Schema(
     category: { type: String, required: true },
     author: { type: String, required: true },
     reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
 );
