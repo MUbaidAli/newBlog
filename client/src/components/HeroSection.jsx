@@ -1,10 +1,14 @@
+import Button from "./Button";
+import bgShadow from "../assets/Ellipse 10.svg";
+
 function HeroSection() {
   return (
     <>
+      <img src={bgShadow} alt="" className="absolute flex w-full " />
       <div className="hero-sec container mx-auto max-w-7xl overflow-hidden  relative">
         <div className="circle inner"></div>
-        <div className="text-section absolute z-10 w-[700px] text-center">
-          <h1 className="mb-4  text-gray-900 dark:text-white  lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-[#FF4242] to-[#99286C]">
+        <div className="text-section absolute z-10  md:w-[600px] w-100  px-5 text-center flex items-center flex-col mt-10">
+          <h1 className="mb-4  text-gray-900 dark:text-white text-5xl md:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-[#FF4242] to-[#99286C]">
             Your Guide To A Healthier Life
           </h1>
           <p className="my-3 text-white inline-block">
@@ -12,13 +16,9 @@ function HeroSection() {
             expert-backed health insights, mindful living tips, and
             scientifically proven wellness strategies.
           </p>
-
-          <a
-            href="#"
-            className="btn bg-gradient-to-r from-[#A80F0F] to-[#2F7362] text-white font-bold py-3 px-9  my-1 inline-block"
-          >
-            Download Free Guidance
-          </a>
+          <div className="w-[350px]">
+            <Button>Download Free Guidance</Button>
+          </div>
         </div>
       </div>
     </>

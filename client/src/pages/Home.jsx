@@ -2,6 +2,11 @@ import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Model from "../components/Model";
 import HeroSection from "../components/HeroSection";
+import LatestBlog from "../components/LatestBlog";
+import CategoryExplorer from "../components/CategoriesExplorer";
+import PopulerPost from "../components/PopularPost";
+import HrLine from "../components/HrLine";
+import Footer from "../components/Footer";
 function Home() {
   const [isModelOpen, setIsModelOpen] = useState(false);
   return (
@@ -10,7 +15,11 @@ function Home() {
         <Navbar modelOpener={setIsModelOpen} />
 
         <HeroSection />
-
+        <LatestBlog />
+        <CategoryExplorer />
+        <PopulerPost />
+        <HrLine />
+        <Footer />
         {isModelOpen && (
           <Model modelOpener={setIsModelOpen}>
             <form class="max-w-md mx-auto">

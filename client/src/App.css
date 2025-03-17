@@ -1,3 +1,7 @@
+body {
+  background-color: #111119;
+  /* height: 1000vh; */
+}
 .background {
   position: absolute;
   width: 100%;
@@ -61,4 +65,43 @@ body {
   -moz-box-shadow: 0px -1px 24px 14px rgba(0, 170, 255, 0.102);
   /* box-shadow: 0 0 16px rgba(0, 170, 255, 0.102), inset 0 0 16px #00aaff1a; */
   -webkit-animation: pulse 2s linear 1s infinite;
+}
+
+/*  */
+
+.custom-border::after {
+  content: "";
+  background: url(./src/assets/Vector1.svg);
+  background-repeat: no-repeat;
+  position: absolute;
+  /* opacity: 1; */
+  top: -5px;
+  right: -3px;
+  width: 87px;
+  height: 100px;
+  z-index: 9999;
+}
+
+.custom-border::before {
+  content: "";
+  background: url(./src/assets/Vector1.svg);
+  transform: rotate(180deg);
+  background-repeat: no-repeat;
+  position: absolute;
+  /* opacity: 1; */
+  bottom: -5px;
+  left: -3px;
+  width: 87px;
+  height: 100px;
+  z-index: 9999;
+}
+
+/* footer  */
+
+footer {
+  background: url("./src/assets/image.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
 }
