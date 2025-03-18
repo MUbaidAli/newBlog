@@ -1,6 +1,10 @@
-function HrLine() {
+function HrLine({ width }) {
   return (
-    <hr className="h-[2px] bg-gradient-to-r from-[#FF4242] to-[#99286C]" />
+    <hr
+      className={`h-[${
+        width + "px" || "3px"
+      }] bg-gradient-to-r from-[#FF4242] to-[#99286C] border-0`}
+    />
   );
 }
 

@@ -1,69 +1,9 @@
 // import { useState } from "react";
 // // import { FaSearch, FaHeart } from "react-icons/fa";
 
-import { useState } from "react";
-
-// const Navbar = () => {
-//   const [isOpen, setIsOpen] = useState(false);
-
-//   return (
-//     <nav className="bg-gradient-to-r from-black via-gray-900 to-black text-white p-4">
-//       <div className="max-w-7xl mx-auto flex justify-between items-center">
-//         {/* Logo */}
-//         <h1 className="text-xl font-bold">Logo</h1>
-
-//         {/* Menu Items */}
-//         <ul className="flex space-x-6">
-//           <li className="cursor-pointer">Home</li>
-//           <li
-//             className="relative cursor-pointer"
-//             onMouseEnter={() => setIsOpen(true)}
-//             onMouseLeave={() => setIsOpen(false)}
-//           >
-//             Categories ▼
-//             {isOpen && (
-//               <div className="absolute top-full left-0 mt-2 bg-white text-black rounded-lg shadow-lg p-4 grid grid-cols-3 gap-2 w-72">
-//                 {[
-//                   "Healthy Eating Tips",
-//                   "Superfoods Benefits",
-//                   "Weight Management",
-//                   "Natural Remedies",
-//                   "Productivity",
-//                   "Sleep & Relaxation",
-//                   "Yoga & Flexibility",
-//                   "Mental Health",
-//                   "Beauty & Skincare",
-//                   "Lifestyle & Wellness",
-//                   "Foods to Avoid",
-//                 ].map((category, index) => (
-//                   <button
-//                     key={index}
-//                     className="border border-red-400 text-red-500 px-2 py-1 rounded-md hover:bg-red-100 transition"
-//                   >
-//                     {category}
-//                   </button>
-//                 ))}
-//               </div>
-//             )}
-//           </li>
-//           <li className="cursor-pointer">Latest Posts</li>
-//           <li className="cursor-pointer">About Us</li>
-//           <li className="cursor-pointer">Contact</li>
-//         </ul>
-
-//         {/* Icons */}
-//         <div className="flex space-x-4">
-//           <i class="fa-solid fa-magnifying-glass"></i>
-//           <i class="fa-solid fa-magnifying-glass"></i>
-//           {/* <FaSearch className="cursor-pointer" /> */}
-//           {/* <FaHeart className="cursor-pointer" /> */}
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// };
-
-// export default Navbar;
+import { useEffect, useState } from "react";
+import HrLine from "./HrLine";
+import { NavLink } from "react-router-dom";
 
 function Navbar({ modelOpener }) {
   const categories = [
@@ -81,10 +21,32 @@ function Navbar({ modelOpener }) {
   ];
   const [isOpen, setIsOpen] = useState(false);
   const [isDropDown, setIsDropDown] = useState(false);
+  const [pos, setPos] = useState("top");
+
+  useEffect(() => {
+    document.addEventListener("scroll", (e) => {
+      let scrolled = document.scrollingElement.scrollTop;
+      console.log(scrolled);
+      console.log(pos);
+      if (scrolled >= 5 && scrolled <= 700) {
+        setPos("moved");
+      } else if (scrolled >= 701) {
+        setPos("show");
+      } else {
+        setPos("top");
+      }
+    });
+  }, []);
   return (
     <>
-      <nav className="fixed z-30 w-full text-white">
-        <div className=" navbar h-20  mx-auto max-w-7xl px-6  sm:px-6 lg:px-8 flex items-center justify-between">
+      <nav
+        className={`${pos == "moved" ? "hidden" : ""} 
+        ${
+          pos == "show" &&
+          " bg-[oklch(0.87 0.01 258.34 / 0.8)]  bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-20 "
+        } fixed z-100 w-full text-white `}
+      >
+        <div className=" navbar h-20  mx-auto max-w-7xl px-6  sm:px-6 lg:px-8 flex items-center justify-between ">
           <button
             className="block md:hidden"
             onClick={() => setIsDropDown(!isDropDown)}
@@ -101,12 +63,12 @@ function Navbar({ modelOpener }) {
           <div className="hidden md:block">
             <ul className="flex  ">
               <li className="mx-5">
-                <a
-                  href="#"
+                <NavLink
+                  to="/"
                   className="hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent"
                 >
                   Home
-                </a>
+                </NavLink>
               </li>
               <li
                 className="mx-5"
@@ -117,8 +79,8 @@ function Navbar({ modelOpener }) {
                   setIsOpen(false);
                 }}
               >
-                <a
-                  href="#"
+                <NavLink
+                  to="/categories"
                   className="hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent"
                 >
                   Categories ▼{" "}
@@ -135,31 +97,31 @@ function Navbar({ modelOpener }) {
                       ))}
                     </div>
                   )}{" "}
-                </a>
+                </NavLink>
               </li>
               <li className="mx-5">
-                <a
-                  href="#"
+                <NavLink
+                  to="/posts"
                   className="hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent"
                 >
                   Latest Posts
-                </a>
+                </NavLink>
               </li>
               <li className="mx-5">
-                <a
-                  href="#"
+                <NavLink
+                  to="/about"
                   className="hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent"
                 >
                   About Us
-                </a>
+                </NavLink>
               </li>
               <li className="mx-5">
-                <a
-                  href="#"
+                <NavLink
+                  to="/contact"
                   className="hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent"
                 >
                   Contact
-                </a>
+                </NavLink>
               </li>
             </ul>
           </div>
@@ -178,18 +140,23 @@ function Navbar({ modelOpener }) {
         </div>
 
         {isDropDown && (
-          <div className="md:hidden block">
-            <ul className="flex flex-col items-center justify-between bg-gray  ">
-              <li className="mx-5">
+          <div
+            className={`${
+              isDropDown &&
+              "bg-[oklch(0.87 0.01 258.34 / 0.8)]  bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-20 "
+            } fixed z-100 w-full text-white"} md:hidden block `}
+          >
+            <ul className="flex flex-col items-center justify-between bg-gray navBar ">
+              <li className="mx-5 hover:bg-linear-65  from-red-500 to-pink-800 bg-clip-text hover:text-transparent cursor-pointer">
                 <a
                   href="#"
-                  className="hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent"
+                  className="hover:bg-linear-65  from-red-500 to-pink-800 bg-clip-text hover:text-transparent"
                 >
                   Home
                 </a>
               </li>
               <li
-                className="mx-5"
+                className="mx-5 mx-5 hover:bg-linear-65  from-red-500 to-pink-800 bg-clip-text hover:text-transparent cursor-pointer"
                 onMouseEnter={() => {
                   setIsOpen(true);
                 }}
@@ -203,7 +170,7 @@ function Navbar({ modelOpener }) {
                 >
                   Categories ▼{" "}
                   {isOpen && (
-                    <div className="absolute  flex flex-col  w-150  py-5 bg-white text-black shadow-lg border rounded-lg border-white ">
+                    <div className="absolute  flex sm:flex-col flex-wrap  w-100  py-5 bg-white text-black shadow-lg border rounded-lg border-white ">
                       {categories.map((item, i) => (
                         <a
                           key={i}
@@ -217,7 +184,7 @@ function Navbar({ modelOpener }) {
                   )}{" "}
                 </a>
               </li>
-              <li className="mx-5">
+              <li className="mx-5  hover:bg-linear-65  from-red-500 to-pink-800 bg-clip-text hover:text-transparent cursor-pointer">
                 <a
                   href="#"
                   className="hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent"
@@ -225,7 +192,7 @@ function Navbar({ modelOpener }) {
                   Latest Posts
                 </a>
               </li>
-              <li className="mx-5">
+              <li className="mx-5 hover:bg-linear-65  from-red-500 to-pink-800 bg-clip-text hover:text-transparent cursor-pointer">
                 <a
                   href="#"
                   className="hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent"
@@ -233,7 +200,7 @@ function Navbar({ modelOpener }) {
                   About Us
                 </a>
               </li>
-              <li className="mx-5">
+              <li className="mx-5 hover:bg-linear-65  from-red-500 to-pink-800 bg-clip-text hover:text-transparent cursor-pointer">
                 <a
                   href="#"
                   className="hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent"
@@ -244,6 +211,9 @@ function Navbar({ modelOpener }) {
             </ul>
           </div>
         )}
+
+        {pos == "show" && <HrLine width={"4"} />}
+        {/* <hr className="h-[4px] bg-gradient-to-r from-[#FF4242] to-[#99286C] border-0" /> */}
       </nav>
     </>
   );

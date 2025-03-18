@@ -16,21 +16,21 @@ function PopularPost() {
           </div>
         </section>
         {/* slider code section */}
-        <div className="slider flex justify-between">
+        <div className="slider flex sm:justify-between  justify-center">
           {/* left button */}
           <img
             src="./src/assets/vector3.svg"
             alt="left button"
-            className="rotate-180 "
+            className="rotate-180  mx-5 hidden sm:block "
           />
 
-          <div className="content flex  justify-between items-center ">
+          <div className="content flex  justify-between items-center flex-col md:flex-row ">
             <img
               src="./src/assets/image10.png"
               alt=""
-              className="m-5 md:w-full w-100"
+              className="m-5 sm:w-80 w-70"
             />
-            <div className="slider-text m-5 md:w-110">
+            <div className="slider-text m-5 md:w-110 w-70">
               <SectionHeading
                 text={
                   " Simple and effective home workouts to keep you in shape without gym equipment.  Simple and effective home workouts to keep you in shape without gym equipment."
@@ -41,7 +41,11 @@ function PopularPost() {
           </div>
 
           {/* right button */}
-          <img src="./src/assets/vector3.svg" alt="right button" />
+          <img
+            src="./src/assets/vector3.svg"
+            alt="right button"
+            className="mx-5 hidden sm:block"
+          />
         </div>
       </section>
     </>

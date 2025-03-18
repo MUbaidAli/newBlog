@@ -40,6 +40,14 @@ Implemented protected delete functionality (users can only delete their own blog
 🚀 Authentication & Authorization added successfully!
 
 
+✅ Progress - March 17, 2025
+Completed HomePage Design And More Customization About Navbar and Optimize  Code fix Bugs
+
+✅ Progress - March 18, 2025
+completed About Us Page Frontend
+Completed Contact Us Page Frontend
+Completed 404 Page Not Found Page
+Some More Modification On responsiveness and Code and fix Bugs
 
 
 🛠 Tech Stack

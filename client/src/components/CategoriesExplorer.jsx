@@ -13,7 +13,7 @@ function CategoryExplorer() {
           <div className="container  py-12 mx-auto">
             <div className="flex flex-wrap text-center lg:justify-between justify-center  ">
               {/* singple category */}
-              <div className="p-4 my-5 md:w-100 xl:w-70  border rounded-md  custom-border relative">
+              <div className="p-4 md:w-70 my-5 border w-100 md:w-100 xl:w-70 rounded-md  custom-border relative">
                 <div className="px-4 py-6 transform transition duration-500 hover:scale-110">
                   <div className="flex justify-left w-20">
                     <img src="./src/assets/Vector.svg" className="w-32 mb-3" />

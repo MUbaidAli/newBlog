@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Model from "../components/Model";
 import HeroSection from "../components/HeroSection";
@@ -7,15 +7,26 @@ import CategoryExplorer from "../components/CategoriesExplorer";
 import PopulerPost from "../components/PopularPost";
 import HrLine from "../components/HrLine";
 import Footer from "../components/Footer";
+import NavScroll from "../components/navScroll";
 function Home() {
   const [isModelOpen, setIsModelOpen] = useState(false);
+
   return (
     <>
       <div className="background">
+        {/* <NavScroll /> */}
         <Navbar modelOpener={setIsModelOpen} />
 
-        <HeroSection />
-        <LatestBlog />
+        <HeroSection
+          heading={"Your Guide To A Healthier Life"}
+          text="       Read expert tips on wellness, mental health, and fitness Explore
+            expert-backed health insights, mindful living tips, and
+            scientifically proven wellness strategies."
+          btnText={"Download Free Guide"}
+        />
+        <div className="bg">
+          <LatestBlog />
+        </div>
         <CategoryExplorer />
         <PopulerPost />
         <HrLine />
