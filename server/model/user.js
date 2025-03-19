@@ -8,8 +8,17 @@ const userSchema = new mongoose.Schema(
       required: [true, "please enter Email"],
       unique: true,
     },
-    password: { type: String, required: [true, "Please Enter Password"] },
-    roll: { type: String, required: true, default: "user" },
+    password: {
+      type: String,
+      required: [true, "Please Enter Password"],
+      min: 6,
+    },
+    role: {
+      type: String,
+      required: true,
+      enum: ["Admin", "Editor", "User"],
+      default: "user",
+    },
   },
   { timestamps: true }
 );

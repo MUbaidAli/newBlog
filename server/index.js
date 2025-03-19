@@ -8,8 +8,10 @@ const blogRoutes = require("./routes/blogRoutes.js");
 const reviewRoutes = require("./routes/reviewRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
 const errorHandler = require("./middlewares/errorHandle.js");
-
+const Blog = require("./model/blog.js");
+const cors = require("cors");
 app.use(express.json());
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 // Blog Routes
 app.use("/api/blogs", blogRoutes);
 

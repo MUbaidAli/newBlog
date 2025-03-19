@@ -2,7 +2,7 @@ import SectionHeading from "./SectionHeading";
 
 function CategoryExplorer() {
   return (
-    <section className="mx-auto max-w-7xl px-6  sm:px-10 lg:px-8 py-10">
+    <section className="mx-auto max-w-7xl px-6  sm:px-10 lg:px-8 md:py-40 py-40">
       <SectionHeading
         heading="Explore By Category"
         text="Top Picks for Your Wellness Journey"

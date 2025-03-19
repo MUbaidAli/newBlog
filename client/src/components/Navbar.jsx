@@ -4,6 +4,8 @@
 import { useEffect, useState } from "react";
 import HrLine from "./HrLine";
 import { NavLink } from "react-router-dom";
+import Button from "./Button";
+import { toast } from "react-toastify";
 
 function Navbar({ modelOpener }) {
   const categories = [
@@ -23,6 +25,23 @@ function Navbar({ modelOpener }) {
   const [isDropDown, setIsDropDown] = useState(false);
   const [pos, setPos] = useState("top");
 
+  const [user, setUser] = useState(null);
+  console.log(user, "user");
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get("http://localhost:8484/api/user/me", {
+          withCredentials: true,
+        });
+        console.log(res);
+        setUser(res);
+      } catch (error) {
+        setUser(null);
+      }
+    };
+    fetchUser();
+  }, []);
+
   useEffect(() => {
     document.addEventListener("scroll", (e) => {
       let scrolled = document.scrollingElement.scrollTop;
@@ -37,8 +56,23 @@ function Navbar({ modelOpener }) {
       }
     });
   }, []);
+
+  async function handleLogout() {
+    try {
+      await axios.post(
+        "http://localhost:8484/api/user/logout",
+        {},
+        { withCredentials: true }
+      );
+
+      toast("User Logged Out");
+    } catch (error) {
+      toast("Logout Failed");
+    }
+  }
   return (
     <>
+      {user && <Button onClick={handleLogout}>LogOut</Button>}
       <nav
         className={`${pos == "moved" ? "hidden" : ""} 
         ${

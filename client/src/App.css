@@ -146,8 +146,9 @@ ul.custom {
 
 .bg {
   background: url("./src/assets/ellipse 10.svg");
-  width: 100%;
-  height: 100%;
+  /* width: 100%; */
+  /* height: 100vh; */
+  background-size: contain;
   background-size: cover;
   background-repeat: no-repeat;
 }

@@ -24,12 +24,12 @@ function Home() {
             scientifically proven wellness strategies."
           btnText={"Download Free Guide"}
         />
-        <div className="bg">
+        <div className="bg ">
           <LatestBlog />
+          <CategoryExplorer />
+          <PopulerPost />
         </div>
-        <CategoryExplorer />
-        <PopulerPost />
-        <HrLine />
+        <HrLine width={4} />
         <Footer />
         {isModelOpen && (
           <Model modelOpener={setIsModelOpen}>

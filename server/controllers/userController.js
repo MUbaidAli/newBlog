@@ -19,7 +19,12 @@ const createUser = wrapAsync(async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
-  const newUser = User({ name, email, password: hashedPassword });
+  const newUser = new User({
+    name,
+    email,
+    password: hashedPassword,
+    role: "User",
+  });
 
   const userAdded = await newUser.save();
 
@@ -28,11 +33,12 @@ const createUser = wrapAsync(async (req, res) => {
       _id: userAdded._id,
       name: userAdded.name,
       email: userAdded.email,
+      role: userAdded.role,
       token: generateToken(userAdded._id),
     });
   } else {
-    res.status(400);
-    throw new ExpressError("invalid User Status");
+    // res.status(400);
+    throw new ExpressError(400, "invalid User Status");
   }
 });
 
@@ -52,10 +58,17 @@ const loginUser = wrapAsync(async (req, res) => {
   const passwordMatched = await bcrypt.compare(password, user.password);
 
   if (user && passwordMatched) {
+    res.cookie("token", generateToken(user._id), {
+      httpOnly: true, // Prevents JavaScript access (XSS protection)
+      secure: true, // Use true in production with HTTPS
+      sameSite: "Strict", // Prevents CSRF attacks
+      maxAge: 7 * 24 * 60 * 60 * 1000, // Expires in 7 days
+    });
     res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
+      role: user.role,
       token: generateToken(user._id),
     });
   } else if (user && !passwordMatched) {
@@ -66,9 +79,44 @@ const loginUser = wrapAsync(async (req, res) => {
   }
 });
 
+// admin Register
+const adminRegister = wrapAsync(async (req, res) => {
+  const { name, email, password, role } = req.body;
+
+  if (!["Admin", "Editor", "User"].includes(role)) {
+    throw new ExpressError(400, "Invalid Role");
+  }
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  const newUser = User({ name, email, password: hashedPassword, role });
+
+  const userAdded = await newUser.save();
+  if (userAdded) {
+    res.status(201).json({ message: "registered Successfully" });
+  } else {
+    res.status(400);
+    throw new ExpressError("invalid User");
+  }
+});
+
+// logout
+const logOut = wrapAsync((req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true, // Ensure it's secure in production
+    sameSite: "Strict",
+  });
+
+  res.json({ message: "Logged Out Successfully" });
+});
+
 // get user
 const getCurrentUSer = wrapAsync(async (req, res) => {
   const user = await User.findById(req.user._id);
+
+  if (!user) {
+    throw new ExpressError(404, "User Not Found");
+  }
 
   res.json({ message: "User data", user });
 });
@@ -79,4 +127,10 @@ function generateToken(id) {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 }
 
-module.exports = { createUser, loginUser, getCurrentUSer };
+module.exports = {
+  logOut,
+  createUser,
+  loginUser,
+  getCurrentUSer,
+  adminRegister,
+};
