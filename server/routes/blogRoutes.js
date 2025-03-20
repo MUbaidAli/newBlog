@@ -8,6 +8,10 @@ const {
   deleteBlog,
 } = require("../controllers/blogController");
 const authMiddleware = require("../middlewares/authMiddleware");
+const {
+  authAdminMiddleware,
+  authAdminOnlyMiddleware,
+} = require("../middlewares/authAdminMiddleware");
 
 // get Request to show blogs data
 router.get("/", getAllBlogs);
@@ -16,13 +20,13 @@ router.get("/:id", getBlogById);
 
 // post Request to create new blog
 
-router.post("/", authMiddleware, createBlog);
+router.post("/", authAdminMiddleware, createBlog);
 
 // update Blog
-router.put("/:id", authMiddleware, updateBlog);
+router.put("/:id", authAdminMiddleware, updateBlog);
 
 // delete Request Blog
 
-router.delete("/:id", authMiddleware, deleteBlog);
+router.delete("/:id", authAdminMiddleware, authAdminOnlyMiddleware, deleteBlog);
 
 module.exports = router;

@@ -10,8 +10,10 @@ const userRoutes = require("./routes/userRoutes.js");
 const errorHandler = require("./middlewares/errorHandle.js");
 const Blog = require("./model/blog.js");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cookieParser());
 // Blog Routes
 app.use("/api/blogs", blogRoutes);
 

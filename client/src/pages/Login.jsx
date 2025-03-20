@@ -8,12 +8,13 @@ import Button from "../components/Button";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-
+import { useAuth } from "../context/AuthContext";
 function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
   function handleForm(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setError({ ...error, [e.target.name]: "" });
@@ -35,18 +36,11 @@ function Login() {
     try {
       setIsLoading(true);
 
-      const response = await axios.post(
-        "http://localhost:8484/api/user/login",
-        formData,
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const data = await login(formData);
+      // console.log(data, "data");
+      toast(`Welcome ${data.name}`);
 
-      toast(`Welcome ${response.data.name}`);
-
-      if (response.data.role === "Admin" || response.data.role === "Editor") {
+      if (data.role === "Admin" || data.role === "Editor") {
         navigate("/dashboard");
       } else {
         navigate("/");
@@ -64,14 +58,6 @@ function Login() {
   return (
     <>
       <>
-        {/*
-  This example requires updating your template:
-
-  ```
-  <html class="h-full bg-white">
-  <body class="h-full">
-  ```
-*/}
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <h1 className="text-white text-center text-3xl">Logo</h1>

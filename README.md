@@ -50,6 +50,22 @@ Completed 404 Page Not Found Page
 Some More Modification On responsiveness and Code and fix Bugs
 
 
+✅ Progress - March 19, 2025
+completed Single Blog Post page (frontend)
+implemented register page with backend + frontend
+implemented login page with backend + frontend 
+implemented backend protected routes 
+
+✅ Progress - March 20, 2025
+implemented protected Routes (frontend)
+implemented more backend Protected Routes .
+implemented Role base access Protected Routes for blog creating deleting and updating  
+implemented http cookies for user storage and track user sessions 
+fix bugs 
+creating Custom Dashboard Design (in Progress) 
+
+
+
 🛠 Tech Stack
 
 Frontend:

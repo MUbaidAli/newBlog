@@ -105,6 +105,7 @@ const logOut = wrapAsync((req, res) => {
     httpOnly: true,
     secure: true, // Ensure it's secure in production
     sameSite: "Strict",
+    path: "/",
   });
 
   res.json({ message: "Logged Out Successfully" });

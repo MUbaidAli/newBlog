@@ -22,7 +22,7 @@ const authAdminMiddleware = wrapAsync(async (req, res, next) => {
     throw new ExpressError(404, "User Not Exist");
   }
 
-  if (user.role == "Admin") {
+  if (user.role == "Admin" || user.role === "Editor") {
     req.user = user;
     next();
   } else {
@@ -30,4 +30,13 @@ const authAdminMiddleware = wrapAsync(async (req, res, next) => {
   }
 });
 
-module.exports = authAdminMiddleware;
+const authAdminOnlyMiddleware = (req, res, next) => {
+  if (req.user.role !== "Admin") {
+    throw new ExpressError(
+      403,
+      "Unauthorized: Only Admin Can Perform This Action"
+    );
+  }
+  next();
+};
+module.exports = { authAdminMiddleware, authAdminOnlyMiddleware };

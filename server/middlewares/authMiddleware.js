@@ -4,12 +4,15 @@ const ExpressError = require("../utils/expressError");
 const User = require("../model/user");
 
 const authMiddleware = wrapAsync(async (req, res, next) => {
+  // console.log(req.cookies, "Cookies in Auth Middleware");
   let token = req.cookies.token;
-
+  // console.log(req.cookies.token);
+  // console.log("auth running");
+  // console.log("token", token);
   if (!token) {
     throw new ExpressError(401, "not Authorized , No Token");
   }
-  console.log(req.headers);
+  // console.log(req.headers);
   // if (
   //   req.headers.authorization &&
   //   req.headers.authorization.startsWith("Bearer")
@@ -23,7 +26,13 @@ const authMiddleware = wrapAsync(async (req, res, next) => {
 
     // get user with the Decoded ID
 
-    req.user = await User.findById(decoded.id).select("-password");
+    const user = await User.findById(decoded.id).select("-password");
+
+    if (!user) {
+      throw new ExpressError(404, "User Not Found");
+    }
+    // console.log("Auth user", user);
+    req.user = user;
 
     next();
     //   console.log(decoded, "decoded");

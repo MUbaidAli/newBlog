@@ -36,9 +36,13 @@ body {
   z-index: 1;
 }
 
-body {
-  height: 1000px;
+.dashboard-sidebar nav .active {
+  background: linear-gradient(90deg, #a80f0f 0%, #2f7362 60.43%);
 }
+
+/* body {
+  height: 1000px;
+} */
 
 @-webkit-keyframes pulse {
   0% {

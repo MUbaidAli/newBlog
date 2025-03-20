@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import AccountLayout from "./pages/AccountLayout";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -25,7 +26,15 @@ function App() {
         </Route>
 
         {/* dashboard Routes */}
-        <Route path="/dashboard" element={<Dashboard />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["Admin", "Editor"]}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>

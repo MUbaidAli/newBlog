@@ -3,10 +3,10 @@
 
 import { useEffect, useState } from "react";
 import HrLine from "./HrLine";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { toast } from "react-toastify";
-
+import axios from "axios";
 function Navbar({ modelOpener }) {
   const categories = [
     "Healthy Eating Tips",
@@ -24,17 +24,17 @@ function Navbar({ modelOpener }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropDown, setIsDropDown] = useState(false);
   const [pos, setPos] = useState("top");
-
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  console.log(user, "user");
+  // console.log(user, "user");
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const res = await axios.get("http://localhost:8484/api/user/me", {
           withCredentials: true,
         });
-        console.log(res);
-        setUser(res);
+        // console.log(res.data.user, "responsee");
+        setUser(res.data.user);
       } catch (error) {
         setUser(null);
       }
@@ -45,7 +45,7 @@ function Navbar({ modelOpener }) {
   useEffect(() => {
     document.addEventListener("scroll", (e) => {
       let scrolled = document.scrollingElement.scrollTop;
-      console.log(scrolled);
+      // console.log(scrolled);
       console.log(pos);
       if (scrolled >= 5 && scrolled <= 700) {
         setPos("moved");
@@ -59,12 +59,15 @@ function Navbar({ modelOpener }) {
 
   async function handleLogout() {
     try {
-      await axios.post(
+      console.log("called");
+      const res = await axios.post(
         "http://localhost:8484/api/user/logout",
         {},
         { withCredentials: true }
       );
-
+      console.log(res);
+      navigate("/");
+      setUser(null);
       toast("User Logged Out");
     } catch (error) {
       toast("Logout Failed");
@@ -72,7 +75,6 @@ function Navbar({ modelOpener }) {
   }
   return (
     <>
-      {user && <Button onClick={handleLogout}>LogOut</Button>}
       <nav
         className={`${pos == "moved" ? "hidden" : ""} 
         ${
@@ -163,12 +165,23 @@ function Navbar({ modelOpener }) {
           <div className="icons flex ">
             <div className="search mx-3">
               <i
-                class="fa-solid fa-magnifying-glass"
+                class="fa-solid fa-magnifying-glass cursor-pointer"
                 onClick={() => modelOpener(true)}
               ></i>
             </div>
             <div className="user mx-3">
-              <i class="fa-solid fa-user"></i>
+              {user && (
+                <i
+                  class="fa-solid fa-right-from-bracket cursor-pointer"
+                  onClick={handleLogout}
+                ></i>
+              )}
+
+              {!user && (
+                <Link to={"/account"}>
+                  <i class="fa-solid fa-user"></i>
+                </Link>
+              )}
             </div>
           </div>
         </div>
