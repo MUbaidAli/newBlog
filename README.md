@@ -65,6 +65,16 @@ fix bugs
 creating Custom Dashboard Design (in Progress) 
 
 
+✅ Progress - March 21, 2025
+implemented dashboard Design (frontend)
+implemented blog management design .
+implemented draft.js editor for writing better post.  
+making frontend blog data sync with BACKEND for  reading creating and deleting blogs.
+fix bugs 
+ 
+
+
+
 
 🛠 Tech Stack
 
