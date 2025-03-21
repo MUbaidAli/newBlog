@@ -58,10 +58,10 @@ const updateBlog = wrapAsync(async (req, res) => {
     throw new ExpressError(401, "User Not Found");
   }
 
-  if (user.id !== blog.user.toString()) {
-    // console.log(blog.user.toString() !== user.id);
-    throw new ExpressError(401, "You Are Not Authorizedddddd");
-  }
+  // if (user.id !== blog.user.toString()) {
+  //   // console.log(blog.user.toString() !== user.id);
+  //   throw new ExpressError(401, "You Are Not Authorizedddddd");
+  // }
 
   const updatedBlog = await Blog.findByIdAndUpdate(id, data, { new: true });
   res.json({ message: "Blog Updated Successfully", Blog: updatedBlog });
@@ -70,7 +70,8 @@ const updateBlog = wrapAsync(async (req, res) => {
 // delete Request Blog
 const deleteBlog = wrapAsync(async (req, res) => {
   const { id } = req.params;
-
+  console.log(id, "this also runss");
+  // console.log(req, "req");
   const blog = await Blog.findById(id);
 
   if (!blog) {
@@ -78,15 +79,17 @@ const deleteBlog = wrapAsync(async (req, res) => {
   }
 
   const user = await User.findById(req.user._id);
-
+  console.log(user, "user Runs");
   if (!user) {
     throw new ExpressError(401, "User Not Found");
   }
 
-  if (user.id !== blog.user.toString()) {
-    // console.log(user.id, blog.user.toString());
-    throw new ExpressError(401, "You Are Not Authorized");
-  }
+  // dont need this because it is check that only user that created the blog can delete the post but now i change the functionality to only admin can delete so removing this
+  // if (user.id !== blog.user.toString()) {
+  //   console.log(user.id, blog.user.toString());
+  //   // here is the error
+  //   throw new ExpressError(401, "You Are Not Authorized ");
+  // }
 
   const deletedBlog = await Blog.findByIdAndDelete(id);
 

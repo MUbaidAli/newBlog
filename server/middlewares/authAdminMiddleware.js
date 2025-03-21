@@ -5,6 +5,7 @@ const wrapAsync = require("../utils/wrapAsync");
 
 const authAdminMiddleware = wrapAsync(async (req, res, next) => {
   let token = req.cookies.token;
+  console.log(token);
   if (!token) {
     throw new ExpressError(401, "Not Authorized , No Token");
   }
@@ -14,6 +15,7 @@ const authAdminMiddleware = wrapAsync(async (req, res, next) => {
   //   ) {
   //     token = req.headers.authorization.split(" ")[1];
   // }
+  // console.log("JWT Secret:", process.env.JWT_SECRET);
   const decode = jwt.verify(token, process.env.JWT_SECRET);
 
   const user = await User.findById(decode.id).select("-password");
@@ -23,20 +25,25 @@ const authAdminMiddleware = wrapAsync(async (req, res, next) => {
   }
 
   if (user.role == "Admin" || user.role === "Editor") {
+    console.log("role checked", user.role == "Admin", "admin");
     req.user = user;
     next();
   } else {
+    console.log("error check");
     throw new Error(403, "Unauthorized: Admin Only");
   }
 });
 
 const authAdminOnlyMiddleware = (req, res, next) => {
+  console.log(req.user.role);
   if (req.user.role !== "Admin") {
+    console.log("this run");
     throw new ExpressError(
       403,
       "Unauthorized: Only Admin Can Perform This Action"
     );
   }
+  console.log("this runssssss");
   next();
 };
 module.exports = { authAdminMiddleware, authAdminOnlyMiddleware };

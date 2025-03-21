@@ -56,9 +56,9 @@ const loginUser = wrapAsync(async (req, res) => {
   }
 
   const passwordMatched = await bcrypt.compare(password, user.password);
-
+  const token = generateToken(user._id);
   if (user && passwordMatched) {
-    res.cookie("token", generateToken(user._id), {
+    res.cookie("token", token, {
       httpOnly: true, // Prevents JavaScript access (XSS protection)
       secure: true, // Use true in production with HTTPS
       sameSite: "Strict", // Prevents CSRF attacks
@@ -69,7 +69,7 @@ const loginUser = wrapAsync(async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
-      token: generateToken(user._id),
+      token: token,
     });
   } else if (user && !passwordMatched) {
     throw new ExpressError(400, "Incorrect Password");
@@ -125,6 +125,7 @@ const getCurrentUSer = wrapAsync(async (req, res) => {
 // generate Token
 
 function generateToken(id) {
+  console.log("Signing JWT with Secret:", process.env.JWT_SECRET);
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 }
 

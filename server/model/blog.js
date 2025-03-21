@@ -3,11 +3,17 @@ const Review = require("./reviews");
 
 const blogSchema = new mongoose.Schema(
   {
-    title: { type: String, required: true },
-    content: { type: String, required: true },
+    title: { type: String, required: true, trim: true },
+    content: { type: Object, required: true },
     category: { type: String, required: true },
     author: { type: String, required: true },
     reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
+    status: {
+      type: String,
+      enum: ["Published", "Draft", "Archived"],
+      required: true,
+      default: "Draft",
+    },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
