@@ -1,7 +1,14 @@
 const Blog = require("../model/blog");
+
 const Review = require("../model/reviews");
 const ExpressError = require("../utils/expressError");
 const wrapAsync = require("../utils/wrapAsync");
+
+const getBlogReviews = wrapAsync(async (req, res) => {
+  const blog = await Review.find().populate("blog");
+  console.log(blog);
+  res.json({ message: "Blogs Data", blog });
+});
 
 // post request for creating a review
 const createReview = wrapAsync(async (req, res) => {
@@ -51,4 +58,34 @@ const deleteReview = wrapAsync(async (req, res) => {
   res.json({ message: "review Deleted" });
 });
 
-module.exports = { createReview, getSingleBlogReviews, deleteReview };
+// update status
+const updateReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedReview = await Review.findByIdAndUpdate(
+      id,
+      { status: "Approved" },
+      { new: true }
+    );
+
+    if (!updatedReview) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    res.json({
+      message: "Review approved successfully",
+      review: updatedReview,
+    });
+  } catch (error) {
+    console.error("Error updating review status:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports = {
+  createReview,
+  updateReview,
+  getSingleBlogReviews,
+  deleteReview,
+  getBlogReviews,
+};

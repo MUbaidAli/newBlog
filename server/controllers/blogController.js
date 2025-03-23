@@ -5,7 +5,7 @@ const wrapAsync = require("../utils/wrapAsync");
 
 // get Request to show blogs data
 const getAllBlogs = wrapAsync(async (req, res) => {
-  const data = await Blog.find({});
+  const data = await Blog.find().sort({ createdAt: -1 });
   res.json(data);
 });
 
@@ -24,7 +24,7 @@ const getBlogById = wrapAsync(async (req, res) => {
 // post Request to create new blog
 
 const createBlog = wrapAsync(async (req, res) => {
-  const { title, content, category, author } = req.body;
+  const { title, content, category, author, status } = req.body;
   if (!title || !content || !category) {
     throw new ExpressError(400, "Please Fill All Test Fields");
   }
@@ -35,6 +35,7 @@ const createBlog = wrapAsync(async (req, res) => {
     content,
     user: req.user._id,
     author: req.user.name,
+    status,
   });
   console.log(newBlog);
   await newBlog.save();

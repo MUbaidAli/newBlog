@@ -4,7 +4,7 @@ const wrapAsync = require("../utils/wrapAsync");
 
 // get all categories
 const getAllCategories = wrapAsync(async (req, res) => {
-  const data = await Category.find({});
+  const data = await Category.find().sort({ createdAt: -1 });
   res.json(data);
 });
 

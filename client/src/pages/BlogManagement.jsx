@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import ConfirmDialog from "../components/ConfirmDialog";
 function BlogManagement() {
   const { user } = useAuth();
   const [blogs, setBlog] = useState([]);
@@ -47,19 +48,21 @@ function BlogManagement() {
   }, []);
 
   async function handleDelete(id) {
-    console.log(id);
-    try {
-      setIsLoading(true);
-      await axios.delete(`http://localhost:8484/api/blogs/${id}`, {
-        withCredentials: true,
-      });
-      setBlog((prevBlogs) => prevBlogs.filter(id !== prevBlogs._id));
-    } catch (error) {
-      console.log(error);
-      toast(error.response.data.error);
-    } finally {
-      setIsLoading(false);
-    }
+    // console.log(id);
+    ConfirmDialog(async () => {
+      try {
+        setIsLoading(true);
+        await axios.delete(`http://localhost:8484/api/blogs/${id}`, {
+          withCredentials: true,
+        });
+        setBlog((prevBlogs) => prevBlogs.filter((blog) => id !== blog._id));
+      } catch (error) {
+        console.log(error);
+        toast(error.response.data.error);
+      } finally {
+        setIsLoading(false);
+      }
+    });
   }
 
   return (
@@ -134,7 +137,12 @@ function BlogManagement() {
                         </button>
                       )}
 
-                      <button className="bg-green-500 p-2 rounded-full text-white hover:bg-green-600">
+                      <button
+                        className="bg-green-500 p-2 rounded-full text-white hover:bg-green-600"
+                        onClick={() =>
+                          navigate(`/dashboard/manage-blog/${blog._id}`)
+                        }
+                      >
                         ✏️
                       </button>
                     </div>

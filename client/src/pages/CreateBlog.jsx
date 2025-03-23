@@ -6,12 +6,16 @@ import ImageTool from "@editorjs/image";
 import Embed from "@editorjs/embed";
 import CodeTool from "@editorjs/code";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
+
 const CreateBlog = () => {
   const editorRef = useRef(null); // Store EditorJS instance
+  const { user } = useAuth();
   const [blogData, setBlogData] = useState({
     title: "",
     category: "",
     content: "",
+    status: "",
   });
 
   useEffect(() => {
@@ -69,10 +73,12 @@ const CreateBlog = () => {
       const blogPost = {
         title: blogData.title,
         category: blogData.category,
+        status: blogData.status,
         content: savedData, // Editor.js JSON content
-        author: "USER_ID", // Replace with actual logged-in user ID
+        author: user._id, // Replace with actual logged-in user ID
       };
 
+      console.log(blogPost);
       // Send data to backend using Axios
       const response = await axios.post(
         "http://localhost:8484/api/blogs",
@@ -107,16 +113,30 @@ const CreateBlog = () => {
         value={blogData.title}
         onChange={(e) => setBlogData({ ...blogData, title: e.target.value })}
       />
-      <select
-        className="border p-2 mb-2 w-full"
-        value={blogData.category}
-        onChange={(e) => setBlogData({ ...blogData, category: e.target.value })}
-      >
-        <option value="">Select Category</option>
-        <option value="Tech">Tech</option>
-        <option value="Health">Health</option>
-        <option value="Business">Business</option>
-      </select>
+      <div className="flex justify-between">
+        <select
+          className="border p-2 mb-2 w-full"
+          value={blogData.category}
+          onChange={(e) =>
+            setBlogData({ ...blogData, category: e.target.value })
+          }
+        >
+          <option value="">Select Category</option>
+          <option value="Tech">Tech</option>
+          <option value="Health">Health</option>
+          <option value="Business">Business</option>
+        </select>
+        <select
+          className="border p-2 mb-2 w-full"
+          value={blogData.status}
+          onChange={(e) => setBlogData({ ...blogData, status: e.target.value })}
+        >
+          <option value="">Status</option>
+          <option value="Published">Publish</option>
+          <option value="Draft">Draft</option>
+          <option value="Archived">Archived</option>
+        </select>
+      </div>
       <div id="editorjs" className="min-h-[300px] border rounded p-2"></div>
       <button
         onClick={handleSubmit}

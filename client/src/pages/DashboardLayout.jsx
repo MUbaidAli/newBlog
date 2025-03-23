@@ -38,7 +38,37 @@ function DashboardLayout() {
                     : ""
                 } my-1 px-5 py-3 rounded  text-[#2E2E2E] text-sm flex items-center hover:bg-gradient-to-r from-[#A80F0F] to-[#2F7362] hover:text-white`}
               >
-                <i className="fa-solid fa-house mr-5"></i> Blog Management
+                <i class="fa-brands fa-blogger-b mr-5"></i> Blog Management
+              </Link>
+              <Link
+                to="/dashboard/manage-category"
+                className={`${
+                  location.pathname === "/dashboard/manage-category"
+                    ? "bg-gradient-to-r from-[#A80F0F] to-[#2F7362] text-white  "
+                    : ""
+                } my-1 px-5 py-3 rounded  text-[#2E2E2E] text-sm flex items-center hover:bg-gradient-to-r from-[#A80F0F] to-[#2F7362] hover:text-white`}
+              >
+                <i class="fa-solid fa-tags mr-5"></i> Categories
+              </Link>
+              <Link
+                to="/dashboard/manage-reviews"
+                className={`${
+                  location.pathname === "/dashboard/manage-reviews"
+                    ? "bg-gradient-to-r from-[#A80F0F] to-[#2F7362] text-white  "
+                    : ""
+                } my-1 px-5 py-3 rounded  text-[#2E2E2E] text-sm flex items-center hover:bg-gradient-to-r from-[#A80F0F] to-[#2F7362] hover:text-white`}
+              >
+                <i class="fa-solid fa-star-half-stroke mr-5"></i> Reviews
+              </Link>
+              <Link
+                to="/dashboard/manage-users"
+                className={`${
+                  location.pathname === "/dashboard/manage-users"
+                    ? "bg-gradient-to-r from-[#A80F0F] to-[#2F7362] text-white  "
+                    : ""
+                } my-1 px-5 py-3 rounded  text-[#2E2E2E] text-sm flex items-center hover:bg-gradient-to-r from-[#A80F0F] to-[#2F7362] hover:text-white`}
+              >
+                <i class="fa-solid fa-users mr-5"></i> Users
               </Link>
 
               <Link
@@ -83,7 +113,9 @@ function DashboardLayout() {
             </div>
 
             <div className="main-content">
-              <Outlet />
+              <div className="div  px-6">
+                <Outlet />
+              </div>
             </div>
           </div>
         </main>

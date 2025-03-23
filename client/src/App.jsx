@@ -13,6 +13,10 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./pages/DashboardLayout";
 import CreateBlog from "./pages/CreateBlog";
 import BlogManagement from "./pages/BlogManagement";
+import EditBlog from "./pages/EditBlog";
+import CategoryManagement from "./pages/CategoryManagement";
+import UserManagement from "./pages/UserManagement";
+import ReviewManagement from "./pages/ReviewManagement";
 
 function App() {
   return (
@@ -41,6 +45,16 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="/dashboard/create-blog" element={<CreateBlog />} />
           <Route path="/dashboard/manage-blog" element={<BlogManagement />} />
+          <Route
+            path="/dashboard/manage-category"
+            element={<CategoryManagement />}
+          />
+          <Route path="/dashboard/manage-blog/:id" element={<EditBlog />} />
+          <Route path="/dashboard/manage-users" element={<UserManagement />} />
+          <Route
+            path="/dashboard/manage-reviews"
+            element={<ReviewManagement />}
+          />
         </Route>
 
         <Route path="*" element={<PageNotFound />} />
