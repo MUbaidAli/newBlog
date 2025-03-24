@@ -4,6 +4,15 @@ const ExpressError = require("../utils/expressError");
 const wrapAsync = require("../utils/wrapAsync");
 const jwt = require("jsonwebtoken");
 
+const getAllUsers = wrapAsync(async (req, res) => {
+  const data = await User.find();
+
+  if (!data) {
+    throw new ExpressError(500, "Internal Server Error");
+  }
+  res.status(200).json({ message: "data received", users: data });
+});
+
 const createUser = wrapAsync(async (req, res) => {
   const { email, password, name } = req.body;
 
@@ -81,14 +90,37 @@ const loginUser = wrapAsync(async (req, res) => {
 
 // admin Register
 const adminRegister = wrapAsync(async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const {
+    name,
+    email,
+    password,
+    role,
+    phone,
+    country,
+    address,
+    dob,
+    lastName,
+    gender,
+  } = req.body;
 
   if (!["Admin", "Editor", "User"].includes(role)) {
     throw new ExpressError(400, "Invalid Role");
   }
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
-  const newUser = User({ name, email, password: hashedPassword, role });
+  console.log(req.body);
+  const newUser = User({
+    name,
+    email,
+    password: hashedPassword,
+    role,
+    phone,
+    country,
+    address,
+    dob,
+    lastName,
+    gender,
+  });
 
   const userAdded = await newUser.save();
   if (userAdded) {
@@ -122,6 +154,61 @@ const getCurrentUSer = wrapAsync(async (req, res) => {
   res.json({ message: "User data", user });
 });
 
+const deleteUser = wrapAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const deletedUser = await User.findByIdAndDelete(id);
+  if (!deletedUser) {
+    throw new ExpressError(404, "User Not Found");
+  }
+  res.json({ message: "User Deleted" });
+});
+
+const updateUserDataByAdmin = wrapAsync(async (req, res) => {
+  const { id } = req.params;
+  const {
+    name,
+    email,
+    password,
+    role,
+    phone,
+    country,
+    address,
+    dob,
+    lastName,
+    gender,
+  } = req.body;
+
+  const user = await User.findById(id);
+  if (!user) {
+    throw new ExpressError(404, "User Not Found");
+  }
+
+  let updatedData = {
+    name,
+    email,
+    role,
+    phone,
+    country,
+    address,
+    dob,
+    lastName,
+    gender,
+  };
+
+  // console.log();
+
+  if (password) {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    updatedData.password = hashedPassword;
+  }
+
+  const data = await User.findByIdAndUpdate(id, updatedData, { new: true });
+  console.log(data);
+  res.json({ message: "Data Updated" });
+});
+
 // generate Token
 
 function generateToken(id) {
@@ -135,4 +222,7 @@ module.exports = {
   loginUser,
   getCurrentUSer,
   adminRegister,
+  deleteUser,
+  getAllUsers,
+  updateUserDataByAdmin,
 };

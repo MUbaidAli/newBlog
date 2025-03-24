@@ -17,6 +17,8 @@ import EditBlog from "./pages/EditBlog";
 import CategoryManagement from "./pages/CategoryManagement";
 import UserManagement from "./pages/UserManagement";
 import ReviewManagement from "./pages/ReviewManagement";
+import DashboardAccountSettings from "./pages/DashboardAccountSettings";
+import RegisterAdmin from "./components/RegisterAdmin";
 
 function App() {
   return (
@@ -51,9 +53,14 @@ function App() {
           />
           <Route path="/dashboard/manage-blog/:id" element={<EditBlog />} />
           <Route path="/dashboard/manage-users" element={<UserManagement />} />
+          <Route path="/dashboard/create-user" element={<RegisterAdmin />} />
           <Route
             path="/dashboard/manage-reviews"
             element={<ReviewManagement />}
+          />
+          <Route
+            path="/dashboard/settings"
+            element={<DashboardAccountSettings />}
           />
         </Route>
 

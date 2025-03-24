@@ -63,12 +63,23 @@ function DashboardLayout() {
               <Link
                 to="/dashboard/manage-users"
                 className={`${
-                  location.pathname === "/dashboard/manage-users"
+                  location.pathname === "/dashboard/manage-users" ||
+                  location.pathname === "/dashboard/create-user"
                     ? "bg-gradient-to-r from-[#A80F0F] to-[#2F7362] text-white  "
                     : ""
                 } my-1 px-5 py-3 rounded  text-[#2E2E2E] text-sm flex items-center hover:bg-gradient-to-r from-[#A80F0F] to-[#2F7362] hover:text-white`}
               >
                 <i class="fa-solid fa-users mr-5"></i> Users
+              </Link>
+              <Link
+                to="/dashboard/settings"
+                className={`${
+                  location.pathname === "/dashboard/settings"
+                    ? "bg-gradient-to-r from-[#A80F0F] to-[#2F7362] text-white  "
+                    : ""
+                } my-1 px-5 py-3 rounded  text-[#2E2E2E] text-sm flex items-center hover:bg-gradient-to-r from-[#A80F0F] to-[#2F7362] hover:text-white`}
+              >
+                <i class="fa-solid fa-gear mr-5"></i> Account Settings
               </Link>
 
               <Link

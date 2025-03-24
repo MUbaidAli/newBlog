@@ -71,7 +71,13 @@ implemented blog management design .
 implemented draft.js editor for writing better post.  
 making frontend blog data sync with BACKEND for  reading creating and deleting blogs.
 fix bugs 
- 
+
+✅ Progress - March 22, 2025
+completed blog management with backend 
+implemented feature of category management creating deleting updating backend + frontend (dashboard)
+implemented feature of Reviews Management frontend + backend (dashboard)
+started User Management Design (dashboard)
+implemented feature of confirm model for deleting blogs
 
 
 

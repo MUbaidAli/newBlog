@@ -3,6 +3,13 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: [true, "Please Enter Name"] },
+    lastName: { type: String },
+    gender: { type: String, enum: ["Male", "Female"] },
+    DOB: { type: Date },
+    phone: { type: String },
+    country: { type: String },
+    address: { type: String },
+
     email: {
       type: String,
       required: [true, "please enter Email"],
