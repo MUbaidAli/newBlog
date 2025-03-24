@@ -79,6 +79,14 @@ implemented feature of Reviews Management frontend + backend (dashboard)
 started User Management Design (dashboard)
 implemented feature of confirm model for deleting blogs
 
+✅ Progress - March 24, 2025
+completed dashboard Profile section 
+implemented functionality to display all users data
+implemented functionality that only admin can delete data of any user
+implemented functionality that only admin can update any user related data 
+implemented functionality that admin can register any user with multiple roles
+implemented settings section of dashboard that any user can change his account settings
+started implementing image uploading feature (Final feature of dashboard).
 
 
 
