@@ -12,7 +12,32 @@ import { toast } from "react-toastify";
 const EditBlog = () => {
   const { id } = useParams(); // Get blog ID from URL params
   const editorRef = useRef(null);
-  const [blog, setBlog] = useState({ title: "", category: "", content: {} });
+  const [blog, setBlog] = useState({
+    title: "",
+    category: "",
+    content: {},
+    status: "",
+  });
+  const [allCategory, setAllCategory] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function fetchCategories() {
+    setIsLoading(true);
+
+    try {
+      const res = await axios.get("http://localhost:8484/api/category");
+      console.log(res.data);
+      setAllCategory(res.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     // Fetch existing blog data
@@ -22,7 +47,8 @@ const EditBlog = () => {
         setBlog({
           title: res.data.title,
           category: res.data.category,
-          content: res.data.content, // JSON data stored in DB
+          content: res.data.content,
+          status: res.data.status, // JSON data stored in DB
         });
 
         // Initialize Editor.js after data is loaded
@@ -112,19 +138,22 @@ const EditBlog = () => {
           value={blog.category}
           onChange={(e) => setBlog({ ...blog, category: e.target.value })}
         >
-          <option value="Technology">Technology</option>
-          <option value="Health">Health</option>
-          <option value="Education">Education</option>
+          {allCategory.map((cat) => (
+            <option key={cat._id} value={`${cat.name}`}>
+              {`${cat.name}`}
+            </option>
+          ))}
         </select>
         <select
-          className="border p-2 w-full rounded mb-2"
-          value={blog.category}
-          onChange={(e) => setBlog({ ...blog, category: e.target.value })}
+          className="border p-2 mb-2 w-full"
+          value={blog.status}
+          onChange={(e) => setBlog({ ...blog, status: e.target.value })}
         >
-          <option value="Technology">Technology</option>
-          <option value="Health">Health</option>
-          <option value="Education">Education</option>
-        </select>
+          <option value="">Status</option>
+          <option value="Published">Publish</option>
+          <option value="Draft">Draft</option>
+          <option value="Archived">Archived</option>
+        </select>{" "}
       </div>
       <div id="editorjs" className="min-h-[300px] border rounded p-2"></div>
       <button

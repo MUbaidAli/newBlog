@@ -26,7 +26,29 @@ function Navbar({ modelOpener }) {
   const [pos, setPos] = useState("top");
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [allCategory, setAllCategory] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function fetchCategories() {
+    setIsLoading(true);
+
+    try {
+      const res = await axios.get("http://localhost:8484/api/category");
+      console.log(res.data);
+      setAllCategory(res.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   // console.log(user, "user");
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -119,17 +141,18 @@ function Navbar({ modelOpener }) {
                   to="/categories"
                   className="hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent"
                 >
+                  {console.log(allCategory)}
                   Categories ▼{" "}
                   {isOpen && (
                     <div className="absolute  flex flex-wrap  w-150  py-5 bg-white text-black shadow-lg border rounded-lg border-white ">
-                      {categories.map((item, i) => (
-                        <a
+                      {allCategory.map((item, i) => (
+                        <Link
                           key={i}
                           href="#"
                           className="border border-red-400  px-3 py-2 w-45 rounded-md my-1 mx-2 hover:bg-red-100 transition"
                         >
-                          {item}
-                        </a>
+                          {item.name}
+                        </Link>
                       ))}
                     </div>
                   )}{" "}

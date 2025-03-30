@@ -37,14 +37,18 @@ function Login() {
       setIsLoading(true);
 
       const data = await login(formData);
-      // console.log(data, "data");
-      toast(`Welcome ${data.name}`);
+      console.log(data, "data");
+      // if (!data) {
+      //   toast("Login Failed");
+      //   return;
+      // }
 
       if (data.role === "Admin" || data.role === "Editor") {
         navigate("/dashboard");
       } else {
         navigate("/");
       }
+      toast(`Welcome ${data?.name}`);
       //   console.log(response.data);
     } catch (error) {
       toast(error.response?.data?.error || error.message);

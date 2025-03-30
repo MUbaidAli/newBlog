@@ -12,7 +12,7 @@ function LatestBlog() {
 
       <div className="max-w-7xl mx-auto py-5  sm:py-5 md:py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2   gap-10">
-          {Array.from([1, 2, 3]).map((item) => (
+          {Array.from([1, 2, 3, 4, 5, 6, 7, 8]).map((item) => (
             <BlogCard />
           ))}
         </div>

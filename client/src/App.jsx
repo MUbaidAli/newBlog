@@ -19,6 +19,7 @@ import UserManagement from "./pages/UserManagement";
 import ReviewManagement from "./pages/ReviewManagement";
 import DashboardAccountSettings from "./pages/DashboardAccountSettings";
 import RegisterAdmin from "./components/RegisterAdmin";
+import Categories from "./pages/Categories";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/blog" element={<SingleBlog />} />
+        <Route path="/categories" element={<Categories />} />
 
         <Route path="/account" element={<AccountLayout />}>
           <Route path="login" element={<Login />} />

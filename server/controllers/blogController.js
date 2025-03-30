@@ -25,6 +25,8 @@ const getBlogById = wrapAsync(async (req, res) => {
 
 const createBlog = wrapAsync(async (req, res) => {
   const { title, content, category, author, status } = req.body;
+  const { path, filename } = req.file;
+  // console.log(path, filename, "the file data", req.file);
   if (!title || !content || !category) {
     throw new ExpressError(400, "Please Fill All Test Fields");
   }
@@ -36,6 +38,7 @@ const createBlog = wrapAsync(async (req, res) => {
     user: req.user._id,
     author: req.user.name,
     status,
+    image: { imageUrl: path, imgName: filename },
   });
   console.log(newBlog);
   await newBlog.save();

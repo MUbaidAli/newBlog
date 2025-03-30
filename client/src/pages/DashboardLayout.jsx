@@ -1,6 +1,10 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function DashboardLayout() {
+  const { user } = useAuth();
+
+  console.log(user.image.imageUrl, "from dashboard layout");
   const location = useLocation();
   // console.log(location);
   return (
@@ -12,7 +16,10 @@ function DashboardLayout() {
           <div className="dashboard-sidebar  flex-1 mx-3 bg-white md:w-75 sm:min-w-60 py-10  px-2 rounded-2xl my-5 flex flex-col items-center ">
             <div className="profile-pic ">
               <img
-                src="./src/assets/profile.jpeg"
+                src={`${
+                  user.image.imageUrl ||
+                  "https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png"
+                }`}
                 alt=""
                 className="h-40 w-40 object-cover rounded-full"
               />

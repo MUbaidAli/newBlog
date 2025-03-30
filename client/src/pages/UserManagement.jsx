@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import Loader from "../components/Loader";
 import { useNavigate } from "react-router-dom";
 import RegisterAdmin from "../components/RegisterAdmin";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 function UserManagement() {
   const [usersData, setUsersData] = useState([]);
@@ -35,17 +36,19 @@ function UserManagement() {
   }, []);
 
   async function handleDelete(id) {
-    try {
-      const res = await axios.delete(`http://localhost:8484/api/user/${id}`, {
-        withCredentials: true,
-      });
-      //   console.log(res);
-      toast("User Deleted");
-      setUsersData((prevData) => prevData.filter((user) => user._id !== id));
-    } catch (error) {
-      //   console.log(error);
-      toast(error.message);
-    }
+    ConfirmDialog(async () => {
+      try {
+        const res = await axios.delete(`http://localhost:8484/api/user/${id}`, {
+          withCredentials: true,
+        });
+        //   console.log(res);
+        toast("User Deleted");
+        setUsersData((prevData) => prevData.filter((user) => user._id !== id));
+      } catch (error) {
+        //   console.log(error);
+        toast(error.message);
+      }
+    });
   }
 
   return (

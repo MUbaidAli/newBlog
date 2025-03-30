@@ -88,6 +88,13 @@ implemented functionality that admin can register any user with multiple roles
 implemented settings section of dashboard that any user can change his account settings
 started implementing image uploading feature (Final feature of dashboard).
 
+✅ Progress - March 29, 2025
+implemented Image Uploading Feature
+image Uploading feature for profile
+image uploading feature for Featured Image Blog
+implemented ALL Blog Post Pages on Website
+implemented Dynamic navbar Categories 
+
 
 
 🛠 Tech Stack

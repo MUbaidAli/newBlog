@@ -3,7 +3,10 @@ const bcrypt = require("bcryptjs");
 const ExpressError = require("../utils/expressError");
 const wrapAsync = require("../utils/wrapAsync");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+const { cloudinary, storage } = require("../cloudConfig");
 
+const upload = multer({ storage: storage });
 const getAllUsers = wrapAsync(async (req, res) => {
   const data = await User.find();
 
@@ -54,17 +57,19 @@ const createUser = wrapAsync(async (req, res) => {
 const loginUser = wrapAsync(async (req, res) => {
   const { email, password } = req.body;
 
+  console.log(email, password, "test");
   if (!email || !password) {
     throw new ExpressError(400, "Please Enter Email and Password");
   }
 
   const user = await User.findOne({ email });
-
+  console.log(user);
   if (!user) {
     throw new ExpressError(404, "User Not Exist");
   }
 
   const passwordMatched = await bcrypt.compare(password, user.password);
+  // console.log(poasswirdMatched, "yes or no");
   const token = generateToken(user._id);
   if (user && passwordMatched) {
     res.cookie("token", token, {
@@ -166,6 +171,8 @@ const deleteUser = wrapAsync(async (req, res) => {
 
 const updateUserDataByAdmin = wrapAsync(async (req, res) => {
   const { id } = req.params;
+  // console.log(req.file, "file");
+  const { path, filename } = req.file;
   const {
     name,
     email,
@@ -202,6 +209,13 @@ const updateUserDataByAdmin = wrapAsync(async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     updatedData.password = hashedPassword;
+  }
+  // console.log("testtttttttttttttt");
+  if (path && filename) {
+    updatedData.image = {
+      imageUrl: path,
+      imgName: filename,
+    };
   }
 
   const data = await User.findByIdAndUpdate(id, updatedData, { new: true });

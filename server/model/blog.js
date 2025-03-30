@@ -14,6 +14,10 @@ const blogSchema = new mongoose.Schema(
       required: true,
       default: "Draft",
     },
+    image: {
+      imageUrl: String,
+      imgName: String,
+    },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }

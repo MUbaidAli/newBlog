@@ -12,8 +12,11 @@ const Blog = require("./model/blog.js");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(cookieParser());
+const { v2: cloudinary } = require("cloudinary");
+
 // Blog Routes
 app.use("/api/blogs", blogRoutes);
 

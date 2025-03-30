@@ -7,9 +7,10 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
-  console.log(userData, "from userrr");
+  // console.log(userData, "from userrr");
   const initialFormState = {
     name: "",
+    image: "",
     lastName: "",
     email: "",
     address: "",
@@ -31,7 +32,13 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrorValidation({ ...errorValidation, [e.target.name]: "" });
   }
+  function handleImageChange(e) {
+    setFormData({ ...formData, image: e.target.files[0] });
+    console.log(e.target.files[0]);
+    console.log(formData.image, "imageee");
+  }
 
+  console.log(userData);
   useEffect(() => {
     setFormData({ ...userData });
     // async function fetchUserData() {
@@ -69,23 +76,60 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
       console.log(errorValidation);
       return;
     }
+
+    // name: "",
+    // image: "",
+    // lastName: "",
+    // email: "",
+    // address: "",
+    // country: "",
+    // phone: "",
+    // gender: "",
+    // DOB: "",
+    // password: "",
+    // role: "",
+    // console.log("Selected Image File:", formData.image);
+
+    const form = new FormData();
+    form.append("name", formData.name);
+    form.append("lastName", formData.lastName);
+    form.append("email", formData.email);
+    form.append("address", formData.address);
+    form.append("country", formData.country);
+    form.append("phone", formData.phone);
+    form.append("gender", formData.gender);
+    form.append("DOB", formData.DOB);
+    form.append("password", formData.password);
+    form.append("role", formData.role);
+    form.append("image", formData.image);
+    // form.append("image", formData.image);
     setIsLoading(true);
+    // console.log(formData, "formmmmmmmmmmm");
     try {
+      // console.log(formData.name, form.get("image"), "imageeeeeee");
       if (!userData) {
         const res = await axios.post(
           "http://localhost:8484/api/user/adminRegister",
-          formData,
-          { withCredentials: true }
+          form,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+            withCredentials: true,
+          }
         );
         console.log(res);
         toast(res.data.message);
         navigate("/dashboard/manage-users");
       } else {
-        console.log("thissss");
+        // console.log("thissss");
+        // console.log("FormData Image:", form.get("image"));
+        // console.log("FormData Image:", form.get("image"));
         const res = await axios.put(
           `http://localhost:8484/api/user/update/${formData._id}`,
-          formData,
-          { withCredentials: true }
+          form,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+            withCredentials: true,
+          }
         );
         console.log(res);
         setIsUserId(null);
@@ -94,7 +138,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
         // navigate("/dashboard/manage-users");
       }
     } catch (error) {
-      console.log(error);
+      console.log(error, "errorrr");
       toast(error.message);
     } finally {
       setIsLoading(false);
@@ -107,8 +151,82 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
 
   return (
     <>
-      <h1 className="text-white text-4xl mb-10">Register Admin</h1>
-      <form method="POST" onSubmit={handleSubmit}>
+      {/* <h1 className="text-white text-4xl mb-10">Register Admin</h1> */}
+      <form method="POST" onSubmit={handleSubmit} encType="multipart/form-data">
+        <div className="flex items-center justify-center w-full">
+          <div className="mx-auto w-64 text-center my-10">
+            <div className=" w-64">
+              {/* Hidden File Input */}
+              <input
+                type="file"
+                className="hidden"
+                name="image"
+                id="fileInput"
+                // value={formData.image.fileInput}
+                onChange={handleImageChange}
+              />
+              <img
+                id="profileImage"
+                className="w-50 h-50 rounded-full absolute cursor-pointer"
+                src={`${
+                  formData.image.imageUrl ||
+                  "https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png"
+                }`}
+                alt="Profile"
+                onClick={() => document.getElementById("fileInput").click()}
+              />
+              {/* Overlay with Upload Icon */}
+              <div
+                className="w-50 h-50 group hover:bg-gray-200 opacity-60 rounded-full  flex justify-center items-center cursor-pointer transition duration-500"
+                onClick={() => document.getElementById("fileInput").click()}
+              >
+                <img
+                  className="hidden group-hover:block w-12"
+                  src="https://www.svgrepo.com/show/33565/upload.svg"
+                  alt="Upload"
+                />
+              </div>
+            </div>
+          </div>
+          {/* <label
+            htmlFor="dropzone-file"
+            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+          >
+            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+              <svg
+                className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 16"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                />
+              </svg>
+              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                <span className="font-semibold">Click to upload</span> or drag
+                and drop
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                SVG, PNG, JPG or GIF (MAX. 800x400px)
+              </p>
+            </div>
+            <input
+              id="dropzone-file"
+              type="file"
+              className="hidden"
+              name="image"
+              // value={formData.image}
+              onChange={handleImageChange}
+            />
+          </label> */}
+        </div>
+
         <div className=" pt-6 md:pt-0 w-full    flex justify-between items-center flex-row ">
           <div className="flex flex-col flex-1 ">
             <label htmlFor="name" className="mx-3 text-white">
