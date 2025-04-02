@@ -46,16 +46,57 @@ const CreateBlog = () => {
         tools: {
           header: Header,
           list: List,
-          image: ImageTool,
+          image: {
+            class: ImageTool,
+            config: {
+              uploader: {
+                uploadByFile: async (file) => {
+                  const formData = new FormData();
+                  formData.append("image", file);
+
+                  try {
+                    const response = await fetch(
+                      "http://localhost:8484/api/blogs/upload-image",
+                      {
+                        method: "POST",
+                        body: formData,
+                      }
+                    );
+
+                    const data = await response.json();
+                    // console.log(data, {
+                    //   success: 1,
+                    //   file: {
+                    //     url: data.url, // Make sure the URL is returned here
+                    //   },
+                    // });
+                    if (data.success) {
+                      return {
+                        success: 1,
+                        file: {
+                          url: data.file.url, // Make sure the URL is returned here
+                        },
+                      };
+                    } else {
+                      throw new Error("Upload failed");
+                    }
+                  } catch (error) {
+                    console.error("Image upload error:", error);
+                    return { success: 0 };
+                  }
+                },
+              },
+              endpoints: {
+                byFile: "http://localhost:8484/api/blogs/upload-image", // URL to handle file upload
+              },
+            },
+          },
           embed: Embed,
           code: CodeTool,
         },
         placeholder: "Start writing your blog post...",
         autofocus: true,
       });
-
-      // Store Editor.js instance in ref
-      editorRef.current = editorRef.current;
     }
 
     return () => {
@@ -65,6 +106,7 @@ const CreateBlog = () => {
       }
     };
   }, []);
+
   function handleImageChange(e) {
     console.log(e.target.files[0]);
     setBlogData({ ...blogData, image: e.target.files[0] });
@@ -74,20 +116,38 @@ const CreateBlog = () => {
   // const handleSubmit = async () => {
   //   if (!editorRef.current) return;
 
-  //   // Get data from Editor.js
-  //   const savedData = await editorRef.current.save();
+  //   try {
+  //     // Get content from Editor.js
+  //     const savedData = await editorRef.current.save();
 
-  //   // Prepare blog post data
-  //   const blogPost = {
-  //     title: blogData.title,
-  //     category: blogData.category,
-  //     content: savedData, // Save Editor.js JSON content
-  //   };
+  //     const form = new FormData();
+  //     form.append("title", blogData.title);
+  //     form.append("category", blogData.category);
+  //     form.append("status", blogData.status);
+  //     form.append("content", savedData);
+  //     form.append("author", user._id);
+  //     form.append("image", blogData.image);
 
-  //   console.log("Blog Data:", blogPost);
-  //   // You can now send `blogPost` to the backend via API request
+  //     // Send data to backend using Axios
+  //     const response = await axios.post(
+  //       "http://localhost:8484/api/blogs",
+  //       form,
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     );
+
+  //     if (response.status === 201) {
+  //       alert("Blog posted successfully!");
+  //       console.log("Response:", response.data);
+  //     } else {
+  //       alert("Failed to post blog.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Submission error:", error);
+  //     alert("An error occurred while posting the blog.");
+  //   }
   // };
-
   const handleSubmit = async () => {
     if (!editorRef.current) return;
 
@@ -95,25 +155,31 @@ const CreateBlog = () => {
       // Get content from Editor.js
       const savedData = await editorRef.current.save();
 
+      // console.log("EditorJS Saved Data:", savedData);
+
+      if (
+        !blogData.title ||
+        !blogData.category ||
+        !blogData.status ||
+        !blogData.image
+      ) {
+        alert("Please fill out all fields, including the image.");
+        return;
+      }
+
       const form = new FormData();
       form.append("title", blogData.title);
       form.append("category", blogData.category);
       form.append("status", blogData.status);
-      form.append("content", savedData);
+      form.append("content", JSON.stringify(savedData)); // Ensure it's a stringified JSON
       form.append("author", user._id);
-      form.append("image", blogData.image);
+      form.append("image", blogData.image); // Ensure the image is set
 
-      console.log(form.get("image"), "featured image");
-      // Prepare blog post data
-      // const blogPost = {
-      //   title: blogData.title,
-      //   category: blogData.category,
-      //   status: blogData.status,
-      //   content: savedData, // Editor.js JSON content
-      //   author: user._id, // Replace with actual logged-in user ID
-      // };
+      // Log the form data to check
+      for (let pair of form.entries()) {
+        console.log(pair[0], pair[1]);
+      }
 
-      // console.log(blogPost);
       // Send data to backend using Axios
       const response = await axios.post(
         "http://localhost:8484/api/blogs",

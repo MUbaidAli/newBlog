@@ -1,6 +1,27 @@
+.montserrat {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  /* height: 20; */
+  line-height: 5rem;
+  text-transform: capitalize;
+}
+
 body {
   background-color: #111119;
   /* height: 1000vh; */
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 .background {
   position: absolute;
@@ -102,7 +123,7 @@ body {
 }
 
 .img.custom-border::before {
-  background: url(./src/assets/Vector5.svg) no-repeat;
+  background: url(./src/assets/Vector1.svg) no-repeat;
   height: 170px;
   width: 170px;
 }

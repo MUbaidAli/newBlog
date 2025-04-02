@@ -7,6 +7,7 @@ const {
   createBlog,
   updateBlog,
   deleteBlog,
+  uploadImage,
 } = require("../controllers/blogController");
 const authMiddleware = require("../middlewares/authMiddleware");
 const {
@@ -17,6 +18,9 @@ const {
 const { storage, cloudinary } = require("../cloudConfig");
 const multer = require("multer");
 const upload = multer({ storage });
+
+router.post("/upload-image", upload.single("image"), uploadImage);
+
 // get Request to show blogs data
 router.get("/", getAllBlogs);
 // get single blog with id
@@ -27,7 +31,7 @@ router.get("/:id", getBlogById);
 router.post("/", upload.single("image"), authAdminMiddleware, createBlog);
 
 // update Blog
-router.put("/:id", authAdminMiddleware, updateBlog);
+router.put("/:id", upload.single("image"), authAdminMiddleware, updateBlog);
 
 // delete Request Blog
 

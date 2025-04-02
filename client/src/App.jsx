@@ -29,7 +29,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/blog" element={<SingleBlog />} />
-        <Route path="/categories" element={<Categories />} />
+        <Route path="/posts" element={<Categories />} />
+        <Route path="/posts/:id" element={<SingleBlog />} />
 
         <Route path="/account" element={<AccountLayout />}>
           <Route path="login" element={<Login />} />

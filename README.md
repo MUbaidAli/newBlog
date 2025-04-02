@@ -95,6 +95,14 @@ image uploading feature for Featured Image Blog
 implemented ALL Blog Post Pages on Website
 implemented Dynamic navbar Categories 
 
+✅ Progress - April 2, 2025
+implemented Image Uploading Feature inside blog post
+implemented Image Uploading Feature inside blog post Updating
+Show Single Blog Post Page With Data
+
+
+
+
 
 
 🛠 Tech Stack

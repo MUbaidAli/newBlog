@@ -1,10 +1,10 @@
 import CategoryCard from "./CategoryCard";
 
-function SinglePost() {
+function SinglePost({ data }) {
   return (
     <>
-      <div className="div">
-        <img src="./src/assets/image13.png" alt="" className="w-full" />
+      <div className="div w-full h-[100vh]">
+        <img src={data.image.imageUrl} alt="" className="w-full" />
       </div>
 
       <div className=" mx-auto max-w-7xl py-20 px-10">

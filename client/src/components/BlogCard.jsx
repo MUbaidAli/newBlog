@@ -1,11 +1,13 @@
+import { Link } from "react-router-dom";
 import Button from "./Button";
 
-function BlogCard() {
+function BlogCard({ data }) {
   return (
     <div className="   flex flex-col justify-between leading-normal">
+      {/* {console.log(data)} */}
       <img
         // src="https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-        src="./src/assets/image 7.png"
+        src={`${data.image.imageUrl}`}
         className="h-70 w-full object-cover mb-3 rounded-sm"
       />
       <div className=" pt-2">
@@ -14,7 +16,7 @@ function BlogCard() {
             href="#"
             className=" text-white text-xl md:text-2xl capitalize mb-2  inline-block"
           >
-            Can coffee make you a better developer?
+            {`${data.title}`}
           </a>
           <p className="text-white text-sm">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -22,7 +24,9 @@ function BlogCard() {
           </p>
         </div>
         <div className="w-full">
-          <Button>Read Full Blog</Button>
+          <Link to={`http://localhost:5173/posts/${data._id}`}>
+            <Button>Read Full Blog</Button>
+          </Link>
         </div>
       </div>
     </div>

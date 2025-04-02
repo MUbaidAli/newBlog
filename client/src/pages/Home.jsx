@@ -25,7 +25,7 @@ function Home() {
           btnText={"Download Free Guide"}
         />
         <div className="bg ">
-          <LatestBlog />
+          {/* <LatestBlog /> */}
           <CategoryExplorer />
           <PopulerPost />
         </div>

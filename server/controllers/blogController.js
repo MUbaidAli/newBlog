@@ -26,7 +26,7 @@ const getBlogById = wrapAsync(async (req, res) => {
 const createBlog = wrapAsync(async (req, res) => {
   const { title, content, category, author, status } = req.body;
   const { path, filename } = req.file;
-  // console.log(path, filename, "the file data", req.file);
+  console.log(path, filename, "the file data", req.file);
   if (!title || !content || !category) {
     throw new ExpressError(400, "Please Fill All Test Fields");
   }
@@ -48,7 +48,8 @@ const createBlog = wrapAsync(async (req, res) => {
 // update Blog
 const updateBlog = wrapAsync(async (req, res) => {
   const { id } = req.params;
-  const data = req.body;
+  const { title, content, category, author, status } = req.body;
+  const { path, filename } = req.file;
 
   const blog = await Blog.findById(id);
 
@@ -66,8 +67,19 @@ const updateBlog = wrapAsync(async (req, res) => {
   //   // console.log(blog.user.toString() !== user.id);
   //   throw new ExpressError(401, "You Are Not Authorizedddddd");
   // }
+  const updatedData = {
+    title,
+    category,
+    content,
+    user: req.user._id,
+    author: req.user.name,
+    status,
+    image: { imageUrl: path, imgName: filename },
+  };
 
-  const updatedBlog = await Blog.findByIdAndUpdate(id, data, { new: true });
+  const updatedBlog = await Blog.findByIdAndUpdate(id, updatedData, {
+    new: true,
+  });
   res.json({ message: "Blog Updated Successfully", Blog: updatedBlog });
 });
 
@@ -100,10 +112,34 @@ const deleteBlog = wrapAsync(async (req, res) => {
   res.json({ message: "Blog Deleted Successfully" });
 });
 
+// upload Image
+
+const uploadImage = async (req, res) => {
+  try {
+    const { path } = req.file;
+
+    console.log("running");
+    // Create a publicly accessible URL (assuming it's saved in a directory where it can be accessed)
+    const imageUrl = `${path}`;
+    console.log("running");
+    console.log("running");
+    res.json({
+      success: 1,
+      file: {
+        url: imageUrl, // Send back the URL for the image
+      },
+    });
+  } catch (error) {
+    console.error("Image upload error:", error);
+    res.status(500).json({ error: "Image upload failed" });
+  }
+};
+
 module.exports = {
   getAllBlogs,
   getBlogById,
   createBlog,
   updateBlog,
   deleteBlog,
+  uploadImage,
 };

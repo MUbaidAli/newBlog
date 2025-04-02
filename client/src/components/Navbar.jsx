@@ -34,7 +34,7 @@ function Navbar({ modelOpener }) {
 
     try {
       const res = await axios.get("http://localhost:8484/api/category");
-      console.log(res.data);
+      // console.log(res.data);
       setAllCategory(res.data);
     } catch (error) {
       console.log(error);
@@ -68,7 +68,7 @@ function Navbar({ modelOpener }) {
     document.addEventListener("scroll", (e) => {
       let scrolled = document.scrollingElement.scrollTop;
       // console.log(scrolled);
-      console.log(pos);
+      // console.log(pos);
       if (scrolled >= 5 && scrolled <= 700) {
         setPos("moved");
       } else if (scrolled >= 701) {
@@ -138,10 +138,10 @@ function Navbar({ modelOpener }) {
                 }}
               >
                 <NavLink
-                  to="/categories"
+                  to="/posts"
                   className="hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent"
                 >
-                  {console.log(allCategory)}
+                  {/* {console.log(allCategory)} */}
                   Categories ▼{" "}
                   {isOpen && (
                     <div className="absolute  flex flex-wrap  w-150  py-5 bg-white text-black shadow-lg border rounded-lg border-white ">

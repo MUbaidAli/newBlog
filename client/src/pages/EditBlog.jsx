@@ -6,27 +6,29 @@ import ImageTool from "@editorjs/image";
 import Embed from "@editorjs/embed";
 import CodeTool from "@editorjs/code";
 import axios from "axios";
+
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
 const EditBlog = () => {
-  const { id } = useParams(); // Get blog ID from URL params
+  const { id } = useParams();
   const editorRef = useRef(null);
+  const { user } = useAuth();
   const [blog, setBlog] = useState({
     title: "",
     category: "",
     content: {},
     status: "",
+    featureImage: "",
   });
   const [allCategory, setAllCategory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   async function fetchCategories() {
     setIsLoading(true);
-
     try {
       const res = await axios.get("http://localhost:8484/api/category");
-      console.log(res.data);
       setAllCategory(res.data);
     } catch (error) {
       console.log(error);
@@ -40,32 +42,58 @@ const EditBlog = () => {
   }, []);
 
   useEffect(() => {
-    // Fetch existing blog data
     const fetchBlog = async () => {
       try {
         const res = await axios.get(`http://localhost:8484/api/blogs/${id}`);
         setBlog({
           title: res.data.title,
           category: res.data.category,
-          content: res.data.content,
-          status: res.data.status, // JSON data stored in DB
+          content: JSON.parse(res.data.content),
+          status: res.data.status,
+          featureImage: res.data.featureImage,
         });
 
-        // Initialize Editor.js after data is loaded
-        if (!editorRef.current) {
-          editorRef.current = new EditorJS({
-            holder: "editorjs",
-            tools: {
-              header: Header,
-              list: List,
-              image: ImageTool,
-              embed: Embed,
-              code: CodeTool,
-            },
-            placeholder: "Edit your blog...",
-            data: res.data.content, // Load content
-          });
-        }
+        setTimeout(() => {
+          if (!editorRef.current) {
+            editorRef.current = new EditorJS({
+              holder: "editorjs",
+              tools: {
+                header: Header,
+                list: List,
+                image: {
+                  class: ImageTool,
+                  config: {
+                    uploader: {
+                      uploadByFile(file) {
+                        const formData = new FormData();
+                        formData.append("image", file);
+                        return axios
+                          .post(
+                            "http://localhost:8484/api/blogs/upload-image",
+                            formData
+                          )
+                          .then(
+                            (res) => (
+                              console.log(res.data.file.url),
+                              {
+                                success: 1,
+                                file: { url: res.data.file.url },
+                              }
+                            )
+                          )
+                          .catch(() => ({ success: 0 }));
+                      },
+                    },
+                  },
+                },
+                embed: Embed,
+                code: CodeTool,
+              },
+              placeholder: "Edit your blog...",
+              data: JSON.parse(res.data.content) || {},
+            });
+          }
+        }, 500);
       } catch (error) {
         console.error("Error fetching blog:", error);
       }
@@ -85,41 +113,60 @@ const EditBlog = () => {
     if (!editorRef.current) return;
 
     try {
-      // Get content from Editor.js
       const savedData = await editorRef.current.save();
+      if (!blog.title || !blog.category || !blog.status || !blog.image) {
+        alert("Please fill out all fields, including the image.");
+        return;
+      }
 
-      // Prepare blog post data
-      const blogPost = {
-        title: blog.title,
-        category: blog.category,
-        content: savedData, // Editor.js JSON content
-        author: "USER_ID", // Replace with actual logged-in user ID
-      };
+      const form = new FormData();
+      form.append("title", blog.title);
+      form.append("category", blog.category);
+      form.append("status", blog.status);
+      form.append("content", JSON.stringify(savedData)); // Ensure it's a stringified JSON
+      form.append("author", user._id);
+      form.append("image", blog.image); // Ensure the image is set
 
-      //   console.log("updated Blog:", blogPost);
-      // Send data to backend using Axios
+      // Log the form data to check
+      for (let pair of form.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
       const response = await axios.put(
         `http://localhost:8484/api/blogs/${id}`,
-        blogPost,
+        form,
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
           withCredentials: true,
         }
       );
-      console.log(response);
 
       if (response.status === 200) {
-        toast("Blog posted successfully!");
-        console.log("Response:", response.data);
+        toast("Blog updated successfully!");
       } else {
-        toast("Failed to Update blog.");
+        toast("Failed to update blog.");
       }
     } catch (error) {
       console.error("Submission error:", error);
-      toast("An error occurred while Updating the blog.");
+      toast("An error occurred while updating the blog.");
     }
+  }
+
+  async function handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    setBlog({ ...blog, image: file });
+    // const formData = new FormData();
+    // formData.append("image", file);
+
+    // try {
+    //   const res = await axios.post(
+    //     "http://localhost:8484/api/upload",
+    //     formData
+    //   );
+    // } catch (error) {
+    //   console.error("Image upload error:", error);
+    // }
   }
 
   return (
@@ -132,33 +179,47 @@ const EditBlog = () => {
         value={blog.title}
         onChange={(e) => setBlog({ ...blog, title: e.target.value })}
       />
-      <div>
-        <select
-          className="border p-2 w-full rounded mb-2"
-          value={blog.category}
-          onChange={(e) => setBlog({ ...blog, category: e.target.value })}
-        >
-          {allCategory.map((cat) => (
-            <option key={cat._id} value={`${cat.name}`}>
-              {`${cat.name}`}
-            </option>
-          ))}
-        </select>
-        <select
-          className="border p-2 mb-2 w-full"
-          value={blog.status}
-          onChange={(e) => setBlog({ ...blog, status: e.target.value })}
-        >
-          <option value="">Status</option>
-          <option value="Published">Publish</option>
-          <option value="Draft">Draft</option>
-          <option value="Archived">Archived</option>
-        </select>{" "}
-      </div>
-      <div id="editorjs" className="min-h-[300px] border rounded p-2"></div>
+      <input
+        type="file"
+        className="border p-2 w-full rounded mb-2"
+        onChange={handleImageUpload}
+      />
+      {blog.featureImage && (
+        <img
+          src={blog.featureImage}
+          alt="Feature"
+          className="w-full h-48 object-cover mb-2 rounded"
+        />
+      )}
+      <select
+        className="border p-2 w-full rounded mb-2"
+        value={blog.category}
+        onChange={(e) => setBlog({ ...blog, category: e.target.value })}
+      >
+        <option value="">Select Category</option>
+        {allCategory.map((cat) => (
+          <option key={cat._id} value={cat.name}>
+            {cat.name}
+          </option>
+        ))}
+      </select>
+      <select
+        className="border p-2 mb-2 w-full rounded"
+        value={blog.status}
+        onChange={(e) => setBlog({ ...blog, status: e.target.value })}
+      >
+        <option value="">Select Status</option>
+        <option value="Published">Published</option>
+        <option value="Draft">Draft</option>
+        <option value="Archived">Archived</option>
+      </select>
+      <div
+        id="editorjs"
+        className="min-h-[300px] border rounded p-2 bg-gray-100"
+      ></div>
       <button
         onClick={handleSubmit}
-        className="mt-4 bg-blue-500 text-white p-2 rounded"
+        className="mt-4 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
       >
         Save
       </button>

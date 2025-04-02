@@ -30,6 +30,7 @@
     "@tiptap/starter-kit": "^2.11.5",
     "antd": "^5.24.4",
     "axios": "^1.8.4",
+    "editorjs-html": "^4.0.5",
     "lucide-react": "^0.483.0",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
