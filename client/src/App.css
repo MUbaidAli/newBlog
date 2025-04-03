@@ -429,3 +429,44 @@ ul.custom {
 .toolbar button:hover {
   background: #0056b3;
 }
+
+/* slider */
+.container__slider {
+  position: relative;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  background-color: black;
+}
+
+.slider__item {
+  box-sizing: border-box;
+  min-width: 100%;
+  height: auto;
+  overflow: hidden;
+  object-fit: cover;
+  height: auto;
+  transform: translateX(0);
+  transition: transform 1s ease;
+}
+
+.slider__item-active-1 {
+  transform: translateX(0);
+}
+
+.slider__item-active-2 {
+  transform: translateX(-100%);
+}
+
+.slider__item-active-3 {
+  transform: translateX(-200%);
+}
+
+.slider__item-active-4 {
+  transform: translateX(-300%);
+}

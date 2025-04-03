@@ -100,6 +100,10 @@ implemented Image Uploading Feature inside blog post
 implemented Image Uploading Feature inside blog post Updating
 Show Single Blog Post Page With Data
 
+✅ Progress - April 3, 2025
+implemented home page dynamic data like new Blog posts , dynamic categories , slider featured Blog posts 
+dynamic category Page to show Specific Category Page with Blog Posts
+
 
 
 

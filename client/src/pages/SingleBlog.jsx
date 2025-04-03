@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../components/Loader";
 import CategoryCard from "../components/CategoryCard";
+import Footer from "../components/Footer";
+import HrLine from "../components/HrLine";
 
 function SingleBlog() {
   const initData = {
@@ -305,6 +307,8 @@ function SingleBlog() {
               <CategoryCard heading={"Category"} text={post.category} />
             </div>
           </div>
+          <HrLine />
+          <Footer />
         </>
       )}
     </>

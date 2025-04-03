@@ -147,9 +147,10 @@ function Navbar({ modelOpener }) {
                     <div className="absolute  flex flex-wrap  w-150  py-5 bg-white text-black shadow-lg border rounded-lg border-white ">
                       {allCategory.map((item, i) => (
                         <Link
+                          to={`/category/${item._id}?${item.name}`}
                           key={i}
-                          href="#"
-                          className="border border-red-400  px-3 py-2 w-45 rounded-md my-1 mx-2 hover:bg-red-100 transition"
+                          className="border border-red-400 px-3 py-2
+                          w-45 rounded-md my-1 mx-2 hover:bg-red-100 transition"
                         >
                           {item.name}
                         </Link>
@@ -242,13 +243,13 @@ function Navbar({ modelOpener }) {
                   {isOpen && (
                     <div className="absolute  flex sm:flex-col flex-wrap  w-100  py-5 bg-white text-black shadow-lg border rounded-lg border-white ">
                       {categories.map((item, i) => (
-                        <a
+                        <Link
+                          to={`/category/${item._id}?${item.name}`}
                           key={i}
-                          href="#"
                           className="border border-red-400  px-3 py-2 w-45 rounded-md my-1 mx-2 hover:bg-red-100 transition"
                         >
                           {item}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   )}{" "}

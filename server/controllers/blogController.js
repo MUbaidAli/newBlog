@@ -1,4 +1,5 @@
 const Blog = require("../model/blog");
+const Category = require("../model/category");
 const User = require("../model/user");
 const ExpressError = require("../utils/expressError");
 const wrapAsync = require("../utils/wrapAsync");
@@ -135,6 +136,25 @@ const uploadImage = async (req, res) => {
   }
 };
 
+// category blog
+
+const getBlogByCategory = wrapAsync(async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  const category = await Category.findById(id);
+  console.log("category", category);
+  if (!category) {
+    throw new ExpressError(404, "Category Not Found");
+  }
+  const blogData = await Blog.find({ category: category.name });
+  console.log(blogData);
+  if (blogData.length > 0) {
+    res.json(blogData);
+  } else {
+    res.json({ message: "No Blog Found For Related Category" });
+  }
+});
+
 module.exports = {
   getAllBlogs,
   getBlogById,
@@ -142,4 +162,5 @@ module.exports = {
   updateBlog,
   deleteBlog,
   uploadImage,
+  getBlogByCategory,
 };

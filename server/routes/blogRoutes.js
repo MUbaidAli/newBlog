@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const {
+  getBlogByCategory,
   getAllBlogs,
   getBlogById,
   createBlog,
@@ -25,6 +26,7 @@ router.post("/upload-image", upload.single("image"), uploadImage);
 router.get("/", getAllBlogs);
 // get single blog with id
 router.get("/:id", getBlogById);
+router.get("/category/:id", getBlogByCategory);
 
 // post Request to create new blog
 

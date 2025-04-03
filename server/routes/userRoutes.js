@@ -75,6 +75,7 @@ router.put(
   // },
   updateUserDataByAdmin
 );
+
 router.get("/me", authMiddleware, getCurrentUSer);
 router.put(
   "/update/:id",

@@ -43,7 +43,7 @@ function Login() {
       //   return;
       // }
 
-      if (data.role === "Admin" || data.role === "Editor") {
+      if (data?.role === "Admin" || data?.role === "Editor") {
         navigate("/dashboard");
       } else {
         navigate("/");

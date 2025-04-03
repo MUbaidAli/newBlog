@@ -61,15 +61,16 @@ const loginUser = wrapAsync(async (req, res) => {
   if (!email || !password) {
     throw new ExpressError(400, "Please Enter Email and Password");
   }
-
+  // console.log("thidsssssssssssssssssss");
   const user = await User.findOne({ email });
-  console.log(user);
+  // console.log(user, "emailllllll");
   if (!user) {
     throw new ExpressError(404, "User Not Exist");
   }
 
   const passwordMatched = await bcrypt.compare(password, user.password);
-  // console.log(poasswirdMatched, "yes or no");
+
+  // console.log(passwordMatched, "yes or no");
   const token = generateToken(user._id);
   if (user && passwordMatched) {
     res.cookie("token", token, {

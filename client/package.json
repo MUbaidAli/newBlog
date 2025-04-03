@@ -31,6 +31,7 @@
     "antd": "^5.24.4",
     "axios": "^1.8.4",
     "editorjs-html": "^4.0.5",
+    "framer-motion": "^12.6.3",
     "lucide-react": "^0.483.0",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
