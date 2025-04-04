@@ -470,3 +470,7 @@ ul.custom {
 .slider__item-active-4 {
   transform: translateX(-300%);
 }
+
+.star {
+  height: 20px;
+}

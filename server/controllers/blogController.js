@@ -151,8 +151,25 @@ const getBlogByCategory = wrapAsync(async (req, res) => {
   if (blogData.length > 0) {
     res.json(blogData);
   } else {
-    res.json({ message: "No Blog Found For Related Category" });
+    res.json({ message: "No Blog Found For Related Category", category });
   }
+});
+
+// search Functionality
+
+const searchBlog = wrapAsync(async (req, res) => {
+  const { query } = req.query;
+  if (!query) res.json([]);
+
+  const blog = await Blog.find({
+    $or: [{ title: { $regex: query, $options: "i" } }],
+  }).limit(8);
+
+  if (!blog) {
+    throw new ExpressError(404, "No Blog Found Try Entering Something New");
+  }
+  // console.log(data);
+  res.json(blog);
 });
 
 module.exports = {
@@ -163,4 +180,5 @@ module.exports = {
   deleteBlog,
   uploadImage,
   getBlogByCategory,
+  searchBlog,
 };

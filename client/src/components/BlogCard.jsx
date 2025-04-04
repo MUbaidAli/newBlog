@@ -12,12 +12,12 @@ function BlogCard({ data }) {
       />
       <div className=" pt-2">
         <div className="mb-8">
-          <a
-            href="#"
+          <Link
+            to={`http://localhost:5173/posts/${data._id}`}
             className=" text-white text-xl md:text-2xl capitalize mb-2  inline-block"
           >
             {`${data.title}`}
-          </a>
+          </Link>
           <p className="text-white text-sm">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit.
             Voluptatibus quia,

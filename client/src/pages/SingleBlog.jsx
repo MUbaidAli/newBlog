@@ -7,6 +7,7 @@ import Loader from "../components/Loader";
 import CategoryCard from "../components/CategoryCard";
 import Footer from "../components/Footer";
 import HrLine from "../components/HrLine";
+import Reviews from "./Reviews";
 
 function SingleBlog() {
   const initData = {
@@ -306,7 +307,11 @@ function SingleBlog() {
               />
               <CategoryCard heading={"Category"} text={post.category} />
             </div>
+
+            <p className="text-white">Login To Write Review</p>
+            <Reviews />
           </div>
+
           <HrLine />
           <Footer />
         </>

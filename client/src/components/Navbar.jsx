@@ -7,7 +7,9 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { toast } from "react-toastify";
 import axios from "axios";
-function Navbar({ modelOpener }) {
+import Model from "./Model";
+import BlogCard from "./BlogCard";
+function Navbar() {
   const categories = [
     "Healthy Eating Tips",
     "Superfoods Benefits",
@@ -21,6 +23,7 @@ function Navbar({ modelOpener }) {
     "Lifestyle & Wellness",
     "Foods to Avoid",
   ];
+  const [isModelOpen, setIsModelOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isDropDown, setIsDropDown] = useState(false);
   const [pos, setPos] = useState("top");
@@ -110,9 +113,9 @@ function Navbar({ modelOpener }) {
             onClick={() => setIsDropDown(!isDropDown)}
           >
             {isDropDown ? (
-              <i class="fa-solid fa-x cursor-pointer"></i>
+              <i className="fa-solid fa-x cursor-pointer"></i>
             ) : (
-              <i class="fa-solid fa-bars cursor-pointer"></i>
+              <i className="fa-solid fa-bars cursor-pointer"></i>
             )}
           </button>
           <div className="logo ">
@@ -189,21 +192,21 @@ function Navbar({ modelOpener }) {
           <div className="icons flex ">
             <div className="search mx-3">
               <i
-                class="fa-solid fa-magnifying-glass cursor-pointer"
-                onClick={() => modelOpener(true)}
+                className="fa-solid fa-magnifying-glass cursor-pointer"
+                onClick={() => setIsModelOpen(true)}
               ></i>
             </div>
             <div className="user mx-3">
               {user && (
                 <i
-                  class="fa-solid fa-right-from-bracket cursor-pointer"
+                  className="fa-solid fa-right-from-bracket cursor-pointer"
                   onClick={handleLogout}
                 ></i>
               )}
 
               {!user && (
                 <Link to={"/account"}>
-                  <i class="fa-solid fa-user"></i>
+                  <i className="fa-solid fa-user"></i>
                 </Link>
               )}
             </div>
@@ -286,6 +289,8 @@ function Navbar({ modelOpener }) {
         {pos == "show" && <HrLine width={"4"} />}
         {/* <hr className="h-[4px] bg-gradient-to-r from-[#FF4242] to-[#99286C] border-0" /> */}
       </nav>
+
+      {isModelOpen && <Model modelOpener={setIsModelOpen}></Model>}
     </>
   );
 }

@@ -9,6 +9,7 @@ const {
   updateBlog,
   deleteBlog,
   uploadImage,
+  searchBlog,
 } = require("../controllers/blogController");
 const authMiddleware = require("../middlewares/authMiddleware");
 const {
@@ -21,6 +22,7 @@ const multer = require("multer");
 const upload = multer({ storage });
 
 router.post("/upload-image", upload.single("image"), uploadImage);
+router.get("/search", searchBlog);
 
 // get Request to show blogs data
 router.get("/", getAllBlogs);

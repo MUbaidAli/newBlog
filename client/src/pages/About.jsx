@@ -7,7 +7,28 @@ import MissionSection from "../components/MissionSection";
 import SubscriptionSection from "../components/SubscriptionSection";
 import HrLine from "../components/HrLine";
 import AboutSection from "../components/AboutSection";
+import { useEffect, useState } from "react";
+import axios from "axios";
 function About() {
+  const [homeData, setHomeData] = useState({ blogData: "" });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    async function getHomeData() {
+      try {
+        const res = await axios.get("http://localhost:8484/api/homepage");
+        console.log(res);
+        setHomeData(res.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    getHomeData();
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -22,7 +43,7 @@ function About() {
       <HrLine width={4} />
       <AboutSection />
       <HrLine width={4} />
-      <CategoryExplorer />
+      <CategoryExplorer categoryData={homeData.categoryData} />
 
       <HrLine width={4} />
       <SubscriptionSection />
