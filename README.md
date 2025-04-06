@@ -105,6 +105,12 @@ implemented home page dynamic data like new Blog posts , dynamic categories , sl
 dynamic category Page to show Specific Category Page with Blog Posts
 
 
+✅ Progress - April 4, 2025
+implemented search Functionality to search specific post 
+blog post review Features to comment and give a star rating
+fixed admin registration bugs
+
+
 
 
 

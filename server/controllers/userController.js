@@ -84,6 +84,7 @@ const loginUser = wrapAsync(async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      image: user.image,
       token: token,
     });
   } else if (user && !passwordMatched) {
@@ -96,6 +97,7 @@ const loginUser = wrapAsync(async (req, res) => {
 
 // admin Register
 const adminRegister = wrapAsync(async (req, res) => {
+  const { path, filename } = req.file;
   const {
     name,
     email,
@@ -108,13 +110,17 @@ const adminRegister = wrapAsync(async (req, res) => {
     lastName,
     gender,
   } = req.body;
-
+  console.log(
+    path,
+    filename,
+    "hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+  );
   if (!["Admin", "Editor", "User"].includes(role)) {
     throw new ExpressError(400, "Invalid Role");
   }
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
-  console.log(req.body);
+  // console.log(req.body);
   const newUser = User({
     name,
     email,
@@ -126,6 +132,10 @@ const adminRegister = wrapAsync(async (req, res) => {
     dob,
     lastName,
     gender,
+    image: {
+      imageUrl: path,
+      imgName: filename,
+    },
   });
 
   const userAdded = await newUser.save();

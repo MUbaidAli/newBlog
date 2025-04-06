@@ -36,9 +36,10 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
     setFormData({ ...formData, image: e.target.files[0] });
     console.log(e.target.files[0]);
     console.log(formData.image, "imageee");
+    console.log(e.target.files[0], "imageee");
   }
 
-  console.log(userData);
+  // console.log(userData);
   useEffect(() => {
     setFormData({ ...userData });
     // async function fetchUserData() {
@@ -106,7 +107,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
     setIsLoading(true);
     // console.log(formData, "formmmmmmmmmmm");
     try {
-      // console.log(formData.name, form.get("image"), "imageeeeeee");
+      console.log(formData.name, form.get("image"), "imageeeeeee");
       if (!userData) {
         const res = await axios.post(
           "http://localhost:8484/api/user/adminRegister",
@@ -169,7 +170,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
                 id="profileImage"
                 className="w-50 h-50 rounded-full absolute cursor-pointer"
                 src={`${
-                  formData.image.imageUrl ||
+                  formData?.image?.imageUrl ||
                   "https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png"
                 }`}
                 alt="Profile"

@@ -8,6 +8,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import EditorJsHtml from "editorjs-html";
 import Loader from "../components/Loader";
+import Footer from "../components/Footer";
 
 const editorHtml = EditorJsHtml(); // Now, this is the instance
 
@@ -72,6 +73,7 @@ function Categories() {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

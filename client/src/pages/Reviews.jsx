@@ -1,9 +1,77 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import StarRating from "../components/StarRating";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
-function Reviews() {
-  const [useRating, setUserRating] = useState(null);
+function Reviews({ blogId, rev }) {
+  const { user } = useAuth();
+  const [userRating, setUserRating] = useState(null);
+  const [review, setReview] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  //   console.log(review, userRating);
+  console.log(rev, "blog reviewss");
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (review.trim() === "") {
+      return;
+    }
+
+    const data = { rating: userRating, review, blog: blogId, name: user.name };
+    // console.log(data);
+    setIsLoading(true);
+    try {
+      const res = await axios.post(
+        `http://localhost:8484/api/review/${blogId}`,
+        data
+      );
+      console.log(res);
+      setUserRating(null);
+      setReview("");
+      toast("Review Submited");
+    } catch (error) {
+      console.log(error);
+      toast(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  //   no nned of this because first the review will be approved by admin not by default
+  //   async function fetchReviews() {
+  //     setIsLoading(true);
+  //     try {
+  //       const res = await axios.get("http://localhost:8484/api/review");
+  //       console.log(res);
+  //     } catch (error) {
+  //       console.log(error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
+  //   fetch all reviews and rander it on the page
+  //   delete review by same user
+  //   alos create time base slider for homepage
+  //   useEffect(() => {
+  //     setReview("");
+  //     fetchReviews();
+  //   }, []);
+
+  function formatDate(isoString) {
+    const date = new Date(isoString);
+    return date.toLocaleString("en-US", {
+      // weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+
+      hour12: true,
+    });
+  }
 
   return (
     <>
@@ -29,7 +97,7 @@ function Reviews() {
                     </div>
                   </div>
                   {/* Modal body */}
-                  <form className="p-4 md:p-5">
+                  <form className="p-4 md:p-5" onSubmit={handleSubmit}>
                     <div className="mb-4 grid grid-cols-2 gap-4">
                       <div className="col-span-2">
                         <div className="">
@@ -42,7 +110,7 @@ function Reviews() {
                           </div>
                         </div>
                       </div>
-                      <div className="col-span-2">
+                      {/* <div className="col-span-2">
                         <label
                           htmlFor="title"
                           className="block text-sm/6 font-medium text-white"
@@ -56,7 +124,7 @@ function Reviews() {
                           className=" border-white text-white outline-0 border-2  w-full justify-center text-left rounded-lg shadow px-10 py-3 flex items-center my-5"
                           placeholder="Enter Title"
                         />
-                      </div>
+                      </div> */}
                       <div className="col-span-2">
                         <label
                           htmlFor="description"
@@ -69,6 +137,7 @@ function Reviews() {
                           rows={6}
                           className=" border-white text-white outline-0 border-2  w-full justify-center text-left rounded-lg shadow px-10 py-3 flex items-center my-5"
                           required=""
+                          onChange={(e) => setReview(e.target.value)}
                           defaultValue={""}
                           placeholder="Some description..."
                         />
@@ -82,93 +151,58 @@ function Reviews() {
               </div>
             </div>
             {/* -------------------------------------------- */}
+            <h1 className="text-white text-3xl font-bold">User Reviews</h1>
             <div className="my-6 gap-8 sm:flex sm:items-start md:my-8">
-              <div className="gap-3 py-6 sm:flex sm:items-start">
-                <div className="shrink-0 space-y-2 sm:w-48 md:w-72">
-                  <div className="flex items-center gap-0.5">
-                    <svg
-                      className="h-4 w-4 text-yellow-300"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
+              {rev.length > 0 ? (
+                rev.map((item, i) => (
+                  <>
+                    <div className="gap-3 py-6 sm:flex sm:items-start">
+                      <div className="shrink-0 space-y-2 sm:w-48 md:w-72">
+                        <div className="flex items-center gap-0.5">
+                          <StarRating
+                            ratingLength={5}
+                            size="30"
+                            staticRating={item.rating}
+                          />
+                        </div>
+                        <div className="space-y-0.5">
+                          <p className="text-base font-semibold text-white capitalize">
+                            {item.name}
+                          </p>
+                          <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                            {formatDate(item.createdAt)}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mt-4 min-w-0 flex-1 space-y-4 sm:mt-0">
+                        <p className="text-base font-normal text-gray-500 dark:text-gray-400 capitalize">
+                          {item.review}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-6 text-center">
+                      <button
+                        type="button"
+                        className="mb-2 me-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
+                      >
+                        View more reviews
+                      </button>
+                    </div>
+                  </>
+                ))
+              ) : (
+                <>
+                  <div className="mt-6 text-center">
+                    <p
+                      type="button"
+                      className="mb-2 me-2   px-5 py-2.5 text-sm font-medium text-white    "
                     >
-                      <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                    </svg>
-                    <svg
-                      className="h-4 w-4 text-yellow-300"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                    </svg>
-                    <svg
-                      className="h-4 w-4 text-yellow-300"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                    </svg>
-                    <svg
-                      className="h-4 w-4 text-yellow-300"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                    </svg>
-                    <svg
-                      className="h-4 w-4 text-yellow-300"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
-                    </svg>
-                  </div>
-                  <div className="space-y-0.5">
-                    <p className="text-base font-semibold text-white">
-                      Neil Sims
-                    </p>
-                    <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                      November 18 2023 at 15:35
+                      No Reviews For This Blog Post Be the first one to add a
+                      Review
                     </p>
                   </div>
-                </div>
-                <div className="mt-4 min-w-0 flex-1 space-y-4 sm:mt-0">
-                  <p className="text-base font-normal text-gray-500 dark:text-gray-400">
-                    I replaced my 11 year old iMac with the new M1 Apple. I
-                    wanted to remain with Apple as my old one is still working
-                    perfectly and all Apple products are so reliable. Setting up
-                    was simple and fast and transferring everything from my
-                    previous iMac worked perfectly.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="mt-6 text-center">
-              <button
-                type="button"
-                className="mb-2 me-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
-              >
-                View more reviews
-              </button>
+                </>
+              )}
             </div>
           </div>
         </section>

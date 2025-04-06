@@ -45,10 +45,14 @@ function Login() {
 
       if (data?.role === "Admin" || data?.role === "Editor") {
         navigate("/dashboard");
-      } else {
+        toast(`Welcome ${data?.name}`);
+      } else if (data?.role === "User") {
         navigate("/");
+        toast(`Welcome ${data?.name}`);
+      } else {
+        navigate("/account");
+        toast("Wrong Craditionals");
       }
-      toast(`Welcome ${data?.name}`);
       //   console.log(response.data);
     } catch (error) {
       toast(error.response?.data?.error || error.message);

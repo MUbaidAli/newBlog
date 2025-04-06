@@ -38,7 +38,7 @@ function SingleBlog() {
       try {
         const res = await axios.get(`http://localhost:8484/api/blogs/${id}`);
         // console.log(res);
-        console.log("API Response:", res.data);
+        // console.log("API Response:", res.data);
         setPost(res.data);
       } catch (error) {
         console.log(error);
@@ -247,7 +247,7 @@ function SingleBlog() {
     });
   }
 
-  console.log(post.content);
+  // console.log(post.content);
   return (
     <>
       <div className="bg-[#111119]">
@@ -298,7 +298,7 @@ function SingleBlog() {
             </li>
           </ul> */}
             </div>
-            {console.log(post)}
+            {/* {console.log(post)} */}
             <div className="creater-section flex my-10 justify-center md:justify-between items-center flex-wrap">
               <CategoryCard heading={"Author"} text={post.author} />
               <CategoryCard
@@ -309,7 +309,7 @@ function SingleBlog() {
             </div>
 
             <p className="text-white">Login To Write Review</p>
-            <Reviews />
+            <Reviews blogId={post._id} rev={post.reviews} />
           </div>
 
           <HrLine />

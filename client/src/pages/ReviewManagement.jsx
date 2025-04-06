@@ -88,7 +88,7 @@ function ReviewManagement() {
               {reviews?.map((rev) => (
                 <tr key={rev._id} className="border border-gray-700">
                   <td className="p-3">{rev.name}</td>
-                  <td className="p-3">{rev.blog}</td>
+                  <td className="p-3">{rev.blog.title}</td>
                   <td className="p-3">{rev.status}</td>
                   <td className="p-3">{rev.rating}</td>
                   <td className="p-3">{rev.review}</td>

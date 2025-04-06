@@ -2,11 +2,11 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 function DashboardLayout() {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
 
-  console.log(user.image.imageUrl, "from dashboard layout");
+  // console.log(user.image.imageUrl, "from dashboard layout");
   const location = useLocation();
-  // console.log(location);
+  console.log(user);
   return (
     <>
       <div className="mx-auto max-w-8xl md:px-10  px-5">
@@ -17,8 +17,9 @@ function DashboardLayout() {
             <div className="profile-pic ">
               <img
                 src={`${
-                  user.image.imageUrl ||
-                  "https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png"
+                  !isLoading &&
+                  (user.image.imageUrl ||
+                    "https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png")
                 }`}
                 alt=""
                 className="h-40 w-40 object-cover rounded-full"

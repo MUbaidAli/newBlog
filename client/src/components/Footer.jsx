@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Button from "./Button";
 import HrLine from "./HrLine";
 import SectionHeading from "./SectionHeading";
@@ -62,18 +63,19 @@ function Footer() {
                     />
                   </svg> */}
                 </div>
-                <a className="hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent hidden md:block cursor-pointer text-gray-600  uppercase">
+
+                <Link className="hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent hidden md:block cursor-pointer text-gray-600  uppercase">
                   Categories
-                </a>
-                <a className="hidden md:block cursor-pointer text-gray-600 hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent uppercase">
+                </Link>
+                <Link className="hidden md:block cursor-pointer text-gray-600 hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent uppercase">
                   Latest Posts
-                </a>
-                <a className="hidden md:block cursor-pointer text-gray-600 hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent uppercase">
+                </Link>
+                <Link className="hidden md:block cursor-pointer text-gray-600 hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent uppercase">
                   About us
-                </a>
-                <a className="hidden md:block cursor-pointer text-gray-600 hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent uppercase">
+                </Link>
+                <Link className="hidden md:block cursor-pointer text-gray-600 hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent uppercase">
                   Contact
-                </a>
+                </Link>
                 <div className="flex flex-row space-x-8 items-center justify-between">
                   <a>
                     <svg

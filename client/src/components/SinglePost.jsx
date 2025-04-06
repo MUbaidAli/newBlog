@@ -1,4 +1,5 @@
 import CategoryCard from "./CategoryCard";
+import Footer from "./Footer";
 
 function SinglePost({ data }) {
   return (
