@@ -1,7 +1,11 @@
 const express = require("express");
-const { getHomapageData } = require("../controllers/homepageController");
+const {
+  getHomapageData,
+  getDashboardData,
+} = require("../controllers/homepageController");
 const router = express.Router();
 
 router.get("/", getHomapageData);
+router.get("/dash", getDashboardData);
 
 module.exports = router;

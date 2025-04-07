@@ -5,8 +5,8 @@ const ExpressError = require("../utils/expressError");
 const wrapAsync = require("../utils/wrapAsync");
 
 const getBlogReviews = wrapAsync(async (req, res) => {
-  const blog = await Review.find().populate("blog");
-  console.log(blog);
+  const blog = await Review.find().sort({ status: 1 }).populate("blog");
+  console.log(blog.sort((a, b) => b.status.localeCompare(a.status)));
   res.json({ message: "Blogs Data", blog });
 });
 
@@ -62,6 +62,7 @@ const deleteReview = wrapAsync(async (req, res) => {
 const updateReview = async (req, res) => {
   try {
     const { id } = req.params;
+    // console.log()
     const updatedReview = await Review.findByIdAndUpdate(
       id,
       { status: "Approved" },

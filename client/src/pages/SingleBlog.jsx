@@ -37,7 +37,7 @@ function SingleBlog() {
     async function getData() {
       try {
         const res = await axios.get(`http://localhost:8484/api/blogs/${id}`);
-        // console.log(res);
+        console.log(res, "blogggg data");
         // console.log("API Response:", res.data);
         setPost(res.data);
       } catch (error) {
@@ -47,7 +47,7 @@ function SingleBlog() {
       }
     }
     getData();
-  }, []);
+  }, [id]);
 
   function formatDate(isoString) {
     const date = new Date(isoString);
@@ -253,7 +253,7 @@ function SingleBlog() {
       <div className="bg-[#111119]">
         <Navbar />
       </div>
-      {isLoading && !post ? (
+      {isLoading && !post._id ? (
         <Loader />
       ) : (
         <>
@@ -309,7 +309,10 @@ function SingleBlog() {
             </div>
 
             <p className="text-white">Login To Write Review</p>
-            <Reviews blogId={post._id} rev={post.reviews} />
+            <Reviews
+              blogId={post._id}
+              rev={post.reviews.filter((item) => item.status === "Approved")}
+            />
           </div>
 
           <HrLine />

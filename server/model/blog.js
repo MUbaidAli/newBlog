@@ -8,6 +8,7 @@ const blogSchema = new mongoose.Schema(
     category: { type: String, required: true },
     author: { type: String, required: true },
     reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
+    views: { type: Number, default: 0 },
     status: {
       type: String,
       enum: ["Published", "Draft", "Archived"],

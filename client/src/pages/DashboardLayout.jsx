@@ -6,7 +6,7 @@ function DashboardLayout() {
 
   // console.log(user.image.imageUrl, "from dashboard layout");
   const location = useLocation();
-  console.log(user);
+  // console.log(user);
   return (
     <>
       <div className="mx-auto max-w-8xl md:px-10  px-5">

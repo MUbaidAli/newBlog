@@ -15,9 +15,9 @@ function Reviews({ blogId, rev }) {
   console.log(rev, "blog reviewss");
   async function handleSubmit(e) {
     e.preventDefault();
-    if (review.trim() === "") {
-      return;
-    }
+    // if (review.trim() === "") {
+    //   return;
+    // }
 
     const data = { rating: userRating, review, blog: blogId, name: user.name };
     // console.log(data);
@@ -137,6 +137,7 @@ function Reviews({ blogId, rev }) {
                           rows={6}
                           className=" border-white text-white outline-0 border-2  w-full justify-center text-left rounded-lg shadow px-10 py-3 flex items-center my-5"
                           required=""
+                          value={review}
                           onChange={(e) => setReview(e.target.value)}
                           defaultValue={""}
                           placeholder="Some description..."
@@ -152,41 +153,43 @@ function Reviews({ blogId, rev }) {
             </div>
             {/* -------------------------------------------- */}
             <h1 className="text-white text-3xl font-bold">User Reviews</h1>
-            <div className="my-6 gap-8 sm:flex sm:items-start md:my-8">
+            <div className="flex flex-wrap">
               {rev.length > 0 ? (
                 rev.map((item, i) => (
                   <>
-                    <div className="gap-3 py-6 sm:flex sm:items-start">
-                      <div className="shrink-0 space-y-2 sm:w-48 md:w-72">
-                        <div className="flex items-center gap-0.5">
-                          <StarRating
-                            ratingLength={5}
-                            size="30"
-                            staticRating={item.rating}
-                          />
+                    <div className="w-150 my-6 gap-8 sm:flex sm:items-start md:my-8">
+                      <div className="gap-3 py-6 sm:flex sm:items-start">
+                        <div className="shrink-0 space-y-2 sm:w-48 md:w-72">
+                          <div className="flex items-center gap-0.5">
+                            <StarRating
+                              ratingLength={5}
+                              size="30"
+                              staticRating={item.rating}
+                            />
+                          </div>
+                          <div className="space-y-0.5">
+                            <p className="text-base font-semibold text-white capitalize">
+                              {item.name}
+                            </p>
+                            <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                              {formatDate(item.createdAt)}
+                            </p>
+                          </div>
                         </div>
-                        <div className="space-y-0.5">
-                          <p className="text-base font-semibold text-white capitalize">
-                            {item.name}
-                          </p>
-                          <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                            {formatDate(item.createdAt)}
+                        <div className="mt-4 min-w-0 flex-1 space-y-4 sm:mt-0">
+                          <p className="text-base font-normal text-gray-500 dark:text-gray-400 capitalize">
+                            {item.review}
                           </p>
                         </div>
                       </div>
-                      <div className="mt-4 min-w-0 flex-1 space-y-4 sm:mt-0">
-                        <p className="text-base font-normal text-gray-500 dark:text-gray-400 capitalize">
-                          {item.review}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="mt-6 text-center">
+                      {/* <div className="mt-6 text-center">
                       <button
                         type="button"
                         className="mb-2 me-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
-                      >
+                        >
                         View more reviews
-                      </button>
+                        </button>
+                        </div> */}
                     </div>
                   </>
                 ))

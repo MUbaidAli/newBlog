@@ -112,6 +112,13 @@ fixed admin registration bugs
 
 
 
+✅ Progress - April 7, 2025
+fix bugs
+created view functionalities (daily Visits , total Visits , per Blog Visits)
+created dashboard Statistics 
+show Statistics data on Dashboard Main Page 
+
+
 
 
 

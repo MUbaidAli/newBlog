@@ -28,15 +28,24 @@ function ReviewManagement() {
 
   async function handleApprove(reviewId) {
     try {
-      await axios.put(`http://localhost:8484/api/reviews/${reviewId}`, {
+      await axios.put(`http://localhost:8484/api/review/reviews/${reviewId}`, {
         status: "Approved",
       });
 
-      setReviews((prevReviews) =>
-        prevReviews.map((review) =>
+      setReviews((prevReviews) => {
+        // Update the status
+        const updatedReviews = prevReviews.map((review) =>
           review._id === reviewId ? { ...review, status: "Approved" } : review
-        )
-      );
+        );
+
+        // Sort so pending comes first
+        const statusOrder = { Pending: 0, Approved: 1, Rejected: 2 };
+        updatedReviews.sort(
+          (a, b) => statusOrder[a.status] - statusOrder[b.status]
+        );
+
+        return updatedReviews;
+      });
 
       toast.success("Review Approved");
     } catch (error) {
@@ -48,7 +57,7 @@ function ReviewManagement() {
   async function handleDeleteReview(id) {
     try {
       ConfirmDialog(async () => {
-        await axios.delete(`http://localhost:8484/api/reviews/${id}`);
+        await axios.delete(`http://localhost:8484/api/review/${id}`);
         toast("Review Deleted");
 
         // Remove the deleted review from state without refetching

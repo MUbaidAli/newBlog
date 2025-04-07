@@ -1,7 +1,9 @@
 const Blog = require("../model/blog");
 const Category = require("../model/category");
+const DailyVisit = require("../model/dailyVisits");
 const User = require("../model/user");
 const ExpressError = require("../utils/expressError");
+const getCurrentDate = require("../utils/getCurrentData");
 const wrapAsync = require("../utils/wrapAsync");
 
 // get Request to show blogs data
@@ -18,6 +20,22 @@ const getBlogById = wrapAsync(async (req, res) => {
   if (!data) {
     throw new ExpressError(404, "Blog Not Found");
   }
+  console.log("Before incrementing:", data.views);
+
+  const date = getCurrentDate();
+  console.log(date);
+
+  let todayVisit = await DailyVisit.findOne({ date });
+
+  if (!todayVisit) {
+    await DailyVisit.create({ date, count: 1 });
+  } else {
+    todayVisit.count += 1;
+    await todayVisit.save();
+  }
+
+  data.views += 1;
+  await data.save();
   console.log(data);
   res.send(data);
 });
@@ -140,14 +158,14 @@ const uploadImage = async (req, res) => {
 
 const getBlogByCategory = wrapAsync(async (req, res) => {
   const { id } = req.params;
-  console.log(id);
+  // console.log(id);
   const category = await Category.findById(id);
-  console.log("category", category);
+  // console.log("category", category);
   if (!category) {
     throw new ExpressError(404, "Category Not Found");
   }
   const blogData = await Blog.find({ category: category.name });
-  console.log(blogData);
+  // console.log(blogData);
   if (blogData.length > 0) {
     res.json(blogData);
   } else {
