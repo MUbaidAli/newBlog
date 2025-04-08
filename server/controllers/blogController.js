@@ -8,7 +8,13 @@ const wrapAsync = require("../utils/wrapAsync");
 
 // get Request to show blogs data
 const getAllBlogs = wrapAsync(async (req, res) => {
-  const data = await Blog.find().sort({ createdAt: -1 });
+  console.log(req.user.role, "userrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+  const filter = {};
+  if (req.user.role == "User") {
+    filter.status = "Published";
+  }
+  console.log(filter);
+  const data = await Blog.find(filter).sort({ createdAt: -1 });
   res.json(data);
 });
 
@@ -68,7 +74,6 @@ const createBlog = wrapAsync(async (req, res) => {
 const updateBlog = wrapAsync(async (req, res) => {
   const { id } = req.params;
   const { title, content, category, author, status } = req.body;
-  const { path, filename } = req.file;
 
   const blog = await Blog.findById(id);
 
@@ -93,8 +98,11 @@ const updateBlog = wrapAsync(async (req, res) => {
     user: req.user._id,
     author: req.user.name,
     status,
-    image: { imageUrl: path, imgName: filename },
   };
+  if (req.file) {
+    const { path, filename } = req.file;
+    updatedData.image = { imageUrl: path, imgName: filename };
+  }
 
   const updatedBlog = await Blog.findByIdAndUpdate(id, updatedData, {
     new: true,
@@ -164,7 +172,10 @@ const getBlogByCategory = wrapAsync(async (req, res) => {
   if (!category) {
     throw new ExpressError(404, "Category Not Found");
   }
-  const blogData = await Blog.find({ category: category.name });
+  const blogData = await Blog.find({
+    category: category.name,
+    status: "Published",
+  });
   // console.log(blogData);
   if (blogData.length > 0) {
     res.json(blogData);
@@ -176,6 +187,26 @@ const getBlogByCategory = wrapAsync(async (req, res) => {
 // search Functionality
 
 const searchBlog = wrapAsync(async (req, res) => {
+  const { query } = req.query;
+  if (!query) res.json([]);
+  const filter = {
+    $or: [{ title: { $regex: query, $options: "i" } }],
+  };
+
+  if (req.user.role == "User") {
+    filter.status = "Published";
+  }
+  console.log(filter);
+  const blog = await Blog.find(filter).limit(8);
+
+  if (!blog) {
+    throw new ExpressError(404, "No Blog Found Try Entering Something New");
+  }
+  // console.log(data);
+  res.json(blog);
+});
+
+const searchBlogAdminPanel = wrapAsync(async (req, res) => {
   const { query } = req.query;
   if (!query) res.json([]);
 
@@ -199,4 +230,5 @@ module.exports = {
   uploadImage,
   getBlogByCategory,
   searchBlog,
+  searchBlogAdminPanel,
 };

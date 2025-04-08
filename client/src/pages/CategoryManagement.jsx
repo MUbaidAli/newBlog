@@ -146,7 +146,7 @@ function CategoryManagement() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleDelete(cat._id)}
-                          className="bg-red-500 p-2 rounded-full text-white hover:bg-red-600"
+                          className="bg-red-500 p-2 rounded-full w-10 h-10 text-white hover:bg-red-600 cursor-pointer"
                         >
                           🗑
                         </button>

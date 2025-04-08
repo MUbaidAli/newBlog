@@ -21,6 +21,7 @@ import DashboardAccountSettings from "./pages/DashboardAccountSettings";
 import RegisterAdmin from "./components/RegisterAdmin";
 import Categories from "./pages/Categories";
 import SingleCategory from "./pages/SingleCategory";
+import AdminSearch from "./pages/AdminSearch";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
             path="/dashboard/manage-category"
             element={<CategoryManagement />}
           />
+          <Route path="/dashboard/adminSearch" element={<AdminSearch />} />
           <Route path="/dashboard/manage-blog/:id" element={<EditBlog />} />
           <Route path="/dashboard/manage-users" element={<UserManagement />} />
           <Route path="/dashboard/create-user" element={<RegisterAdmin />} />

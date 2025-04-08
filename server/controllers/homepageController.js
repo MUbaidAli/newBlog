@@ -19,11 +19,27 @@ const getDashboardData = wrapAsync(async (req, res) => {
 
     const today = new Date().toISOString().split("T")[0];
     const todayVisit = await DailyVisit.findOne({ date: today });
-
+    const weeklyViews = await DailyVisit.find(
+      {},
+      { _id: 0, date: 1, count: 1 }
+    );
+    const blogData = await Blog.find(
+      {},
+      { _id: 0, title: 1, views: 1, createdAt: 1 }
+    )
+      .sort({ date: 1 })
+      .limit(7);
+    // console.log(weeklyViews);
+    const formattedResult = weeklyViews.map((item) => ({
+      date: item.date,
+      views: item.count,
+    }));
     res.json({
       publishedCount,
       draftCount,
       todayViews: todayVisit?.count || 0,
+      weeklyViews: formattedResult,
+      blogData,
     });
   } catch (error) {
     console.error("Dashboard summary error:", error.message);

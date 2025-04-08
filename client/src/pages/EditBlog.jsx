@@ -50,7 +50,7 @@ const EditBlog = () => {
           category: res.data.category,
           content: JSON.parse(res.data.content),
           status: res.data.status,
-          featureImage: res.data.featureImage,
+          featureImage: res.data.image,
         });
 
         setTimeout(() => {
@@ -114,8 +114,8 @@ const EditBlog = () => {
 
     try {
       const savedData = await editorRef.current.save();
-      if (!blog.title || !blog.category || !blog.status || !blog.image) {
-        alert("Please fill out all fields, including the image.");
+      if (!blog.title || !blog.category || !blog.status) {
+        toast("Please fill out all fields, including the image.");
         return;
       }
 
@@ -179,18 +179,7 @@ const EditBlog = () => {
         value={blog.title}
         onChange={(e) => setBlog({ ...blog, title: e.target.value })}
       />
-      <input
-        type="file"
-        className="border p-2 w-full rounded mb-2"
-        onChange={handleImageUpload}
-      />
-      {blog.featureImage && (
-        <img
-          src={blog.featureImage}
-          alt="Feature"
-          className="w-full h-48 object-cover mb-2 rounded"
-        />
-      )}
+
       <select
         className="border p-2 w-full rounded mb-2"
         value={blog.category}
@@ -217,6 +206,58 @@ const EditBlog = () => {
         id="editorjs"
         className="min-h-[300px] border rounded p-2 bg-gray-100"
       ></div>
+
+      {/* <input
+        type="file"
+        className="border p-2 w-full rounded my-2"
+        onChange={handleImageUpload}
+        placeholder="Chooose"
+      /> */}
+      <label
+        htmlFor="dropzone-file"
+        className="my-5 flex flex-col items-center justify-center w-full h-40 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+      >
+        <div className="flex flex-col items-center justify-center pt-2 pb-2">
+          <svg
+            className="w-3 h-3 mb-4 text-gray-500 dark:text-gray-400"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 16"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+            />
+          </svg>
+          <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+            <span className="font-semibold">Click to upload Feature Image</span>{" "}
+            or drag and drop
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            SVG, PNG, JPG or GIF (MAX. 800x400px)
+          </p>
+        </div>
+        <input
+          id="dropzone-file"
+          type="file"
+          className="hidden"
+          name="featuredImage"
+          // value={formData.image}
+          onChange={handleImageUpload}
+        />
+      </label>
+      {console.log(blog.featureImage.imageUrl, "Bloggg")}
+      {blog.featureImage.imageUrl && (
+        <img
+          src={blog.featureImage.imageUrl}
+          alt="Feature"
+          className="w-full h-48 object-cover mb-2 rounded"
+        />
+      )}
       <button
         onClick={handleSubmit}
         className="mt-4 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"

@@ -119,6 +119,21 @@ created dashboard Statistics
 show Statistics data on Dashboard Main Page 
 
 
+✅ Progress - April 8, 2025
+fix bugs
+fix some design issues
+completed Dashboard Statistics
+created dashboard Statistics with Graph 
+search functionality of admin
+modified code on blog posts to send only the published blog to users and draft blog only to admin 
+search functionality for Dashboard 
+search functionality based on role admin can search all blogs drafted too but user can only search published one 
+
+⚠️ Project is almost completed Only Pagination and user Data Updating Form Remaining and some testing and modifications remaining 
+
+
+ 
+
 
 
 

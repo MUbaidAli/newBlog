@@ -228,7 +228,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
           </label> */}
         </div>
 
-        <div className=" pt-6 md:pt-0 w-full    flex justify-between items-center flex-row ">
+        <div className=" pt-6 md:pt-0 md:w-full    flex justify-between flex-wrap items-center flex-row ">
           <div className="flex flex-col flex-1 ">
             <label htmlFor="name" className="mx-3 text-white">
               First Name *
@@ -253,7 +253,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
               type="text"
               name="lastName"
               id="lastName"
-              value={formData.lastName}
+              value={formData.lastName === "undefined" ? "" : formData.lastName}
               onChange={handleChange}
               // value={"categoryName"}
               // onChange={(e) => setCategoryName(e.target.value)}
@@ -262,7 +262,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
             />
           </div>
         </div>
-        <div className=" pt-6 md:pt-0 w-full    flex justify-between items-center flex-row ">
+        <div className=" pt-6 md:pt-0 w-full flex-wrap   flex justify-between items-center flex-row ">
           <div className="flex flex-col flex-1 ">
             <label htmlFor="password" className="mx-3 text-white">
               Password *
@@ -306,7 +306,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
             <p className="text-red-800 px-3 ">{errorValidation.role}</p>
           </div>
         </div>
-        <div className=" pt-6 md:pt-0 w-full    flex justify-between items-center ">
+        <div className=" pt-6 md:pt-0 w-full flex-wrap    flex justify-between items-center ">
           <div className="flex flex-col flex-1 ">
             <label htmlFor="email" className="mx-3 text-white">
               Email *
@@ -315,7 +315,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
               type="email"
               name="email"
               id="email"
-              value={formData.email}
+              value={formData.email === "undefined" ? "" : formData.email}
               onChange={handleChange}
               // value={"categoryName"}
               // onChange={(e) => setCategoryName(e.target.value)}
@@ -363,7 +363,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
             </div>
           </div>
         </div>
-        <div className=" pt-6 md:pt-0 w-full    flex justify-between items-center ">
+        <div className=" pt-6 md:pt-0 w-full  flex-wrap  flex justify-between items-center ">
           <div className="flex flex-col flex-1 ">
             <label htmlFor="DOB" className="mx-3 text-white">
               Date Of Birth
@@ -371,7 +371,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
             <input
               type="date"
               name="DOB"
-              value={formData.DOB}
+              value={formData.DOB === "undefined" ? "" : formData.DOB}
               onChange={handleChange}
               // value={"categoryName"}
               // onChange={(e) => setCategoryName(e.target.value)}
@@ -387,7 +387,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
               type="text"
               name="phone"
               id="phone"
-              value={formData.phone}
+              value={formData.phone === "undefined" ? "" : formData.phone}
               onChange={handleChange}
               // value={"categoryName"}
               // onChange={(e) => setCategoryName(e.target.value)}
@@ -396,7 +396,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
             />
           </div>
         </div>
-        <div className=" pt-6 md:pt-0 w-full    flex justify-between items-center ">
+        <div className=" pt-6 md:pt-0 w-full flex-wrap   flex justify-between items-center ">
           <div className="flex flex-col flex-1 ">
             <label htmlFor="country" className="mx-3 text-white">
               Country
@@ -405,7 +405,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
               type="text"
               name="country"
               id="country"
-              value={formData.country}
+              value={formData.country === "undefined" ? "" : formData.country}
               onChange={handleChange}
               // value={"categoryName"}
               // onChange={(e) => setCategoryName(e.target.value)}
@@ -418,7 +418,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
               Address
             </label>
             <input
-              value={formData.address}
+              value={formData.address === "undefined" ? "" : formData.address}
               onChange={handleChange}
               type="text"
               name="address"

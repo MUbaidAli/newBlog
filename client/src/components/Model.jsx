@@ -20,7 +20,8 @@ function Model({ children, modelOpener }) {
 
     async function getSearchResult() {
       const res = await axios.get(
-        `http://localhost:8484/api/blogs/search?query=${query}`
+        `http://localhost:8484/api/blogs/search?query=${query}`,
+        { withCredentials: true }
       );
       console.log(res);
       setResult(res.data);

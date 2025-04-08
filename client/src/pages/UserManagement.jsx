@@ -110,7 +110,7 @@ function UserManagement() {
                         onClick={() => {
                           handleDelete(user._id);
                         }}
-                        className="bg-red-500 p-2 rounded-full text-white hover:bg-red-600"
+                        className="bg-red-500 p-2 rounded-full w-10 h-10 text-white hover:bg-red-600 cursor-pointer"
                       >
                         🗑
                       </button>

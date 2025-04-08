@@ -130,7 +130,7 @@ function BlogManagement() {
                     <div className="flex gap-2">
                       {(user.role === "Admin" || user.role === "Editor") && (
                         <button
-                          className="bg-red-500 p-2 rounded-full text-white hover:bg-red-600"
+                          className="bg-red-500 p-2 rounded-full w-10 h-10 text-white hover:bg-red-600 cursor-pointer"
                           onClick={() => handleDelete(blog._id)}
                         >
                           🗑

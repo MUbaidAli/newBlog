@@ -183,7 +183,7 @@ const deleteUser = wrapAsync(async (req, res) => {
 const updateUserDataByAdmin = wrapAsync(async (req, res) => {
   const { id } = req.params;
   // console.log(req.file, "file");
-  const { path, filename } = req.file;
+  // console.log(req.file, "fileeeeeeeeeeeeeeeeee");
   const {
     name,
     email,
@@ -222,7 +222,9 @@ const updateUserDataByAdmin = wrapAsync(async (req, res) => {
     updatedData.password = hashedPassword;
   }
   // console.log("testtttttttttttttt");
-  if (path && filename) {
+  if (req.file) {
+    const { path, filename } = req.file;
+
     updatedData.image = {
       imageUrl: path,
       imgName: filename,

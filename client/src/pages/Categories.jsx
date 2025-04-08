@@ -20,7 +20,9 @@ function Categories() {
     setIsLoading(true);
     async function fetchBlogs() {
       try {
-        const data = await axios.get("http://localhost:8484/api/blogs");
+        const data = await axios.get("http://localhost:8484/api/blogs", {
+          withCredentials: true,
+        });
 
         setBlogs(data.data);
       } catch (error) {

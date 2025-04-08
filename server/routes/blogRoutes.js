@@ -10,6 +10,7 @@ const {
   deleteBlog,
   uploadImage,
   searchBlog,
+  searchBlogAdminPanel,
 } = require("../controllers/blogController");
 const authMiddleware = require("../middlewares/authMiddleware");
 const {
@@ -19,13 +20,15 @@ const {
 
 const { storage, cloudinary } = require("../cloudConfig");
 const multer = require("multer");
+const { authUserRole } = require("../middlewares/authUserRole");
 const upload = multer({ storage });
 
 router.post("/upload-image", upload.single("image"), uploadImage);
-router.get("/search", searchBlog);
+router.get("/search", authUserRole, searchBlog);
+// router.get("/searchall", authAdminMiddleware, searchBlogAdminPanel);
 
 // get Request to show blogs data
-router.get("/", getAllBlogs);
+router.get("/", authUserRole, getAllBlogs);
 // get single blog with id
 router.get("/:id", getBlogById);
 router.get("/category/:id", getBlogByCategory);
