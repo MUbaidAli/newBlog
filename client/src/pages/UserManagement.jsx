@@ -6,24 +6,33 @@ import Loader from "../components/Loader";
 import { useNavigate } from "react-router-dom";
 import RegisterAdmin from "../components/RegisterAdmin";
 import ConfirmDialog from "../components/ConfirmDialog";
+import Pagination from "../components/Pagination";
 
 function UserManagement() {
   const [usersData, setUsersData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isUserId, setIsUserId] = useState(null);
   const { user } = useAuth();
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
+
   const navigate = useNavigate();
 
-  async function fetchUsers() {
+  async function fetchUsers(pageNumber = 1) {
     setIsLoading(true);
     try {
-      const res = await axios.get("http://localhost:8484/api/user", {
-        withCredentials: true,
-      });
-      // console.log(res.data.users);
+      const res = await axios.get(
+        `http://localhost:8484/api/user?page=${pageNumber}&limit=10`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(res.data, "new res");
       setUsersData(
         res.data.users.filter((curUser) => curUser._id !== user._id)
       );
+      setPages(res.data.pages);
+      setPage(res.data.page);
     } catch (error) {
       // console.log(error);
       toast(error.messgae);
@@ -34,6 +43,10 @@ function UserManagement() {
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  function handlePageChange(newPage) {
+    fetchUsers(newPage);
+  }
 
   async function handleDelete(id) {
     ConfirmDialog(async () => {
@@ -128,6 +141,17 @@ function UserManagement() {
             </tbody>
           </table>
         )}
+        {/* Pagination Controls */}
+        <div className="flex justify-center items-center gap-2 mt-4">
+          <Pagination
+            pages={pages}
+            handlePageChange={handlePageChange}
+            page={page}
+          />
+          <p className="text-white">
+            Page {page} of {pages}{" "}
+          </p>
+        </div>
       </div>
       ;
     </>

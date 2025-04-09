@@ -5,9 +5,25 @@ const ExpressError = require("../utils/expressError");
 const wrapAsync = require("../utils/wrapAsync");
 
 const getBlogReviews = wrapAsync(async (req, res) => {
-  const blog = await Review.find().sort({ status: 1 }).populate("blog");
-  console.log(blog.sort((a, b) => b.status.localeCompare(a.status)));
-  res.json({ message: "Blogs Data", blog });
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const blog = await Review.find()
+    .sort({ status: 1 })
+    .skip(skip)
+    .limit(limit)
+    .populate("blog");
+
+  const total = await Review.countDocuments();
+  res.json({
+    message: "Blogs Data",
+    blog,
+    total,
+    page,
+    limit,
+    pages: Math.ceil((total - 1) / limit),
+  });
 });
 
 // post request for creating a review

@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import HrLine from "../components/HrLine";
 import { div } from "framer-motion/client";
 import SectionHeading from "../components/SectionHeading";
+import Pagination from "../components/Pagination";
 
 function SingleCategory({ heading }) {
   const { id } = useParams();
@@ -16,24 +17,31 @@ function SingleCategory({ heading }) {
   // console.log(searchParams);
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
-  useEffect(() => {
-    async function fetchCategoryBlogs() {
-      setIsLoading(true);
-      try {
-        const res = await axios.get(
-          `http://localhost:8484/api/blogs/category/${id}`
-        );
-        setData(res.data);
-        // console.log(res);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
+  async function fetchCategoryBlogs(pageNumber = 1) {
+    setIsLoading(true);
+    try {
+      const res = await axios.get(
+        `http://localhost:8484/api/blogs/category/${id}?page=${pageNumber}&limit=10`
+      );
+      console.log(res, "resssss");
+      setData(res.data.blogData);
+      setPages(res.data.pages);
+      setPage(res.data.page);
+      // console.log(res);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
+  }
+  useEffect(() => {
     fetchCategoryBlogs();
   }, [id]);
-
+  function handlePageChange(newPage) {
+    fetchCategoryBlogs(newPage);
+  }
   return (
     <>
       <Navbar />
@@ -73,6 +81,17 @@ function SingleCategory({ heading }) {
           {!isLoading && typeof data.message !== "string" && (
             <LatestBlog blogData={data} heading={data[0].category} />
           )}
+        </div>
+        <div className="my-8 flex justify-center items-center gap-2 mt-4">
+          {console.log(pages, page)}
+          <Pagination
+            pages={pages}
+            handlePageChange={handlePageChange}
+            page={page}
+          />
+          <p className="text-white">
+            Page {page} of {pages}{" "}
+          </p>
         </div>
         {/* <p>{JSON.stringify(data)}</p> */}
       </div>

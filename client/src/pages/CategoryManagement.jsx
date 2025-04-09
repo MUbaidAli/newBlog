@@ -4,18 +4,28 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import Loader from "../components/Loader";
 import ConfirmDialog from "../components/ConfirmDialog";
+import Pagination from "../components/Pagination";
 
 function CategoryManagement() {
   const [categoryName, setCategoryName] = useState("");
   const [allCategory, setAllCategory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [editCategoryId, setEditCategoryId] = useState(null);
-  async function fetchCategories() {
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
+  const [limit, setLimit] = useState(10);
+
+  async function fetchCategories(pageNumber = 1) {
     setIsLoading(true);
     try {
-      const res = await axios.get("http://localhost:8484/api/category");
-      console.log(res.data);
-      setAllCategory(res.data);
+      const res = await axios.get(
+        `http://localhost:8484/api/category?page=${pageNumber}&limit=${limit}`
+      );
+      console.log(res.data.data);
+      setAllCategory(res.data.data);
+      setPages(res.data.pages);
+      setPage(res.data.page);
+      setLimit(res.data.limit);
     } catch (error) {
       console.log(error);
     } finally {
@@ -65,6 +75,9 @@ function CategoryManagement() {
     fetchCategories();
   }, []);
 
+  function handlePageChange(newPage) {
+    fetchCategories(newPage);
+  }
   async function handleDelete(id) {
     ConfirmDialog(async () => {
       try {
@@ -137,7 +150,7 @@ function CategoryManagement() {
               <tbody className="border">
                 {allCategory.map((cat, i) => (
                   <tr key={cat._id} className="border border-gray-700">
-                    <td className="p-3">{i}</td>
+                    <td className="p-3">{limit * page - limit + i + 1}</td>
                     <td className="p-3">{cat._id}</td>
                     <td className="p-3">{cat.name}</td>
 
@@ -167,6 +180,17 @@ function CategoryManagement() {
             </table>
           </div>
         )}
+      </div>
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center gap-2 mt-4">
+        <Pagination
+          pages={pages}
+          handlePageChange={handlePageChange}
+          page={page}
+        />
+        <p className="text-white">
+          Page {page} of {pages}{" "}
+        </p>
       </div>
     </>
   );

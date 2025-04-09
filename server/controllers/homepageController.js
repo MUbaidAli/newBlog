@@ -4,7 +4,9 @@ const DailyVisit = require("../model/dailyVisits");
 const wrapAsync = require("../utils/wrapAsync");
 
 const getHomapageData = wrapAsync(async (req, res) => {
-  const blogData = await Blog.find().sort({ createdAt: -1 }).limit(3);
+  const blogData = await Blog.find({ status: "Published" })
+    .sort({ createdAt: -1 })
+    .limit(3);
   const categoryData = await Category.find().limit(4);
 
   res.json({ blogData, categoryData });

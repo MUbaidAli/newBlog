@@ -19,11 +19,6 @@ function LatestBlog({ blogData, isLoading, heading }) {
             blogData.map((item, i) => <BlogCard key={i} data={item} />)}
         </div>
       </div>
-      <div className=" flex justify-end">
-        <div className="">
-          <Button onClick={() => navigate("/posts")}>Explore More</Button>
-        </div>
-      </div>
     </section>
   );
 }

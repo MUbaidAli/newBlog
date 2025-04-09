@@ -22,6 +22,7 @@ import RegisterAdmin from "./components/RegisterAdmin";
 import Categories from "./pages/Categories";
 import SingleCategory from "./pages/SingleCategory";
 import AdminSearch from "./pages/AdminSearch";
+import UserAccount from "./pages/UserAccount";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/blog" element={<SingleBlog />} />
         <Route path="/posts" element={<Categories />} />
+        <Route path="/setting" element={<UserAccount />} />
         <Route path="/posts/:id" element={<SingleBlog />} />
         <Route path="/category/:id" element={<SingleCategory />} />
 

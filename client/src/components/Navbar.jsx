@@ -38,7 +38,7 @@ function Navbar() {
     try {
       const res = await axios.get("http://localhost:8484/api/category");
       // console.log(res.data);
-      setAllCategory(res.data);
+      setAllCategory(res.data.data);
     } catch (error) {
       console.log(error);
     } finally {

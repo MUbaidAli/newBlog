@@ -8,14 +8,23 @@ const wrapAsync = require("../utils/wrapAsync");
 
 // get Request to show blogs data
 const getAllBlogs = wrapAsync(async (req, res) => {
-  console.log(req.user.role, "userrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+  // console.log(req.user.role, "userrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
   const filter = {};
   if (req.user.role == "User") {
     filter.status = "Published";
   }
   console.log(filter);
-  const data = await Blog.find(filter).sort({ createdAt: -1 });
-  res.json(data);
+  const data = await Blog.find(filter)
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  const total = await Blog.countDocuments(filter);
+  console.log(total, page, Math.ceil(total / limit));
+  res.json({ data, total, page, pages: Math.ceil(total / limit) });
 });
 
 // get single blog with id
@@ -166,19 +175,33 @@ const uploadImage = async (req, res) => {
 
 const getBlogByCategory = wrapAsync(async (req, res) => {
   const { id } = req.params;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
   // console.log(id);
   const category = await Category.findById(id);
   // console.log("category", category);
   if (!category) {
     throw new ExpressError(404, "Category Not Found");
   }
+  const filter = {};
+  if (req.user.role == "User") {
+    filter.status = "Published";
+  }
   const blogData = await Blog.find({
     category: category.name,
     status: "Published",
-  });
-  // console.log(blogData);
+  })
+
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+  // console.log(blogData)
+  const total = await Blog.countDocuments(filter);
+  // console.log(total, page, Math.ceil(total / limit));;
   if (blogData.length > 0) {
-    res.json(blogData);
+    res.json({ blogData, total, page, pages: Math.ceil(total / limit) });
   } else {
     res.json({ message: "No Blog Found For Related Category", category });
   }

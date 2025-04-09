@@ -31,7 +31,7 @@ router.get("/search", authUserRole, searchBlog);
 router.get("/", authUserRole, getAllBlogs);
 // get single blog with id
 router.get("/:id", getBlogById);
-router.get("/category/:id", getBlogByCategory);
+router.get("/category/:id", authUserRole, getBlogByCategory);
 
 // post Request to create new blog
 

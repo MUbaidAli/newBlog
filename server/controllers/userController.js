@@ -8,12 +8,27 @@ const { cloudinary, storage } = require("../cloudConfig");
 
 const upload = multer({ storage: storage });
 const getAllUsers = wrapAsync(async (req, res) => {
-  const data = await User.find();
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+  const data = await User.find()
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
 
+  const total = await User.countDocuments();
+
+  // console.log(page, limit, skip, total);
   if (!data) {
     throw new ExpressError(500, "Internal Server Error");
   }
-  res.status(200).json({ message: "data received", users: data });
+  res.status(200).json({
+    message: "data received",
+    users: data,
+    total,
+    page,
+    pages: Math.ceil((total - 1) / limit),
+  });
 });
 
 const createUser = wrapAsync(async (req, res) => {
@@ -236,6 +251,63 @@ const updateUserDataByAdmin = wrapAsync(async (req, res) => {
   res.json({ message: "Data Updated" });
 });
 
+const updateUserDataByUser = wrapAsync(async (req, res) => {
+  const { id } = req.params;
+  // console.log(req.file, "file");
+  // console.log(req.file, "fileeeeeeeeeeeeeeeeee");
+  const {
+    name,
+    email,
+    password,
+    role,
+    phone,
+    country,
+    address,
+    DOB,
+    lastName,
+    gender,
+  } = req.body;
+
+  console.log(req.body);
+  const user = await User.findById(id);
+  if (!user) {
+    throw new ExpressError(404, "User Not Found");
+  }
+
+  let updatedData = {
+    name,
+    email,
+    role,
+    phone,
+    country,
+    address,
+    DOB,
+    lastName,
+    gender,
+  };
+
+  // console.log();
+
+  if (password) {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    updatedData.password = hashedPassword;
+  }
+  // console.log("testtttttttttttttt");
+  if (req.file) {
+    const { path, filename } = req.file;
+
+    updatedData.image = {
+      imageUrl: path,
+      imgName: filename,
+    };
+  }
+
+  const data = await User.findByIdAndUpdate(id, updatedData, { new: true });
+  console.log(data, "comming from here");
+  res.json({ message: "Data Updated" });
+});
+
 // generate Token
 
 function generateToken(id) {
@@ -251,5 +323,7 @@ module.exports = {
   adminRegister,
   deleteUser,
   getAllUsers,
+  updateUserDataByUser,
+
   updateUserDataByAdmin,
 };

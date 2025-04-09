@@ -8,6 +8,7 @@ const blogRoutes = require("./routes/blogRoutes.js");
 const reviewRoutes = require("./routes/reviewRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
 const homepageRoutes = require("./routes/homepageRoutes.js");
+const contactMailer = require("./routes/contactMailer.js");
 const errorHandler = require("./middlewares/errorHandle.js");
 const Blog = require("./model/blog.js");
 const cors = require("cors");
@@ -33,6 +34,7 @@ app.use("/api/user", userRoutes);
 // custome Error Handler Middleware
 app.use("/api/homepage", homepageRoutes);
 app.use(errorHandler);
+app.use("/api/contact", contactMailer);
 
 // listening all requests
 app.listen(process.env.PORT, () => {

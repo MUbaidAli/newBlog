@@ -131,8 +131,16 @@ search functionality based on role admin can search all blogs drafted too but us
 
 ⚠️ Project is almost completed Only Pagination and user Data Updating Form Remaining and some testing and modifications remaining 
 
-
+✅ Progress - April 9, 2025
+fix bugs
+fix design Issues
+implemented Backend Based Paginations for admin panel pages and website pages
+implemented user Setting Functionality 
+also implemented contact form for contact and the message will be delivered to Email
  
+
+⚠ Project is Completed Just some minor design Issues and Bugs Remaining. 
+
 
 
 

@@ -5,11 +5,16 @@ import Loader from "../components/Loader";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ConfirmDialog from "../components/ConfirmDialog";
+import Pagination from "../components/Pagination";
+
 function BlogManagement() {
   const { user } = useAuth();
   const [blogs, setBlog] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
+
   //   const blogs = [
   //     {
   //       id: 1,
@@ -29,23 +34,34 @@ function BlogManagement() {
   //     },
   //   ];
 
+  async function fetchBlogsData(pageNumber = 1) {
+    try {
+      setIsLoading(true);
+      const res = await axios.get(
+        `http://localhost:8484/api/blogs?page=${pageNumber}&limit=10`,
+        {
+          withCredentials: true,
+        }
+      );
+      // console.log(res);
+      setBlog(res.data.data);
+      setPages(res.data.pages);
+      setPage(res.data.page);
+    } catch (error) {
+      // console.log(error);
+      toast(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
   //   console.log(user);
   useEffect(() => {
-    async function fetchBlogsData() {
-      try {
-        setIsLoading(true);
-        const res = await axios.get("http://localhost:8484/api/blogs");
-        // console.log(res);
-        setBlog(res.data);
-      } catch (error) {
-        // console.log(error);
-        toast(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
     fetchBlogsData();
   }, []);
+
+  function handlePageChange(newPage) {
+    fetchBlogsData(newPage);
+  }
 
   async function handleDelete(id) {
     // console.log(id);
@@ -102,7 +118,8 @@ function BlogManagement() {
             {/* Table Body */}
             <tbody className="border">
               {blogs.map((blog) => (
-                <tr key={blog.id} className="border border-gray-700">
+                <tr key={blog._id} className="border border-gray-700">
+                  {/* {console.log(blog.id)} */}
                   <td className="p-3">{blog.title}</td>
                   <td className="p-3">{blog.author}</td>
                   <td className="p-3">{blog.category}</td>
@@ -151,6 +168,17 @@ function BlogManagement() {
               ))}
             </tbody>
           </table>
+          <div className="flex justify-center items-center gap-2 mt-4">
+            {console.log(pages, page)}
+            <Pagination
+              pages={pages}
+              handlePageChange={handlePageChange}
+              page={page}
+            />
+            <p className="text-white">
+              Page {page} of {pages}{" "}
+            </p>
+          </div>
         </div>
       )}
       ;

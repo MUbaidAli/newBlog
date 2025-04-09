@@ -12,6 +12,7 @@ const {
   getAllUsers,
   deleteUser,
   logOut,
+  updateUserDataByUser,
   updateUserDataByAdmin,
 } = require("../controllers/userController");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -82,10 +83,20 @@ router.put(
   authAdminMiddleware,
   authAdminOnlyMiddleware,
 
-  // upload.single("image"),
+  upload.single("image"),
 
   updateUserDataByAdmin
 );
+
+router.put(
+  "/update/me/:id",
+  // authAdminMiddleware,
+
+  upload.single("image"),
+
+  updateUserDataByUser
+);
+
 router.post("/logout", logOut);
 
 module.exports = router;

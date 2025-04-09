@@ -9,31 +9,42 @@ import { toast } from "react-toastify";
 import EditorJsHtml from "editorjs-html";
 import Loader from "../components/Loader";
 import Footer from "../components/Footer";
+import Pagination from "../components/Pagination";
 
 const editorHtml = EditorJsHtml(); // Now, this is the instance
 
 function Categories() {
   const [blogs, setBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
 
-  useEffect(() => {
+  async function fetchBlogs(pageNumber = 1) {
     setIsLoading(true);
-    async function fetchBlogs() {
-      try {
-        const data = await axios.get("http://localhost:8484/api/blogs", {
+    try {
+      const data = await axios.get(
+        `http://localhost:8484/api/blogs?page=${pageNumber}&limit=12`,
+        {
           withCredentials: true,
-        });
+        }
+      );
 
-        setBlogs(data.data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
+      setBlogs(data.data.data);
+      setPages(data.data.pages);
+      setPage(data.data.page);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
-
+  }
+  useEffect(() => {
     fetchBlogs();
   }, []);
+
+  function handlePageChange(newPage) {
+    fetchBlogs(newPage);
+  }
 
   return (
     <div className="bg">
@@ -69,10 +80,16 @@ function Categories() {
             )}
           </div>
         </div>
-        <div className="flex justify-end">
-          <div className="">
-            <Button>Explore More</Button>
-          </div>
+        <div className="flex justify-center items-center gap-2 mt-4">
+          {console.log(pages, page)}
+          <Pagination
+            pages={pages}
+            handlePageChange={handlePageChange}
+            page={page}
+          />
+          <p className="text-white">
+            Page {page} of {pages}{" "}
+          </p>
         </div>
       </section>
       <Footer />

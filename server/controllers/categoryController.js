@@ -4,8 +4,23 @@ const wrapAsync = require("../utils/wrapAsync");
 
 // get all categories
 const getAllCategories = wrapAsync(async (req, res) => {
-  const data = await Category.find().sort({ createdAt: -1 });
-  res.json(data);
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+  const data = await Category.find()
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  const total = await Category.countDocuments();
+
+  res.json({
+    data,
+    total,
+    page,
+    limit,
+    pages: Math.ceil((total - 1) / limit),
+  });
 });
 
 // get request for single category

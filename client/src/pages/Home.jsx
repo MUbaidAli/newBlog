@@ -10,10 +10,13 @@ import Footer from "../components/Footer";
 import NavScroll from "../components/navScroll";
 import axios from "axios";
 import Loader from "../components/Loader";
+import { useNavigate } from "react-router-dom";
+import Button from "../components/Button";
 function Home() {
   const [homeData, setHomeData] = useState({ blogData: "" });
   const [isLoading, setIsLoading] = useState(true);
 
+  const navigate = useNavigate();
   useEffect(() => {
     setIsLoading(true);
     async function getHomeData() {
@@ -52,10 +55,19 @@ function Home() {
           ) : (
             <>
               {
-                <LatestBlog
-                  blogData={homeData.blogData}
-                  isLoading={isLoading}
-                />
+                <>
+                  <LatestBlog
+                    blogData={homeData.blogData}
+                    isLoading={isLoading}
+                  />
+                  <div className=" flex justify-end px-10">
+                    <div className="">
+                      <Button onClick={() => navigate("/posts")}>
+                        Explore More
+                      </Button>
+                    </div>
+                  </div>
+                </>
               }
               <CategoryExplorer categoryData={homeData.categoryData} />
               <HrLine width={4} />

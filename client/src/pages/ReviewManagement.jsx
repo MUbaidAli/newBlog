@@ -3,28 +3,38 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import ConfirmDialog from "../components/ConfirmDialog";
+import Pagination from "../components/Pagination";
 
 function ReviewManagement() {
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
+  async function fetchReviews(pageNumber = 1) {
+    setIsLoading(true);
+    try {
+      const res = await axios.get(
+        `http://localhost:8484/api/review?page=${pageNumber}&limit=10`
+      );
+      setReviews(res.data.blog);
+      setPages(res.data.pages);
+      setPage(res.data.page);
+      // console.log(res.data);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+      toast(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   useEffect(() => {
-    async function fetchReviews() {
-      setIsLoading(true);
-      try {
-        const res = await axios.get("http://localhost:8484/api/review");
-        setReviews(res.data.blog);
-        console.log(res.data);
-      } catch (error) {
-        console.error("Error fetching reviews:", error);
-        toast(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
     fetchReviews();
   }, []);
+
+  function handlePageChange(newPage) {
+    fetchReviews(newPage);
+  }
 
   async function handleApprove(reviewId) {
     try {
@@ -128,6 +138,16 @@ function ReviewManagement() {
           </table>
         </div>
       )}
+      <div className="flex justify-center items-center gap-2 mt-4">
+        <Pagination
+          pages={pages}
+          handlePageChange={handlePageChange}
+          page={page}
+        />
+        <p className="text-white">
+          Page {page} of {pages}{" "}
+        </p>
+      </div>
     </>
   );
 }
