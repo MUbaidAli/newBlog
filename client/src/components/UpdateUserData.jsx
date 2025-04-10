@@ -8,11 +8,6 @@ import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
 
 function UpdateUserData({ userData, setIsUserId, user }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const formattedDate = new Date(!isLoading && formData.DOB)
-    .toISOString()
-    .split("T")[0];
-  // console.log(userData, "from userrr");
   const initialFormState = {
     name: "",
     image: "",
@@ -22,18 +17,24 @@ function UpdateUserData({ userData, setIsUserId, user }) {
     country: "",
     phone: "",
     gender: "",
-    DOB: formattedDate,
+    DOB: "",
     password: "",
     role: "",
   };
-
-  useState(() => {
-    // setIsLoading(false);
-  }, []);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialFormState);
+
+  // console.log(userData, "from userrr");
+
+  useEffect(() => {
+    if (user && user.DOB) {
+      const formattedDate = new Date(user.DOB).toISOString().split("T")[0];
+      setFormData({ ...user, DOB: formattedDate });
+    }
+  }, [user]);
   const [errorValidation, setErrorValidation] = useState({});
   const navigate = useNavigate();
-  console.log(!isLoading && formData.DOB);
+  // console.log(!isLoading && formData.DOB);
   function handleChange(e) {
     // console.log(e.target.name, ":", e.   target.value)
     // ;
@@ -42,9 +43,9 @@ function UpdateUserData({ userData, setIsUserId, user }) {
   }
   function handleImageChange(e) {
     setFormData({ ...formData, image: e.target.files[0] });
-    console.log(e.target.files[0]);
-    console.log(formData.image, "imageee");
-    console.log(e.target.files[0], "imageee");
+    // console.log(e.target.files[0]);
+    // console.log(formData.image, "imageee");
+    // console.log(e.target.files[0], "imageee");
   }
 
   // console.log(userData);
@@ -80,11 +81,11 @@ function UpdateUserData({ userData, setIsUserId, user }) {
 
     if (Object.keys(errorObj).length) {
       setErrorValidation(errorObj);
-      console.log(errorValidation);
+      // console.log(errorValidation);
       return;
     }
 
-    console.log(formData, "form data submited");
+    // console.log(formData, "form data submited");
     const form = new FormData();
     form.append("name", formData.name);
     form.append("lastName", formData.lastName);
@@ -112,7 +113,7 @@ function UpdateUserData({ userData, setIsUserId, user }) {
           withCredentials: true,
         }
       );
-      console.log(res);
+      // console.log(res);
       // setIsUserId(null);
       //   fetchUsers();
       toast(res.data.message);
@@ -132,8 +133,13 @@ function UpdateUserData({ userData, setIsUserId, user }) {
   return (
     <>
       {/* <h1 className="text-white text-4xl mb-10">Register Admin</h1> */}
-      <form method="POST" onSubmit={handleSubmit} encType="multipart/form-data">
-        <div className="flex items-center justify-center w-full">
+      <form
+        method="POST"
+        onSubmit={handleSubmit}
+        encType="multipart/form-data"
+        className="py-20"
+      >
+        <div className="flex items-center justify-center w-full ">
           <div className="mx-auto w-64 text-center my-10">
             <div className=" w-64">
               {/* Hidden File Input */}
@@ -321,8 +327,8 @@ function UpdateUserData({ userData, setIsUserId, user }) {
             <label htmlFor="DOB" className="mx-3 text-white">
               Date Of Birth
             </label>
-            {console.log(formData.DOB)}
-            {console.log(formData)}
+            {/* {console.log(formData.DOB)}
+            {console.log(formData)} */}
             <input
               type="date"
               name="DOB"

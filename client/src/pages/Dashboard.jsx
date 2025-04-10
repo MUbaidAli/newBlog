@@ -18,7 +18,7 @@ function Dashboard() {
     const fetchSummary = async () => {
       try {
         const res = await axios.get("http://localhost:8484/api/homepage/dash");
-        console.log(res);
+        // console.log(res);
         setSummary(res.data);
       } catch (err) {
         console.error("Error fetching dashboard summary:", err);

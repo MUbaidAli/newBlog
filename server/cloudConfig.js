@@ -18,7 +18,7 @@ if (
   !process.env.CLOUDINARY_API_KEY ||
   !process.env.CLOUDINARY_API_SECRET
 ) {
-  console.error("❌ Cloudinary ENV variables are missing!");
+  // console.error("❌ Cloudinary ENV variables are missing!");
 }
 
 // ✅ Ensure Cloudinary Storage is Correct

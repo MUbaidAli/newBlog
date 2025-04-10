@@ -219,7 +219,7 @@ const searchBlog = wrapAsync(async (req, res) => {
   if (req.user.role == "User") {
     filter.status = "Published";
   }
-  console.log(filter);
+  // console.log(filter);
   const blog = await Blog.find(filter).limit(8);
 
   if (!blog) {

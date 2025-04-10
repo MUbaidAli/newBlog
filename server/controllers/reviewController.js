@@ -10,7 +10,7 @@ const getBlogReviews = wrapAsync(async (req, res) => {
   const skip = (page - 1) * limit;
 
   const blog = await Review.find()
-    .sort({ status: 1 })
+    .sort({ status: -1 })
     .skip(skip)
     .limit(limit)
     .populate("blog");

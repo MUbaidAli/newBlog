@@ -29,7 +29,7 @@ const EditBlog = () => {
     setIsLoading(true);
     try {
       const res = await axios.get("http://localhost:8484/api/category");
-      setAllCategory(res.data);
+      setAllCategory(res.data.data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -72,14 +72,12 @@ const EditBlog = () => {
                             "http://localhost:8484/api/blogs/upload-image",
                             formData
                           )
-                          .then(
-                            (res) => (
-                              console.log(res.data.file.url),
-                              {
-                                success: 1,
-                                file: { url: res.data.file.url },
-                              }
-                            )
+                          .then((res) =>
+                            // console.log(res.data.file.url),
+                            ({
+                              success: 1,
+                              file: { url: res.data.file.url },
+                            })
                           )
                           .catch(() => ({ success: 0 }));
                       },
@@ -128,9 +126,9 @@ const EditBlog = () => {
       form.append("image", blog.image); // Ensure the image is set
 
       // Log the form data to check
-      for (let pair of form.entries()) {
-        console.log(pair[0], pair[1]);
-      }
+      // for (let pair of form.entries()) {
+      //   console.log(pair[0], pair[1]);
+      // }
 
       const response = await axios.put(
         `http://localhost:8484/api/blogs/${id}`,

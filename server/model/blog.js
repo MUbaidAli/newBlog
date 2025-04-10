@@ -30,7 +30,7 @@ blogSchema.pre("findOneAndDelete", async function (next) {
   if (blog) {
     await Review.deleteMany({ blog: blog._id });
   }
-  console.log(blog);
+  // console.log(blog);
   next();
 });
 

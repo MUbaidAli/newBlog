@@ -26,6 +26,7 @@ function Navbar() {
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isDropDown, setIsDropDown] = useState(false);
+  const [isProfileClicked, setIsProfileClicked] = useState(false);
   const [pos, setPos] = useState("top");
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -84,13 +85,13 @@ function Navbar() {
 
   async function handleLogout() {
     try {
-      console.log("called");
+      // console.log("called");
       const res = await axios.post(
         "http://localhost:8484/api/user/logout",
         {},
         { withCredentials: true }
       );
-      console.log(res);
+      // console.log(res);
       navigate("/");
       setUser(null);
       toast("User Logged Out");
@@ -189,7 +190,7 @@ function Navbar() {
             </ul>
           </div>
 
-          <div className="icons flex ">
+          <div className="icons flex  items-center">
             <div className="search mx-3">
               <i
                 className="fa-solid fa-magnifying-glass cursor-pointer"
@@ -198,10 +199,52 @@ function Navbar() {
             </div>
             <div className="user mx-3">
               {user && (
-                <i
-                  className="fa-solid fa-right-from-bracket cursor-pointer"
-                  onClick={handleLogout}
-                ></i>
+                <div className="relative">
+                  <img
+                    onClick={() => {
+                      setIsProfileClicked(!isProfileClicked);
+                    }}
+                    class="cursor-pointer w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
+                    src={user.image.imageUrl}
+                    alt="Default avatar"
+                  ></img>
+                  {isProfileClicked && (
+                    <div className="flex flex-col  absolute top-10 right-2 mt-6 z-100 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-35 dark:bg-gray-700">
+                      <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+                        {user.role != "User" && (
+                          <li>
+                            <Link
+                              to="/dashboard"
+                              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                            >
+                              Dashboard
+                            </Link>
+                          </li>
+                        )}
+                        <li>
+                          <Link
+                            to="/setting"
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          >
+                            Settings
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            onClick={handleLogout}
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          >
+                            Logout
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                  {/* <i
+                    className="fa-solid fa-right-from-bracket cursor-pointer"
+                    onClick={handleLogout}
+                  ></i> */}
+                </div>
               )}
 
               {!user && (

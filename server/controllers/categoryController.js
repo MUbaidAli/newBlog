@@ -39,7 +39,7 @@ const getCategoryById = wrapAsync(async (req, res) => {
 // post request to create new Category
 const createCategory = wrapAsync(async (req, res) => {
   const { name } = req.body;
-  console.log(name);
+  // console.log(name);
   if (!name) {
     throw new ExpressError(400, "Category Name is Required");
   }

@@ -27,7 +27,7 @@ function UserManagement() {
           withCredentials: true,
         }
       );
-      console.log(res.data, "new res");
+      // console.log(res.data, "new res");
       setUsersData(
         res.data.users.filter((curUser) => curUser._id !== user._id)
       );
@@ -112,9 +112,21 @@ function UserManagement() {
                 <tr key={user._id} className="border border-gray-700">
                   <td className="p-3">{user.name}</td>
                   <td className="p-3">{user.email}</td>
-                  <td className="p-3">{user.role}</td>
+                  <td
+                    className={`p-3 ${
+                      user.role === "User"
+                        ? "text-yellow-500"
+                        : "text-green-500"
+                    }`}
+                  >
+                    {user.role}
+                  </td>
 
-                  <td className="p-3">{user.phone || "Null"}</td>
+                  <td className="p-3">
+                    {user.phone === "undefined" || !user.phone
+                      ? "Null"
+                      : user.phone}
+                  </td>
 
                   {/* Actions Column */}
                   <div className="p-3 absolute">

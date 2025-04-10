@@ -64,20 +64,32 @@ function Footer() {
                   </svg> */}
                 </div>
 
-                <Link className="hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent hidden md:block cursor-pointer text-gray-600  uppercase">
+                <Link
+                  to="/categories"
+                  className="hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent hidden md:block cursor-pointer text-gray-600  uppercase"
+                >
                   Categories
                 </Link>
-                <Link className="hidden md:block cursor-pointer text-gray-600 hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent uppercase">
+                <Link
+                  to="/posts"
+                  className="hidden md:block cursor-pointer text-gray-600 hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent uppercase"
+                >
                   Latest Posts
                 </Link>
-                <Link className="hidden md:block cursor-pointer text-gray-600 hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent uppercase">
+                <Link
+                  to="/about"
+                  className="hidden md:block cursor-pointer text-gray-600 hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent uppercase"
+                >
                   About us
                 </Link>
-                <Link className="hidden md:block cursor-pointer text-gray-600 hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent uppercase">
+                <Link
+                  to="/contact"
+                  className="hidden md:block cursor-pointer text-gray-600 hover:bg-linear-65 from-red-500 to-pink-800 bg-clip-text hover:text-transparent uppercase"
+                >
                   Contact
                 </Link>
                 <div className="flex flex-row space-x-8 items-center justify-between">
-                  <a>
+                  <Link to="https://www.facebook.com/">
                     <svg
                       width={6}
                       height={12}
@@ -90,8 +102,8 @@ function Footer() {
                         fill="white"
                       />
                     </svg>
-                  </a>
-                  <a>
+                  </Link>
+                  <Link to="https://www.instagram.com/">
                     <svg
                       width={12}
                       height={13}
@@ -112,8 +124,8 @@ function Footer() {
                         fill="white"
                       />
                     </svg>
-                  </a>
-                  <a href="https://www.youtube.com/channel/UCjtCbnkIaiCJgj13sEZ9iqw">
+                  </Link>
+                  <Link to="https://www.youtube.com/">
                     <svg
                       width={13}
                       height={9}
@@ -126,7 +138,7 @@ function Footer() {
                         fill="white"
                       />
                     </svg>
-                  </a>
+                  </Link>
                 </div>
               </div>
               <HrLine width={"4"} />

@@ -14,7 +14,7 @@ const reviewSchema = new mongoose.Schema(
 // review , blog id
 reviewSchema.pre("findOneAndDelete", async function (next) {
   const review = await this.model.findOne(this.getFilter()); // Get the review being deleted
-  console.log(review);
+  // console.log(review);
   if (review) {
     const Blog = require("./blog");
     const data = await Blog.findByIdAndUpdate(review.blog, {

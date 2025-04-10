@@ -81,7 +81,7 @@ function Categories() {
           </div>
         </div>
         <div className="flex justify-center items-center gap-2 mt-4">
-          {console.log(pages, page)}
+          {/* {console.log(pages, page)} */}
           <Pagination
             pages={pages}
             handlePageChange={handlePageChange}

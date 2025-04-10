@@ -21,7 +21,7 @@ function CategoryManagement() {
       const res = await axios.get(
         `http://localhost:8484/api/category?page=${pageNumber}&limit=${limit}`
       );
-      console.log(res.data.data);
+      // console.log(res.data.data);
       setAllCategory(res.data.data);
       setPages(res.data.pages);
       setPage(res.data.page);
@@ -34,7 +34,7 @@ function CategoryManagement() {
   }
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log(categoryName, "clicked");
+    // console.log(categoryName, "clicked");
 
     setIsLoading(true);
 
@@ -96,7 +96,7 @@ function CategoryManagement() {
   }
 
   function handleEdit(category) {
-    console.log(category);
+    // console.log(category);
     setEditCategoryId(category._id);
     setCategoryName(category.name);
     // console.log();

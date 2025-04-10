@@ -26,7 +26,7 @@ const CreateBlog = () => {
 
     try {
       const res = await axios.get("http://localhost:8484/api/category");
-      console.log(res.data);
+      // console.log(res.data);
       setAllCategory(res.data);
     } catch (error) {
       console.log(error);
@@ -108,9 +108,9 @@ const CreateBlog = () => {
   }, []);
 
   function handleImageChange(e) {
-    console.log(e.target.files[0]);
+    // console.log(e.target.files[0]);
     setBlogData({ ...blogData, image: e.target.files[0] });
-    console.log(blogData);
+    // console.log(blogData);
   }
 
   // const handleSubmit = async () => {
@@ -176,9 +176,9 @@ const CreateBlog = () => {
       form.append("image", blogData.image); // Ensure the image is set
 
       // Log the form data to check
-      for (let pair of form.entries()) {
-        console.log(pair[0], pair[1]);
-      }
+      // for (let pair of form.entries()) {
+      //   console.log(pair[0], pair[1]);
+      // }
 
       // Send data to backend using Axios
       const response = await axios.post(

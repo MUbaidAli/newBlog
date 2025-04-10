@@ -19,14 +19,15 @@ function SingleCategory({ heading }) {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
+  // console.log(data, "dataaaa");
   async function fetchCategoryBlogs(pageNumber = 1) {
     setIsLoading(true);
     try {
       const res = await axios.get(
         `http://localhost:8484/api/blogs/category/${id}?page=${pageNumber}&limit=10`
       );
-      console.log(res, "resssss");
-      setData(res.data.blogData);
+      // console.log(res, "resssss");
+      setData(res.data.blogData || res.data);
       setPages(res.data.pages);
       setPage(res.data.page);
       // console.log(res);
@@ -48,7 +49,7 @@ function SingleCategory({ heading }) {
 
       <div className="bg">
         <div className="mx-auto max-w-7xl px-10">
-          <h1>Category Page</h1>
+          {/* <h1>Category Page</h1> */}
           {/* {console.log(typeof )} */}
           {/* {console.log(!isLoading && typeof blogData === "string")} */}
           {isLoading && <Loader />}
@@ -83,16 +84,23 @@ function SingleCategory({ heading }) {
           )}
         </div>
         <div className="my-8 flex justify-center items-center gap-2 mt-4">
-          {console.log(pages, page)}
-          <Pagination
-            pages={pages}
-            handlePageChange={handlePageChange}
-            page={page}
-          />
-          <p className="text-white">
-            Page {page} of {pages}{" "}
-          </p>
+          {/* {console.log(pages, page)} */}
+          {pages <= 1 ? (
+            ""
+          ) : (
+            <>
+              <Pagination
+                pages={pages}
+                handlePageChange={handlePageChange}
+                page={page}
+              />
+              <p className="text-white">
+                Page {page} of {pages}{" "}
+              </p>
+            </>
+          )}
         </div>
+
         {/* <p>{JSON.stringify(data)}</p> */}
       </div>
       <HrLine />

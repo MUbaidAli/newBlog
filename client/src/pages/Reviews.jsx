@@ -12,7 +12,7 @@ function Reviews({ blogId, rev }) {
   const [isLoading, setIsLoading] = useState(false);
 
   //   console.log(review, userRating);
-  console.log(rev, "blog reviewss");
+  // console.log(rev, "blog reviewss");
   async function handleSubmit(e) {
     e.preventDefault();
     // if (review.trim() === "") {
@@ -27,7 +27,7 @@ function Reviews({ blogId, rev }) {
         `http://localhost:8484/api/review/${blogId}`,
         data
       );
-      console.log(res);
+      // console.log(res);
       setUserRating(null);
       setReview("");
       toast("Review Submited");
@@ -79,78 +79,68 @@ function Reviews({ blogId, rev }) {
         <section className=" py-8 antialiased dark:bg-gray-900 md:py-16">
           <div className="mx-auto  px-4 2xl:px-0">
             {/* -------------------------------------------- */}
-            <div
-              id="review-modal"
-              tabIndex={-1}
-              aria-hidden="true"
-              className="  w-full flex items-center justify-center overflow-y-auto overflow-x-hidden "
-            >
-              <div className=" max-h-full w-full max-w-2xl p-4">
-                {/* Modal content */}
-                <div className=" rounded-lg  shadow dark:bg-gray-800">
-                  {/* Modal header */}
-                  <div className="flex items-center justify-between rounded-t border-b border-gray-200 p-4 dark:border-gray-700 md:p-5">
-                    <div>
-                      <h3 className="mb-1 text-lg font-semibold text-white">
-                        Add a review:
-                      </h3>
-                    </div>
-                  </div>
-                  {/* Modal body */}
-                  <form className="p-4 md:p-5" onSubmit={handleSubmit}>
-                    <div className="mb-4 grid grid-cols-2 gap-4">
-                      <div className="col-span-2">
-                        <div className="">
-                          <div className="">
-                            <StarRating
-                              ratingLength={5}
-                              size="30"
-                              onSet={setUserRating}
+            {user && (
+              <>
+                <div
+                  id="review-modal"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                  className="  w-full flex items-center justify-center overflow-y-auto overflow-x-hidden "
+                >
+                  <div className=" max-h-full w-full max-w-2xl p-4">
+                    {/* Modal content */}
+                    <div className=" rounded-lg  shadow dark:bg-gray-800">
+                      {/* Modal header */}
+                      <div className="flex items-center justify-between rounded-t border-b border-gray-200 p-4 dark:border-gray-700 md:p-5">
+                        <div>
+                          <h3 className="mb-1 text-lg font-semibold text-white">
+                            Add a review:
+                          </h3>
+                        </div>
+                      </div>
+                      {/* Modal body */}
+                      <form className="p-4 md:p-5" onSubmit={handleSubmit}>
+                        <div className="mb-4 grid grid-cols-2 gap-4">
+                          <div className="col-span-2">
+                            <div className="">
+                              <div className="">
+                                <StarRating
+                                  ratingLength={5}
+                                  size="30"
+                                  onSet={setUserRating}
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="col-span-2">
+                            <label
+                              htmlFor="description"
+                              className="block text-sm/6 font-medium text-white"
+                            >
+                              Review description
+                            </label>
+                            <textarea
+                              id="description"
+                              rows={6}
+                              className=" border-white text-white outline-0 border-2  w-full justify-center text-left rounded-lg shadow px-10 py-3 flex items-center my-5"
+                              required=""
+                              value={review}
+                              onChange={(e) => setReview(e.target.value)}
+                              defaultValue={""}
+                              placeholder="Some description..."
                             />
                           </div>
                         </div>
-                      </div>
-                      {/* <div className="col-span-2">
-                        <label
-                          htmlFor="title"
-                          className="block text-sm/6 font-medium text-white"
-                        >
-                          Review title
-                        </label>
-                        <input
-                          type="text"
-                          name="title"
-                          id="title"
-                          className=" border-white text-white outline-0 border-2  w-full justify-center text-left rounded-lg shadow px-10 py-3 flex items-center my-5"
-                          placeholder="Enter Title"
-                        />
-                      </div> */}
-                      <div className="col-span-2">
-                        <label
-                          htmlFor="description"
-                          className="block text-sm/6 font-medium text-white"
-                        >
-                          Review description
-                        </label>
-                        <textarea
-                          id="description"
-                          rows={6}
-                          className=" border-white text-white outline-0 border-2  w-full justify-center text-left rounded-lg shadow px-10 py-3 flex items-center my-5"
-                          required=""
-                          value={review}
-                          onChange={(e) => setReview(e.target.value)}
-                          defaultValue={""}
-                          placeholder="Some description..."
-                        />
-                      </div>
+                        <div className="border-t border-gray-200 pt-4 dark:border-gray-700 md:pt-5">
+                          <Button>Submit Review</Button>
+                        </div>
+                      </form>
                     </div>
-                    <div className="border-t border-gray-200 pt-4 dark:border-gray-700 md:pt-5">
-                      <Button>Submit Review</Button>
-                    </div>
-                  </form>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </>
+            )}
             {/* -------------------------------------------- */}
             <h1 className="text-white text-3xl font-bold">User Reviews</h1>
             <div className="flex flex-wrap">

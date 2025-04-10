@@ -34,9 +34,9 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
   }
   function handleImageChange(e) {
     setFormData({ ...formData, image: e.target.files[0] });
-    console.log(e.target.files[0]);
-    console.log(formData.image, "imageee");
-    console.log(e.target.files[0], "imageee");
+    // console.log(e.target.files[0]);
+    // console.log(formData.image, "imageee");
+    // console.log(e.target.files[0], "imageee");
   }
 
   // console.log(userData);
@@ -74,7 +74,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
 
     if (Object.keys(errorObj).length) {
       setErrorValidation(errorObj);
-      console.log(errorValidation);
+      // console.log(errorValidation);
       return;
     }
 
@@ -107,7 +107,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
     setIsLoading(true);
     // console.log(formData, "formmmmmmmmmmm");
     try {
-      console.log(formData.name, form.get("image"), "imageeeeeee");
+      // console.log(formData.name, form.get("image"), "imageeeeeee");
       if (!userData) {
         const res = await axios.post(
           "http://localhost:8484/api/user/adminRegister",
@@ -117,7 +117,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
             withCredentials: true,
           }
         );
-        console.log(res);
+        // console.log(res);
         toast(res.data.message);
         navigate("/dashboard/manage-users");
       } else {
@@ -132,7 +132,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
             withCredentials: true,
           }
         );
-        console.log(res);
+        // console.log(res);
         setIsUserId(null);
         fetchUsers();
         toast(res.data.message);
@@ -268,7 +268,7 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
               Password *
             </label>
             <input
-              type="text"
+              type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}

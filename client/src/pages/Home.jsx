@@ -22,7 +22,7 @@ function Home() {
     async function getHomeData() {
       try {
         const res = await axios.get("http://localhost:8484/api/homepage");
-        console.log(res);
+        // console.log(res);
         setHomeData(res.data);
       } catch (error) {
         console.log(error);

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import SinglePost from "../components/SinglePost";
 import React, { useEffect, useState } from "react";
@@ -8,6 +8,7 @@ import CategoryCard from "../components/CategoryCard";
 import Footer from "../components/Footer";
 import HrLine from "../components/HrLine";
 import Reviews from "./Reviews";
+import { useAuth } from "../context/AuthContext";
 
 function SingleBlog() {
   const initData = {
@@ -29,7 +30,7 @@ function SingleBlog() {
   const [post, setPost] = useState(initData);
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
-
+  const { user } = useAuth();
   const parsedContent = post.content ? JSON.parse(post.content) : null;
   // console.log();
   useEffect(() => {
@@ -37,7 +38,7 @@ function SingleBlog() {
     async function getData() {
       try {
         const res = await axios.get(`http://localhost:8484/api/blogs/${id}`);
-        console.log(res, "blogggg data");
+        // console.log(res, "blogggg data");
         // console.log("API Response:", res.data);
         setPost(res.data);
       } catch (error) {
@@ -307,11 +308,19 @@ function SingleBlog() {
               />
               <CategoryCard heading={"Category"} text={post.category} />
             </div>
-
-            <p className="text-white">Login To Write Review</p>
+            {!user && (
+              <p className="text-white my-5 px-3 pt-10">
+                <Link to="/account/login" className="text-green-600 font-bold">
+                  {" "}
+                  Login{" "}
+                </Link>
+                To Write A Review.
+              </p>
+            )}
             <Reviews
               blogId={post._id}
               rev={post.reviews.filter((item) => item.status === "Approved")}
+              user={user}
             />
           </div>
 

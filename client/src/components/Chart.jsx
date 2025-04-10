@@ -24,7 +24,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 const WeeklyViewsChart = ({ viewsData }) => {
-  console.log(viewsData, "from Chart");
+  // console.log(viewsData, "from Chart");
   return (
     <div className="bg-white p-4 rounded-lg shadow-md">
       <h2 className="text-lg font-semibold mb-4">Weekly Blog Views</h2>

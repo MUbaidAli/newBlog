@@ -30,7 +30,7 @@ function ContactForm() {
     };
 
     const res = await axios.post("http://localhost:8484/api/contact", data);
-    console.log(res);
+    // console.log(res);
     toast(res.data.message);
   };
 

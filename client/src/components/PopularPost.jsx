@@ -5,7 +5,7 @@ import SectionHeading from "./SectionHeading";
 function PopularPost({ data }) {
   const [counter, setCounter] = useState(0);
   // const data = [{ name: "Title 1" }, { name: "Title 2" }, { name: "Title 3" }];
-  console.log(data, "feature Data");
+  // console.log(data, "feature Data");
   function handleLeft() {
     setCounter((prev) => (prev > 0 ? prev - 1 : data.length - 1));
   }
@@ -45,7 +45,7 @@ function PopularPost({ data }) {
           transition={{ duration: 0.5 }}
           className="content flex justify-between items-center flex-col md:flex-row"
         >
-          {console.log(data[counter].image.imageUrl)}
+          {/* {console.log(data[counter].image.imageUrl)} */}
           <img
             src={`${data[counter].image.imageUrl}`}
             alt=""

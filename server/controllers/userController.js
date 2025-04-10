@@ -72,7 +72,7 @@ const createUser = wrapAsync(async (req, res) => {
 const loginUser = wrapAsync(async (req, res) => {
   const { email, password } = req.body;
 
-  console.log(email, password, "test");
+  // console.log(email, password, "test");
   if (!email || !password) {
     throw new ExpressError(400, "Please Enter Email and Password");
   }
@@ -125,11 +125,11 @@ const adminRegister = wrapAsync(async (req, res) => {
     lastName,
     gender,
   } = req.body;
-  console.log(
-    path,
-    filename,
-    "hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-  );
+  // console.log(
+  //   path,
+  //   filename,
+  //   "hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+  // );
   if (!["Admin", "Editor", "User"].includes(role)) {
     throw new ExpressError(400, "Invalid Role");
   }
@@ -247,7 +247,7 @@ const updateUserDataByAdmin = wrapAsync(async (req, res) => {
   }
 
   const data = await User.findByIdAndUpdate(id, updatedData, { new: true });
-  console.log(data);
+  // console.log(data);
   res.json({ message: "Data Updated" });
 });
 
@@ -268,7 +268,7 @@ const updateUserDataByUser = wrapAsync(async (req, res) => {
     gender,
   } = req.body;
 
-  console.log(req.body);
+  // console.log(req.body);
   const user = await User.findById(id);
   if (!user) {
     throw new ExpressError(404, "User Not Found");
@@ -304,14 +304,14 @@ const updateUserDataByUser = wrapAsync(async (req, res) => {
   }
 
   const data = await User.findByIdAndUpdate(id, updatedData, { new: true });
-  console.log(data, "comming from here");
+  // console.log(data, "comming from here");
   res.json({ message: "Data Updated" });
 });
 
 // generate Token
 
 function generateToken(id) {
-  console.log("Signing JWT with Secret:", process.env.JWT_SECRET);
+  // console.log("Signing JWT with Secret:", process.env.JWT_SECRET);
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 }
 

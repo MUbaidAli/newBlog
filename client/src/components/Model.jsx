@@ -10,7 +10,7 @@ function Model({ children, modelOpener }) {
   // function handleChange(e) {
   //   // console.log(e.target.value);
   // }
-  console.log(query);
+  // console.log(query);
 
   useEffect(() => {
     if (query.trim() === "") {
@@ -23,7 +23,7 @@ function Model({ children, modelOpener }) {
         `http://localhost:8484/api/blogs/search?query=${query}`,
         { withCredentials: true }
       );
-      console.log(res);
+      // console.log(res);
       setResult(res.data);
     }
 

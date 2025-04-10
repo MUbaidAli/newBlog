@@ -11,7 +11,7 @@ function UserAccount() {
   return (
     <>
       <Navbar />
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-7xl ">
         <UpdateUserData
           userData={!isLoading && user._id}
           setIsUserId={!isLoading && user._id}

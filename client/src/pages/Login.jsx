@@ -37,7 +37,7 @@ function Login() {
       setIsLoading(true);
 
       const data = await login(formData);
-      console.log(data, "data");
+      // console.log(data, "data");
       // if (!data) {
       //   toast("Login Failed");
       //   return;

@@ -73,7 +73,7 @@ function BlogManagement() {
         });
         setBlog((prevBlogs) => prevBlogs.filter((blog) => id !== blog._id));
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         toast(error.response.data.error);
       } finally {
         setIsLoading(false);
@@ -169,7 +169,7 @@ function BlogManagement() {
             </tbody>
           </table>
           <div className="flex justify-center items-center gap-2 mt-4">
-            {console.log(pages, page)}
+            {/* {console.log(pages, page)} */}
             <Pagination
               pages={pages}
               handlePageChange={handlePageChange}

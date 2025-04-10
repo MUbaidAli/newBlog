@@ -15,6 +15,10 @@ function DashboardLayout() {
   const [result, setResult] = useState([]);
   const [query, setQuery] = useState("");
   useEffect(() => {
+    // Clear search text on route change
+    setQuery("");
+  }, [location.pathname]);
+  useEffect(() => {
     if (query.trim() === "") {
       setResult([]);
       return;
@@ -25,7 +29,7 @@ function DashboardLayout() {
         `http://localhost:8484/api/blogs/search?query=${query}`,
         { withCredentials: true }
       );
-      console.log(res, "hereee");
+      // console.log(res, "hereee");
       setResult(res.data);
     }
 

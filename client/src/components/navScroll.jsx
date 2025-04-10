@@ -8,7 +8,7 @@ function NavScroll() {
   const handleScroll = (event) => {
     const { scrollTop, scrollHeight, clientHeight } = event.target;
     const scrollRatio = scrollTop / (scrollHeight - clientHeight);
-    console.log(scrollRatio);
+    // console.log(scrollRatio);
     if (scrollRatio > 0.5) {
       setBackgroundColor("lightblue");
     } else {
