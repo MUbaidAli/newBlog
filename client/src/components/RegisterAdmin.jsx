@@ -5,6 +5,7 @@ import Button from "./Button";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import API from "../utils/axiosInstance";
 
 function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
   // console.log(userData, "from userrr");
@@ -109,14 +110,10 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
     try {
       // console.log(formData.name, form.get("image"), "imageeeeeee");
       if (!userData) {
-        const res = await axios.post(
-          "http://localhost:8484/api/user/adminRegister",
-          form,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-            withCredentials: true,
-          }
-        );
+        const res = await API.post("/user/adminRegister", form, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        });
         // console.log(res);
         toast(res.data.message);
         navigate("/dashboard/manage-users");
@@ -124,14 +121,10 @@ function RegisterAdmin({ userData, setIsUserId, fetchUsers }) {
         // console.log("thissss");
         // console.log("FormData Image:", form.get("image"));
         // console.log("FormData Image:", form.get("image"));
-        const res = await axios.put(
-          `http://localhost:8484/api/user/update/${formData._id}`,
-          form,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-            withCredentials: true,
-          }
-        );
+        const res = await API.put(`/user/update/${formData._id}`, form, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        });
         // console.log(res);
         setIsUserId(null);
         fetchUsers();

@@ -112,7 +112,6 @@ const loginUser = wrapAsync(async (req, res) => {
 
 // admin Register
 const adminRegister = wrapAsync(async (req, res) => {
-  const { path, filename } = req.file;
   const {
     name,
     email,
@@ -147,11 +146,14 @@ const adminRegister = wrapAsync(async (req, res) => {
     dob,
     lastName,
     gender,
-    image: {
+  });
+  if (req.file) {
+    const { path, filename } = req.file;
+    newUser.image = {
       imageUrl: path,
       imgName: filename,
-    },
-  });
+    };
+  }
 
   const userAdded = await newUser.save();
   if (userAdded) {

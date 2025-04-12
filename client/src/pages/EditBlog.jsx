@@ -10,6 +10,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
+import API from "../utils/axiosInstance";
 
 const EditBlog = () => {
   const { id } = useParams();
@@ -28,7 +29,7 @@ const EditBlog = () => {
   async function fetchCategories() {
     setIsLoading(true);
     try {
-      const res = await axios.get("http://localhost:8484/api/category");
+      const res = await API.get("/category");
       setAllCategory(res.data.data);
     } catch (error) {
       console.log(error);
@@ -44,7 +45,7 @@ const EditBlog = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const res = await axios.get(`http://localhost:8484/api/blogs/${id}`);
+        const res = await API.get(`/blogs/${id}`);
         setBlog({
           title: res.data.title,
           category: res.data.category,
@@ -67,11 +68,7 @@ const EditBlog = () => {
                       uploadByFile(file) {
                         const formData = new FormData();
                         formData.append("image", file);
-                        return axios
-                          .post(
-                            "http://localhost:8484/api/blogs/upload-image",
-                            formData
-                          )
+                        return API.post("/blogs/upload-image", formData)
                           .then((res) =>
                             // console.log(res.data.file.url),
                             ({
@@ -130,13 +127,9 @@ const EditBlog = () => {
       //   console.log(pair[0], pair[1]);
       // }
 
-      const response = await axios.put(
-        `http://localhost:8484/api/blogs/${id}`,
-        form,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await API.put(`/api/blogs/${id}`, form, {
+        withCredentials: true,
+      });
 
       if (response.status === 200) {
         toast("Blog updated successfully!");

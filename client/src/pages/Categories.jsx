@@ -10,6 +10,7 @@ import EditorJsHtml from "editorjs-html";
 import Loader from "../components/Loader";
 import Footer from "../components/Footer";
 import Pagination from "../components/Pagination";
+import API from "../utils/axiosInstance";
 
 const editorHtml = EditorJsHtml(); // Now, this is the instance
 
@@ -22,12 +23,9 @@ function Categories() {
   async function fetchBlogs(pageNumber = 1) {
     setIsLoading(true);
     try {
-      const data = await axios.get(
-        `http://localhost:8484/api/blogs?page=${pageNumber}&limit=12`,
-        {
-          withCredentials: true,
-        }
-      );
+      const data = await API.get(`/blogs?page=${pageNumber}&limit=12`, {
+        withCredentials: true,
+      });
 
       setBlogs(data.data.data);
       setPages(data.data.pages);

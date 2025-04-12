@@ -5,6 +5,7 @@ import axios from "axios";
 import Loader from "../components/Loader";
 import ConfirmDialog from "../components/ConfirmDialog";
 import Pagination from "../components/Pagination";
+import API from "../utils/axiosInstance";
 
 function CategoryManagement() {
   const [categoryName, setCategoryName] = useState("");
@@ -18,9 +19,7 @@ function CategoryManagement() {
   async function fetchCategories(pageNumber = 1) {
     setIsLoading(true);
     try {
-      const res = await axios.get(
-        `http://localhost:8484/api/category?page=${pageNumber}&limit=${limit}`
-      );
+      const res = await API.get(`/category?page=${pageNumber}&limit=${limit}`);
       // console.log(res.data.data);
       setAllCategory(res.data.data);
       setPages(res.data.pages);
@@ -40,12 +39,9 @@ function CategoryManagement() {
 
     try {
       if (editCategoryId) {
-        await axios.put(
-          `http://localhost:8484/api/category/${editCategoryId}`,
-          {
-            name: categoryName,
-          }
-        );
+        await API.put(`/category/${editCategoryId}`, {
+          name: categoryName,
+        });
         toast("Category Updated");
 
         setAllCategory((prev) =>
@@ -54,7 +50,7 @@ function CategoryManagement() {
           )
         );
       } else {
-        await axios.post("http://localhost:8484/api/category", {
+        await API.post("/category", {
           name: categoryName,
         });
         toast("Category Created");
@@ -81,7 +77,7 @@ function CategoryManagement() {
   async function handleDelete(id) {
     ConfirmDialog(async () => {
       try {
-        await axios.delete(`http://localhost:8484/api/category/${id}`);
+        await API.delete(`/category/${id}`, { withCredentials: false });
         toast("Category Deleted");
 
         // Remove the deleted category from state without refetching

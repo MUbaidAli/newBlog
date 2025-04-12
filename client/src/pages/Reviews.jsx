@@ -4,6 +4,7 @@ import StarRating from "../components/StarRating";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import API from "../utils/axiosInstance";
 
 function Reviews({ blogId, rev }) {
   const { user } = useAuth();
@@ -23,10 +24,7 @@ function Reviews({ blogId, rev }) {
     // console.log(data);
     setIsLoading(true);
     try {
-      const res = await axios.post(
-        `http://localhost:8484/api/review/${blogId}`,
-        data
-      );
+      const res = await API.post(`/review/${blogId}`, data);
       // console.log(res);
       setUserRating(null);
       setReview("");
@@ -144,9 +142,9 @@ function Reviews({ blogId, rev }) {
             {/* -------------------------------------------- */}
             <h1 className="text-white text-3xl font-bold">User Reviews</h1>
             <div className="flex flex-wrap">
-              {rev.length > 0 ? (
+              {rev && rev.length > 0 ? (
                 rev.map((item, i) => (
-                  <>
+                  <div key={i}>
                     <div className="w-150 my-6 gap-8 sm:flex sm:items-start md:my-8">
                       <div className="gap-3 py-6 sm:flex sm:items-start">
                         <div className="shrink-0 space-y-2 sm:w-48 md:w-72">
@@ -181,7 +179,7 @@ function Reviews({ blogId, rev }) {
                         </button>
                         </div> */}
                     </div>
-                  </>
+                  </div>
                 ))
               ) : (
                 <>

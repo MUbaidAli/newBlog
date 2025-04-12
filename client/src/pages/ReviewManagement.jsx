@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import ConfirmDialog from "../components/ConfirmDialog";
 import Pagination from "../components/Pagination";
+import API from "../utils/axiosInstance";
 
 function ReviewManagement() {
   const [reviews, setReviews] = useState([]);
@@ -13,9 +14,7 @@ function ReviewManagement() {
   async function fetchReviews(pageNumber = 1) {
     setIsLoading(true);
     try {
-      const res = await axios.get(
-        `http://localhost:8484/api/review?page=${pageNumber}&limit=10`
-      );
+      const res = await API.get(`/review?page=${pageNumber}&limit=10`);
       setReviews(res.data.blog);
       setPages(res.data.pages);
       setPage(res.data.page);
@@ -38,7 +37,7 @@ function ReviewManagement() {
 
   async function handleApprove(reviewId) {
     try {
-      await axios.put(`http://localhost:8484/api/review/reviews/${reviewId}`, {
+      await API.put(`/review/reviews/${reviewId}`, {
         status: "Approved",
       });
 
@@ -67,7 +66,7 @@ function ReviewManagement() {
   async function handleDeleteReview(id) {
     try {
       ConfirmDialog(async () => {
-        await axios.delete(`http://localhost:8484/api/review/${id}`);
+        await API.delete(`/review/${id}`);
         toast("Review Deleted");
 
         // Remove the deleted review from state without refetching

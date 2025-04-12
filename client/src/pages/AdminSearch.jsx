@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../components/Pagination";
+import API from "../utils/axiosInstance";
 
 function AdminSearch({ result }) {
   const { user } = useAuth();
@@ -18,7 +19,7 @@ function AdminSearch({ result }) {
     ConfirmDialog(async () => {
       try {
         setIsLoading(true);
-        await axios.delete(`http://localhost:8484/api/blogs/${id}`, {
+        await API.delete(`/blogs/${id}`, {
           withCredentials: true,
         });
         setBlog((prevBlogs) => prevBlogs.filter((blog) => id !== blog._id));

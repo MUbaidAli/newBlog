@@ -13,7 +13,7 @@ function BlogCard({ data }) {
       <div className=" pt-2">
         <div className="mb-8">
           <Link
-            to={`http://localhost:5173/posts/${data._id}`}
+            to={`posts/${data._id}`}
             className=" text-white text-xl md:text-2xl capitalize mb-2  inline-block"
           >
             {`${data.title}`}
@@ -24,7 +24,7 @@ function BlogCard({ data }) {
           </p>
         </div>
         <div className="w-full">
-          <Link to={`http://localhost:5173/posts/${data._id}`}>
+          <Link to={`/posts/${data._id}`}>
             <Button>Read Full Blog</Button>
           </Link>
         </div>

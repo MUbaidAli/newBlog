@@ -47,7 +47,7 @@ function PopularPost({ data }) {
         >
           {/* {console.log(data[counter].image.imageUrl)} */}
           <img
-            src={`${data[counter].image.imageUrl}`}
+            src={`${(data && data[counter]?.image?.imageUrl) || ""}`}
             alt=""
             className="m-5  h-60 w-80 object-cover"
           />
@@ -56,7 +56,7 @@ function PopularPost({ data }) {
               <h1
                 className={`mb-4  h-[60px] text-gray-900 dark:text-white  text-5xl sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-[#FF4242] to-[#99286C]`}
               >
-                {data[counter].title}
+                {data[counter]?.title}
               </h1>
               <p className={`text-white md:w-full md:text-1xl `}>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit.

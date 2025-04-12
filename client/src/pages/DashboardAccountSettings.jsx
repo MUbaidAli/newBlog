@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import RegisterAdmin from "../components/RegisterAdmin";
 import { toast } from "react-toastify";
+import API from "../utils/axiosInstance";
 
 function DashboardAccountSettings() {
   const [data, setData] = useState({});
@@ -9,7 +10,7 @@ function DashboardAccountSettings() {
   async function fetchCurrentUserData() {
     setIsLoading(true);
     try {
-      const res = await axios.get("http://localhost:8484/api/user/me", {
+      const res = await API.get("/user/me", {
         withCredentials: true,
       });
       // console.log(res.data.user);

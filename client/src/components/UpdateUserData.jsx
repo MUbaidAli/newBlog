@@ -6,6 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
+import API from "../utils/axiosInstance";
 
 function UpdateUserData({ userData, setIsUserId, user }) {
   const initialFormState = {
@@ -106,13 +107,9 @@ function UpdateUserData({ userData, setIsUserId, user }) {
       // console.log("thissss");
       // console.log("FormData Image:", form.get("image"));
       // console.log("FormData Image:", form.get("image"));
-      const res = await axios.put(
-        `http://localhost:8484/api/user/update/me/${formData._id}`,
-        form,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await API.put(`/user/update/me/${formData._id}`, form, {
+        withCredentials: true,
+      });
       // console.log(res);
       // setIsUserId(null);
       //   fetchUsers();

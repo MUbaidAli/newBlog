@@ -9,6 +9,7 @@ import HrLine from "../components/HrLine";
 import { div } from "framer-motion/client";
 import SectionHeading from "../components/SectionHeading";
 import Pagination from "../components/Pagination";
+import API from "../utils/axiosInstance";
 
 function SingleCategory({ heading }) {
   const { id } = useParams();
@@ -23,8 +24,9 @@ function SingleCategory({ heading }) {
   async function fetchCategoryBlogs(pageNumber = 1) {
     setIsLoading(true);
     try {
-      const res = await axios.get(
-        `http://localhost:8484/api/blogs/category/${id}?page=${pageNumber}&limit=10`
+      const res = await API.get(
+        `/blogs/category/${id}?page=${pageNumber}&limit=10`,
+        { withCredentials: false }
       );
       // console.log(res, "resssss");
       setData(res.data.blogData || res.data);

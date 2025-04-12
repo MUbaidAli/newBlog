@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ConfirmDialog from "../components/ConfirmDialog";
 import Pagination from "../components/Pagination";
+import API from "../utils/axiosInstance";
 
 function BlogManagement() {
   const { user } = useAuth();
@@ -37,12 +38,9 @@ function BlogManagement() {
   async function fetchBlogsData(pageNumber = 1) {
     try {
       setIsLoading(true);
-      const res = await axios.get(
-        `http://localhost:8484/api/blogs?page=${pageNumber}&limit=10`,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await API.get(`/blogs?page=${pageNumber}&limit=10`, {
+        withCredentials: true,
+      });
       // console.log(res);
       setBlog(res.data.data);
       setPages(res.data.pages);
@@ -68,7 +66,7 @@ function BlogManagement() {
     ConfirmDialog(async () => {
       try {
         setIsLoading(true);
-        await axios.delete(`http://localhost:8484/api/blogs/${id}`, {
+        await API.delete(`/blogs/${id}`, {
           withCredentials: true,
         });
         setBlog((prevBlogs) => prevBlogs.filter((blog) => id !== blog._id));

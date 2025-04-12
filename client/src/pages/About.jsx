@@ -9,6 +9,7 @@ import HrLine from "../components/HrLine";
 import AboutSection from "../components/AboutSection";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import API from "../utils/axiosInstance";
 function About() {
   const [homeData, setHomeData] = useState({ blogData: "" });
   const [isLoading, setIsLoading] = useState(true);
@@ -17,7 +18,9 @@ function About() {
     setIsLoading(true);
     async function getHomeData() {
       try {
-        const res = await axios.get("http://localhost:8484/api/homepage");
+        const res = await API.get("/homepage", {
+          withCredentials: false,
+        });
         // console.log(res);
         setHomeData(res.data);
       } catch (error) {

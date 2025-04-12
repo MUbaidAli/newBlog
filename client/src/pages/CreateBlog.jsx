@@ -7,6 +7,7 @@ import Embed from "@editorjs/embed";
 import CodeTool from "@editorjs/code";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import API from "../utils/axiosInstance";
 
 const CreateBlog = () => {
   const editorRef = useRef(null); // Store EditorJS instance
@@ -25,9 +26,9 @@ const CreateBlog = () => {
     setIsLoading(true);
 
     try {
-      const res = await axios.get("http://localhost:8484/api/category");
+      const res = await API.get("/category", { withCredentials: false });
       // console.log(res.data);
-      setAllCategory(res.data);
+      setAllCategory(res.data.data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -163,7 +164,7 @@ const CreateBlog = () => {
         !blogData.status ||
         !blogData.image
       ) {
-        alert("Please fill out all fields, including the image.");
+        toast("Please fill out all fields, including the image.");
         return;
       }
 
@@ -181,25 +182,24 @@ const CreateBlog = () => {
       // }
 
       // Send data to backend using Axios
-      const response = await axios.post(
-        "http://localhost:8484/api/blogs",
-        form,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await API.post("/blogs", form, {
+        withCredentials: true,
+      });
 
       if (response.status === 201) {
-        alert("Blog posted successfully!");
+        toast("Blog posted successfully!");
         console.log("Response:", response.data);
       } else {
-        alert("Failed to post blog.");
+        toast("Failed to post blog.");
       }
     } catch (error) {
       console.error("Submission error:", error);
-      alert("An error occurred while posting the blog.");
+      toast("An error occurred while posting the blog.");
     }
   };
+  // if (isLoading && !blogData.category) {
+  //   return <p className="text-red-600 ">Kindly Create A Category First</p>;
+  // }
 
   return (
     <div className="p-4 border rounded-lg bg-white shadow">

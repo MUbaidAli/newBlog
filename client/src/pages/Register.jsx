@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import API from "../utils/axiosInstance";
 
 // toast.configure();
 
@@ -46,13 +47,9 @@ function Register() {
         data.password === data.confirmPass &&
         !(Object.keys(errorObj).length > 0)
       ) {
-        const response = await axios.post(
-          "http://localhost:8484/api/user/register",
-          data,
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
+        const response = await API.post("/user/register", data, {
+          headers: { "Content-Type": "application/json" },
+        });
         toast("User Registered");
         // console.log("User Registered", response.data);
       }

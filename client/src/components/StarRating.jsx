@@ -74,6 +74,7 @@ function StarRating({
         <>
           {Array.from({ length: ratingLength }, (_, i) => (
             <span
+              key={i}
               onClick={() => handleRating(i + 1)}
               onMouseEnter={() => setTempRating(i + 1)}
               onMouseLeave={() => setTempRating(0)}

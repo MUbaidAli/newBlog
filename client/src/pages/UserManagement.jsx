@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import RegisterAdmin from "../components/RegisterAdmin";
 import ConfirmDialog from "../components/ConfirmDialog";
 import Pagination from "../components/Pagination";
+import API from "../utils/axiosInstance";
 
 function UserManagement() {
   const [usersData, setUsersData] = useState([]);
@@ -21,12 +22,9 @@ function UserManagement() {
   async function fetchUsers(pageNumber = 1) {
     setIsLoading(true);
     try {
-      const res = await axios.get(
-        `http://localhost:8484/api/user?page=${pageNumber}&limit=10`,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await API.get(`/user?page=${pageNumber}&limit=10`, {
+        withCredentials: true,
+      });
       // console.log(res.data, "new res");
       setUsersData(
         res.data.users.filter((curUser) => curUser._id !== user._id)
@@ -51,7 +49,7 @@ function UserManagement() {
   async function handleDelete(id) {
     ConfirmDialog(async () => {
       try {
-        const res = await axios.delete(`http://localhost:8484/api/user/${id}`, {
+        const res = await API.delete(`/user/${id}`, {
           withCredentials: true,
         });
         //   console.log(res);

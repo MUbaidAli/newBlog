@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import DashboardCards from "../components/DashboardCards";
 import axios from "axios";
 import WeeklyViewsChart from "../components/Chart";
+import API from "../utils/axiosInstance";
 
 function Dashboard() {
   const [summary, setSummary] = useState({
@@ -17,7 +18,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchSummary = async () => {
       try {
-        const res = await axios.get("http://localhost:8484/api/homepage/dash");
+        const res = await API.get("/homepage/dash", { withCredentials: false });
         // console.log(res);
         setSummary(res.data);
       } catch (err) {

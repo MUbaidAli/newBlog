@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AdminSearch from "./AdminSearch";
+import API from "../utils/axiosInstance";
 
 function DashboardLayout() {
   const { user, isLoading } = useAuth();
@@ -25,10 +26,9 @@ function DashboardLayout() {
     }
 
     async function getSearchResult() {
-      const res = await axios.get(
-        `http://localhost:8484/api/blogs/search?query=${query}`,
-        { withCredentials: true }
-      );
+      const res = await API.get(`/blogs/search?query=${query}`, {
+        withCredentials: true,
+      });
       // console.log(res, "hereee");
       setResult(res.data);
     }

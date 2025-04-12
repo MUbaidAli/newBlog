@@ -12,6 +12,7 @@ import axios from "axios";
 import Loader from "../components/Loader";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
+import API from "../utils/axiosInstance";
 function Home() {
   const [homeData, setHomeData] = useState({ blogData: "" });
   const [isLoading, setIsLoading] = useState(true);
@@ -21,8 +22,12 @@ function Home() {
     setIsLoading(true);
     async function getHomeData() {
       try {
-        const res = await axios.get("http://localhost:8484/api/homepage");
-        // console.log(res);
+        const res = await API.get("/homepage", {
+          withCredentials: false,
+        });
+        // console.log(import.meta.env.VITE_API_BASE_URL);
+        // console.log(API.defaults.baseURL);
+        console.log(res, "ressssss");
         setHomeData(res.data);
       } catch (error) {
         console.log(error);

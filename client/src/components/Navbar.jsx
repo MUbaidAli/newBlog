@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import Model from "./Model";
 import BlogCard from "./BlogCard";
+import API from "../utils/axiosInstance";
 function Navbar() {
   const categories = [
     "Healthy Eating Tips",
@@ -37,7 +38,7 @@ function Navbar() {
     setIsLoading(true);
 
     try {
-      const res = await axios.get("http://localhost:8484/api/category");
+      const res = await API.get("/category", { withCredentials: false });
       // console.log(res.data);
       setAllCategory(res.data.data);
     } catch (error) {
@@ -55,14 +56,15 @@ function Navbar() {
 
   useEffect(() => {
     const fetchUser = async () => {
+      setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:8484/api/user/me", {
-          withCredentials: true,
-        });
-        // console.log(res.data.user, "responsee");
+        const res = await API.get("/user/me");
+        console.log(res.data.user, "responsee");
         setUser(res.data.user);
       } catch (error) {
         setUser(null);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchUser();
@@ -86,11 +88,7 @@ function Navbar() {
   async function handleLogout() {
     try {
       // console.log("called");
-      const res = await axios.post(
-        "http://localhost:8484/api/user/logout",
-        {},
-        { withCredentials: true }
-      );
+      const res = await API.post("/user/logout", {});
       // console.log(res);
       navigate("/");
       setUser(null);

@@ -9,6 +9,7 @@ import Footer from "../components/Footer";
 import HrLine from "../components/HrLine";
 import Reviews from "./Reviews";
 import { useAuth } from "../context/AuthContext";
+import API from "../utils/axiosInstance";
 
 function SingleBlog() {
   const initData = {
@@ -28,7 +29,7 @@ function SingleBlog() {
     updatedAt: "",
   };
   const [post, setPost] = useState(initData);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
   const { user } = useAuth();
   const parsedContent = post.content ? JSON.parse(post.content) : null;
@@ -37,8 +38,10 @@ function SingleBlog() {
     setIsLoading(true);
     async function getData() {
       try {
-        const res = await axios.get(`http://localhost:8484/api/blogs/${id}`);
-        // console.log(res, "blogggg data");
+        // API.get();
+        const res = await API.get(`/blogs/${id}`, { withCredentials: false });
+
+        console.log(res, "blogggg data");
         // console.log("API Response:", res.data);
         setPost(res.data);
       } catch (error) {
@@ -260,7 +263,7 @@ function SingleBlog() {
         <>
           <div className="div w-full h-[100vh]">
             <img
-              src={post.image.imageUrl}
+              src={post?.image?.imageUrl}
               alt=""
               className="w-full object-cover h-[100vh] w-full"
             />
@@ -319,7 +322,7 @@ function SingleBlog() {
             )}
             <Reviews
               blogId={post._id}
-              rev={post.reviews.filter((item) => item.status === "Approved")}
+              rev={post?.reviews?.filter((item) => item.status === "Approved")}
               user={user}
             />
           </div>
